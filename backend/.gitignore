@@ -1,0 +1,5 @@
+# virtual env
+lift-bro/
+
+# python cache
+__pycache__/

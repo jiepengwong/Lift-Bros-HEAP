@@ -3,141 +3,15 @@ import React from 'react'
 function Home() {
   return (
     <div >
-        <div className="p-20">
-          testtestest          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
+      <h1 className="text-2xl">Welcome to the Home Page</h1>
 
+      
+        
+            {/* Add your styles here */}
+         
        
-        </div>
 
-        <div className=" p-20">
-          testtestest          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-
-       
-        </div>
-
-        <div className="p-20">
-          testtestest          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-
-       
-        </div>
-
-        <div className="p-20">
-          testtestest          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-          testtestest
-
-       
-        </div>
+        
     </div>
   )
 }

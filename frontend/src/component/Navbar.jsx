@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 
 function Navbar() {
@@ -21,6 +21,22 @@ function Navbar() {
     };
 
 
+    // To close the menu when the window size reaches desktop breakpoint (e.g., 640px) and set menu to close even if it is opened on mobile
+    useEffect(() => {
+        const handleResize = () => {
+          if (window.innerWidth >= 640) {
+            setMenuOpen(false); // Close the menu when window size reaches desktop breakpoint (e.g., 640px)
+          }
+        };
+    
+        window.addEventListener('resize', handleResize);
+    
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, []);
+
+
 
     return (
         <div className="top-0 w-full block">
@@ -31,9 +47,11 @@ function Navbar() {
                 </div>
 
                 {/* Navbar desktop */}
-                <div className="hidden sm:block">
+                <div className={`hidden sm:block ${menuOpen ? 'hidden' : ''}`}>
+
                     <ul>
                         {/* Links */}
+                      
                         {navbar.map((item) => (
                             <li
                                 key={item}
@@ -92,7 +110,8 @@ function Navbar() {
                 </div> */}
 
                 {/* Mobile Menu Content */}
-                <ul>
+                <ul className={`${menuOpen ? 'block sm:hidden' : 'hidden'}`}>
+
                     {/* Links */}
                     {navbar.map((item, index) => (
                         <li

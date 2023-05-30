@@ -4,6 +4,7 @@ import "./App.css";
 import Navbar from "./component/Navbar";
 import Homepage from "./pages/Homepage";
 // import Home from "./pages/Home";
+// test
 import Planner from "./pages/Planner.js";
 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";

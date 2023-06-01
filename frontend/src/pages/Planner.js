@@ -32,7 +32,7 @@ const toggleMobileMenu = () => {
         {/* Planner page */}
 
 
-        <h1 class="text-xl sm:text-lg lg:text-4xl font-bold text-center m-10 p-2">Welcome to the Planner Page</h1>
+        <h1 class="text-xl sm:text-lg lg:text-4xl font-bold text-center m-10 p-2">Welcome to the Routines Page</h1>
 
 
 

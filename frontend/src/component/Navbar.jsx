@@ -1,12 +1,12 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 
 function Navbar() {
 
     const button = <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Sign in</button>
 
-    const [navbar, setNavbar] = useState(['Home', 'Planner'])
+    const [navbar, setNavbar] = useState(['Home', 'Routine'])
     const [menuOpen, setMenuOpen] = useState(false);
     const [signIn, setSignIn] = useState(false);
 
@@ -21,6 +21,22 @@ function Navbar() {
     };
 
 
+    // To close the menu when the window size reaches desktop breakpoint (e.g., 640px) and set menu to close even if it is opened on mobile
+    useEffect(() => {
+        const handleResize = () => {
+          if (window.innerWidth >= 640) {
+            setMenuOpen(false); // Close the menu when window size reaches desktop breakpoint (e.g., 640px)
+          }
+        };
+    
+        window.addEventListener('resize', handleResize);
+    
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, []);
+
+
 
     return (
         <div className="top-0 w-full block">
@@ -31,9 +47,11 @@ function Navbar() {
                 </div>
 
                 {/* Navbar desktop */}
-                <div className="hidden sm:block">
+                <div className={`hidden sm:block ${menuOpen ? 'hidden' : ''}`}>
+
                     <ul>
                         {/* Links */}
+                      
                         {navbar.map((item) => (
                             <li
                                 key={item}
@@ -92,7 +110,8 @@ function Navbar() {
                 </div> */}
 
                 {/* Mobile Menu Content */}
-                <ul>
+                <ul className={`${menuOpen ? 'block sm:hidden' : 'hidden'}`}>
+
                     {/* Links */}
                     {navbar.map((item, index) => (
                         <li

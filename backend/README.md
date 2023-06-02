@@ -1,14 +1,12 @@
-# How to create a virtual environment for development
+# 1. How to run application for development
 
-python -m venv <env-name>
-<env-name>\Scripts\activate
-pip install -r requirements.txt
+go run main.go
 
-## Deactive Environment
+# 2. Using docker compose
 
-deactive
+docker compose up
 
-# Using Docker Image
+# 3. Using Docker Image if you are using local mysql
 
 ## Create Docker Image
 
@@ -16,4 +14,4 @@ docker build -t lift-bro:0.0.1 .
 
 ## Run docker image
 
-docker run -p 5000:5000 lift-bro:0.0.1
+docker run -p 8080:8080 lift-bro:0.0.1

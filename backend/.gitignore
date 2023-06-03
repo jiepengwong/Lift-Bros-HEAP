@@ -3,3 +3,6 @@ lift-bro/
 
 # python cache
 __pycache__/
+
+# firebase Account Key
+serviceAccountKey.json

@@ -7,9 +7,9 @@ import (
 
 func SetupUserRoutes(app *fiber.App) {
 	user := app.Group("/user")
-	user.Get("/:username", models.GetUser)
-	user.Get("/", models.GetUsers)
-	user.Post("/", models.CreateUser)
-	user.Put("/:username", models.UpdateUser)
-	user.Delete("/:username", models.DeleteUser)
+	user.Get("/:username", services.GetUser)
+	user.Get("/", services.GetUsers)
+	user.Post("/", services.CreateUser)
+	user.Put("/:username", services.UpdateUser)
+	user.Delete("/:username", services.DeleteUser)
 }

@@ -1,16 +1,17 @@
-package models
+package services
 
 import (
 	// "time"
 	"fmt"
-	"github.com/jiepengwong/Lift-Bros-HEAP/app/database"
-	"github.com/jiepengwong/Lift-Bros-HEAP/app/models"
+
 	"github.com/gofiber/fiber/v2"
+	"github.com/jiepengwong/Lift-Bros-HEAP/app/config"
+	"github.com/jiepengwong/Lift-Bros-HEAP/app/models"
 	// "gorm.io/gorm"
 )
 
 func GetUser(c *fiber.Ctx) error {
-	db := database.GetDB()
+	db := config.GetDB()
 	username := c.Params("username")
 	var user models.User // creates a null User
 	if err := db.First(&user, "username = ?", username).Error; err != nil {
@@ -21,7 +22,7 @@ func GetUser(c *fiber.Ctx) error {
 }
 
 func GetUsers(c *fiber.Ctx) error {
-	db := database.GetDB()
+	db := config.GetDB()
 	var users []models.User
 	if err := db.Find(&users).Error; err != nil {
 		return err
@@ -31,7 +32,7 @@ func GetUsers(c *fiber.Ctx) error {
 }
 
 func CreateUser(c *fiber.Ctx) error {
-	db := database.GetDB()
+	db := config.GetDB()
 	user := new(models.User) // creates a pointer to a null User
 	if err := c.BodyParser(user); err != nil {
 		return err
@@ -44,7 +45,7 @@ func CreateUser(c *fiber.Ctx) error {
 }
 
 func UpdateUser(c *fiber.Ctx) error {
-	db := database.GetDB()
+	db := config.GetDB()
 	username := c.Params("username")
 	var user models.User
 	if err := db.First(&user, "username = ?", username).Error; err != nil {
@@ -81,7 +82,7 @@ func UpdateUser(c *fiber.Ctx) error {
 
 func DeleteUser(c *fiber.Ctx) error {
 	// Delete user logic
-	db := database.GetDB()
+	db := config.GetDB()
 	username := c.Params("username")
 	var user models.User
 	db.First(&user, "username = ?", username)

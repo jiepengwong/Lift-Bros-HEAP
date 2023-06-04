@@ -17,8 +17,7 @@ func GetUser(c *fiber.Ctx) error {
 	if err := db.First(&user, "username = ?", username).Error; err != nil {
 		return err
 	}
-	c.JSON(user)
-	return nil
+	return c.Status(fiber.StatusOK).JSON(user)
 }
 
 func GetUsers(c *fiber.Ctx) error {
@@ -27,8 +26,7 @@ func GetUsers(c *fiber.Ctx) error {
 	if err := db.Find(&users).Error; err != nil {
 		return err
 	}
-	c.JSON(users)
-	return nil
+	return c.Status(fiber.StatusOK).JSON(users)
 }
 
 func CreateUser(c *fiber.Ctx) error {
@@ -40,8 +38,7 @@ func CreateUser(c *fiber.Ctx) error {
 	if err := db.Create(user).Error; err != nil {
 		return err
 	}
-	c.JSON(user)
-	return nil
+	return c.Status(fiber.StatusCreated).JSON(user)
 }
 
 func UpdateUser(c *fiber.Ctx) error {
@@ -76,8 +73,7 @@ func UpdateUser(c *fiber.Ctx) error {
 		return err
 	}
 
-	c.SendString("Update User")
-	return nil
+	return c.Status(fiber.StatusOK).SendString("Update User")
 }
 
 func DeleteUser(c *fiber.Ctx) error {
@@ -92,6 +88,22 @@ func DeleteUser(c *fiber.Ctx) error {
 		return err
 	}
 	db.Delete(user)
-	c.SendString("Delete User")
-	return nil
+	return c.Status(fiber.StatusOK).SendString("Delete User")
+}
+
+func Login(c *fiber.Ctx) error {
+	// Login logic
+	db := config.GetDB()
+	user := new(models.User) // creates a pointer to a null User
+	if err := c.BodyParser(user); err != nil {
+		return err
+	}
+	var userInDB models.User
+	if err := db.First(&userInDB, "email = ?", user.Email).Error; err != nil {
+		return err
+	}
+	if userInDB.Password != user.Password {
+		return c.Status(fiber.StatusUnauthorized).SendString("Incorrect password")
+	}
+	return c.Status(fiber.StatusOK).JSON(userInDB)
 }

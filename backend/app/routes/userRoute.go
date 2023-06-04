@@ -12,4 +12,5 @@ func SetupUserRoutes(app *fiber.App) {
 	user.Post("/", services.CreateUser)
 	user.Put("/:username", services.UpdateUser)
 	user.Delete("/:username", services.DeleteUser)
+	user.Post("/login", services.Login)
 }

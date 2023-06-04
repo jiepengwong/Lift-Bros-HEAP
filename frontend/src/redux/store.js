@@ -1,5 +1,5 @@
 import {configureStore} from '@reduxjs/toolkit';
-import {createRoutineSlice} from './slice/createRoutineSlice';
+import createRoutineSlice from './slice/createRoutineSlice';
 
 export default configureStore({
     reducer: {

@@ -19,6 +19,6 @@ export const createRoutineSlice = createSlice({
 });
 
 // Export actions
-export const {setroutine_details} = createRoutineSlice.actions;
+export const {setRoutineDetails} = createRoutineSlice.actions;
 
 export default createRoutineSlice.reducer;

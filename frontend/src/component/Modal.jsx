@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+// Redux
+import { useSelector, useDispatch } from 'react-redux'
+import { setRoutineDetails } from '../redux/slice/createRoutineSlice';
 
-const Modal = ({ isOpen, onClose, initialRoutineName = '', initialSelectedOption = '', handleSaveRoutine }) => {
-  const [routineName, setRoutineName] = useState(initialRoutineName);
-  const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
+const Modal = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [routineName, setRoutineName] = useState( '');
+  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedExercises, setSelectedExercises] = useState([])
 
   const dropdownOptions = [
     // Exercises can be of a particular ID name for exercises, with preloaded of 3 sets 10 reps each for each exercise
-    { value: 'Template 1', label: 'Option 1', exercises: ["Exercise 1"] },
-    { value: 'Template 2', label: 'Option 2', exercises: ["Exercise 2"] },
-    { value: 'Template 3', label: 'Option 3', exercises: ["Exercise 3"]  },
+    { value: 'Workout Template 1', label: 'Workout Template 1', exercises: ["Exercise 1", "Exercise 2", "Exercise 3"] },
+    { value: 'Workout Template 2', label: 'Workout Template 2', exercises: ["Exercise 2", "Exercise 3", "Exercise 4"] },
+    { value: 'Workout Template 3', label: 'Workout Template 3', exercises: ["Exercise 3", "Exercise 4", "Exercise 5"]  },
     // Add more options as needed
   ];
 
@@ -18,13 +25,24 @@ const Modal = ({ isOpen, onClose, initialRoutineName = '', initialSelectedOption
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
+    setSelectedExercises(dropdownOptions.find(option => option.value === event.target.value).exercises)
   };
 
   if (!isOpen) return null;
 
   const handleSave = () => {
-    handleSaveRoutine(routineName, selectedOption);
+    console.log(routineName, selectedOption)
     onClose();
+    // Clear the routine name
+    setRoutineName('');
+    setSelectedOption('');
+
+    // Store the routine name and selected option in the redux store
+    dispatch(setRoutineDetails({ "routineName" :routineName, exercises: selectedExercises }));
+    
+
+    // Redirect to create routine page
+    navigate('/createRoutine')
   };
 
   return (

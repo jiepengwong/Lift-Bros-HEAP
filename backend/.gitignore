@@ -6,3 +6,6 @@ __pycache__/
 
 # firebase Account Key
 serviceAccountKey.json
+
+# env
+.env

@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/config"
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/routes"
+	"github.com/joho/godotenv"
 )
 
 func Start() {
@@ -15,6 +16,11 @@ func Start() {
 
 	// Register routes
 	routes.SetupUserRoutes(app)
+
+	// Load .env file
+	if err := godotenv.Load(".env"); err != nil {
+		panic("Error loading .env file")
+	} 
 
 	app.Listen(":8080")
 }

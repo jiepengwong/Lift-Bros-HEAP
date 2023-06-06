@@ -1,22 +1,26 @@
-# Use the official Python base image
-FROM python:3.8-slim-buster
+# Use an official Golang runtime as the base image
+FROM golang:1.19-alpine
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the requirements file to the working directory
-COPY requirements.txt .
+# Install Git
+RUN apk update && apk add --no-cache git
 
-# Install build dependencies
-# RUN apt-get update \
-#     && apt-get install -y build-essential \
-#     && rm -rf /var/lib/apt/lists/*
+# Copy the Go module dependency files
+COPY go.mod go.sum ./
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Download and install the application dependencies
+RUN go mod download
 
-# Copy the application code to the working directory
-COPY . .
+# Copy the source code to the container
+COPY . ./
 
-# Set the default command to run the application
-CMD [ "python", "run.py" ]
+# Build the Go application
+RUN go build -o main .
+
+# Expose the port on which the application will run
+EXPOSE 8080
+
+# Run the Go application
+CMD ["./main"]

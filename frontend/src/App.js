@@ -3,7 +3,7 @@ import "./App.css";
 // Import components
 import Navbar from "./component/Navbar";
 import Homepage from "./pages/Homepage";
-// import Home from "./pages/Home";
+import History from "./pages/History";
 // test
 import Planner from "./pages/Planner.js";
 
@@ -14,7 +14,7 @@ function App() {
       <Navbar />
       <div>
         <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/history" element={<History />} />
           <Route path="/" element={<Homepage />} />
           <Route path="/planner" element={<Planner />} />
         </Routes>

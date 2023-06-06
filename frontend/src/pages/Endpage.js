@@ -2,6 +2,7 @@ import React from "react";
 import GreyBox from "../component/GreyBox";
 import StarRating from "../component/StarRating";
 import Notes from "../component/Notes";
+import Button from "../component/Button";
 
 function Endpage() {
   return (
@@ -19,6 +20,9 @@ function Endpage() {
         <StarRating />
         <div className="w-72"></div> {/* Custom gap width */}
         <Notes />
+      </div>
+      <div className="flex justify-center">
+        <Button text="Save & back to home" />
       </div>
     </div>
   );

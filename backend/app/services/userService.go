@@ -10,8 +10,6 @@ import (
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/config"
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/models"
 	"golang.org/x/crypto/bcrypt"
-	// "gorm.io/gorm"
-)
 
 var secretKey = os.Getenv("SECRET_KEY")
 

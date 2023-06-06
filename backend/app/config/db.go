@@ -24,6 +24,7 @@ func InitDatabase() {
 	fmt.Println("Database connection successfully opened")
 
 	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Exercise{})
 }
 
 func GetDB() *gorm.DB {
@@ -35,7 +36,7 @@ func CloseDB() {
 	if err != nil {
 		panic(err)
 	}
-	
+
 	err = db.Close()
 	if err != nil {
 		panic(err)

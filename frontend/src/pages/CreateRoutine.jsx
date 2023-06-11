@@ -79,6 +79,8 @@ function CreateRoutine() {
     // For example, you can navigate to an edit page or open a modal
 
     console.log('Exercise edited:', exercise);
+    // Redirect to the edit page
+    navigate('/manageExercise')
   };
 
   // Monitor changes in savedExercises and refresh when it changes
@@ -102,7 +104,7 @@ function CreateRoutine() {
           <p className="font-bold text-center mt-4 mb-2">Current Exercises:</p>
           <ul className="text-center">
             {savedExercises.map((exercise, index) => (
-              <li key={index} className="capitalize">{exercise}</li>
+              <li key={index} className="capitalize">{exercise.exercise}</li>
             ))}
           </ul>
         </div>
@@ -126,7 +128,7 @@ function CreateRoutine() {
               <h2 className="text-lg font-bold mb-2">Exercises in: Routine {newRoutineName}</h2>
               <div className="grid grid-cols-2 gap-4">
                 {savedExercises.map((exerciseName, index) => {
-                  const result = results.find((result) => result.name === exerciseName);
+                  const result = results.find((result) => result.name === exerciseName.exercise);
 
                   if (result) {
                     return (
@@ -167,7 +169,7 @@ function CreateRoutine() {
               {searchResults.map((result, index) => {
                 // savedExercises is an array, check it it matches the name of the result
                 const isExerciseAdded = savedExercises.some(
-                  (exercise) => exercise === result.name
+                  (exercise) => exercise.exercise === result.name
                 );
 
                 return (

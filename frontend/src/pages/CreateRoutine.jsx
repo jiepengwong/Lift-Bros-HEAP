@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
+import Searchbar from '../component/Searchbar';
 
 function CreateRoutine() {
   const navigate = useNavigate();
@@ -34,19 +35,27 @@ function CreateRoutine() {
   ];
 
   const [searchInput, setSearchInput] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState(results);
   const [savedExercises, setSavedExercises] = useState(routineDetails.exercises)
 
-  const handleSearch = () => {
-    // Perform search logic here based on the searchInput
 
-    // Take the searchInput and filter according to the name and description
-    const searchOutput = results.filter((result) => {
-      return result.name.toLowerCase().includes(searchInput.toLowerCase()) ||
-        result.description.toLowerCase().includes(searchInput.toLowerCase());
-    });
 
-    setSearchResults(searchOutput);
+  const handleSearch = (data, filterString) => {
+
+    // Handlesearch will be used in the search bar component (Parent to child)
+
+    if (filterString != "") {
+      const searchOutput = data.filter((result) => {
+        return result.name.toLowerCase().includes(filterString.toLowerCase()) ||
+          result.description.toLowerCase().includes(filterString.toLowerCase());
+      });
+  
+      setSearchResults(searchOutput);
+
+    } else {
+      console.log("in the handlesearch component" + data)
+      setSearchResults(data);
+    }
   };
 
   // Logic for buttons (Have to filter between ARRAY (saved exercises) and OBJECT (search results))
@@ -106,25 +115,9 @@ function CreateRoutine() {
         <div className="py-4">
           <h2 className="text-lg font-bold mb-2">Search for Routines</h2>
 
-          <div className="flex items-center justify-center">
-            <div className="flex items-center border-b-2 border-teal-500 py-2 px-4 w-1/2">
-              <input
-                className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-                type="text"
-                placeholder="Search Routines"
-                aria-label="Full name"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-              />
-              <button
-                className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
-                type="button"
-                onClick={handleSearch}
-              >
-                Search
-              </button>
-            </div>
-          </div>
+          <Searchbar exerciseData={results} handleSearch={handleSearch}/>
+
+         
 
           {/* Saved exercises, from the preloaded exercises + Any other exercises that comes */}
           {/* If selectedTemplateExercises not empty and it exists, filter through the list and add it as saved */}

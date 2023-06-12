@@ -63,7 +63,7 @@ function ModalExerciseSets({ isOpen, onClose, handleChanges, exercise }) {
                                             type="number"
                                             placeholder="Enter sets"
                                             onChange={(e) => setSets(e.target.value)}
-                                            value={sets}
+                                            value={1}
                                             min="1"
 
                                         />
@@ -81,7 +81,7 @@ function ModalExerciseSets({ isOpen, onClose, handleChanges, exercise }) {
                                             placeholder="Enter reps"
                                             onChange={(e) => setReps(e.target.value)}
                                             min="1"
-                                            value={reps}
+                                            value={1}
 
 
                                         />

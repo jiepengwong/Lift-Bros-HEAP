@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import Searchbar from '../component/Searchbar';
+import ModalExerciseSets from '../component/ModalExerciseSets';
 
 function CreateRoutine() {
   const navigate = useNavigate();
@@ -14,36 +15,40 @@ function CreateRoutine() {
   const [newRoutineName, setNewRoutineName] = useState(routineDetails.routineName);
   const [selectedTemplateExercises, setScteeledTemplateExercises] = useState(routineDetails.exercises);
 
-  console.log(selectedTemplateExercises)
 
-  const results = [
-    { name: 'Exercise 1', description: 'Exercise 1 description' },
-    { name: 'Exercise 2', description: 'Exercise 2 description' },
-    { name: 'Exercise 3', description: 'Exercise 3 description' },
-    { name: 'Exercise 4', description: 'Exercise 4 description' },
-    { name: 'Exercise 5', description: 'Exercise 5 description' },
-    { name: 'Exercise 6', description: 'Exercise 6 description' },
-    { name: 'Exercise 7', description: 'Exercise 7 description' },
-    { name: 'Exercise 8', description: 'Exercise 8 description' },
-    { name: 'Exercise 9', description: 'Exercise 9 description' },
-    { name: 'Exercise 10', description: 'Exercise 10 description' },
-    { name: 'Exercise 11', description: 'Exercise 11 description' },
-    { name: 'Exercise 12', description: 'Exercise 12 description' },
-    { name: 'Exercise 13', description: 'Exercise 13 description' },
-    { name: 'Exercise 14', description: 'Exercise 14 description' },
-    { name: 'Exercise 15', description: 'Exercise 15 description' }
-  ];
+const [results, setResults] = useState([
+  { name: 'Exercise 1', description: 'Exercise 1 description', sets: 3, reps: 10 },
+    { name: 'Exercise 2', description: 'Exercise 2 description', sets: 3, reps: 10 },
+    { name: 'Exercise 3', description: 'Exercise 3 description', sets: 3, reps: 10 },
+    { name: 'Exercise 4', description: 'Exercise 4 description', sets: 3, reps: 10 },
+    { name: 'Exercise 5', description: 'Exercise 5 description', sets: 3, reps: 10 },
+    { name: 'Exercise 6', description: 'Exercise 6 description', sets: 3, reps: 10 },
+    { name: 'Exercise 7', description: 'Exercise 7 description', sets: 3, reps: 10 },
+    { name: 'Exercise 8', description: 'Exercise 8 description', sets: 3, reps: 10 },
+    { name: 'Exercise 9', description: 'Exercise 9 description', sets: 3, reps: 10 },
+    { name: 'Exercise 10', description: 'Exercise 10 description', sets: 3, reps: 10 },
+    { name: 'Exercise 11', description: 'Exercise 11 description', sets: 3, reps: 10 },
+    { name: 'Exercise 12', description: 'Exercise 12 description', sets: 3, reps: 10 },
+    { name: 'Exercise 13', description: 'Exercise 13 description', sets: 3, reps: 10 },
+    { name: 'Exercise 14', description: 'Exercise 14 description', sets: 3, reps: 10 },
+    { name: 'Exercise 15', description: 'Exercise 15 description', sets: 3, reps: 10 }
+
+
+])
+
 
   const [searchInput, setSearchInput] = useState('');
   const [searchResults, setSearchResults] = useState(results);
   const [savedExercises, setSavedExercises] = useState(routineDetails.exercises)
+  // For modal
+  const [showModal, setShowModal] = useState(false);
+  const [selectedExercise, setSelectedExercise] = useState({});
+
 
 
 
   const handleSearch = (data, filterString) => {
-
     // Handlesearch will be used in the search bar component (Parent to child)
-
     if (filterString != "") {
       const searchOutput = data.filter((result) => {
         return result.name.toLowerCase().includes(filterString.toLowerCase()) ||
@@ -62,11 +67,18 @@ function CreateRoutine() {
   const handleAddExercise = (exercise) => {
     console.log(exercise)
 
-    setSavedExercises((prevExercises) => [...prevExercises, exercise.name]);
+    // Push to redux store then navigate to manage exercise
+    // Push the exercise name to the redux store
+
+    var tempResult = {"exercise": exercise.name, "sets": exercise.sets, "reps": exercise.reps}
+    setSavedExercises((prevExercises) => [...prevExercises, tempResult]);
     console.log('Added exercise:', exercise.name);
   };
 
   const handleRemoveExercise = (exercise) => {
+    console.log("line70" + exercise.name)
+
+    // NEED TO EDIT THIS 
     setSavedExercises((prevExercises) =>
       prevExercises.filter((prevExercise) => prevExercise !== exercise.name)
     );
@@ -79,9 +91,38 @@ function CreateRoutine() {
     // For example, you can navigate to an edit page or open a modal
 
     console.log('Exercise edited:', exercise);
+
+    // Set the selected exercise to pass to modal
+    setSelectedExercise(exercise);
+
+    // Click to open the modal
+    setShowModal(true);
+
+
+
     // Redirect to the edit page
-    navigate('/manageExercise')
+    // navigate('/manageExercise')
   };
+
+  const handleChanges = (sets,reps, exerciseName) => {
+    // Filter through the results and find the exercise that matches the exercise name, and then replace the sets and reps
+    const newResults = results.map((result) => {
+      if (result.name === exerciseName) {
+        return {
+          ...result,
+          sets,
+          reps,
+        };
+      }
+      return result;
+    });
+  
+    // Update the results state with the modified array
+    setResults(newResults);
+      
+}
+
+
 
   // Monitor changes in savedExercises and refresh when it changes
   useEffect(() => {
@@ -135,6 +176,12 @@ function CreateRoutine() {
                       <div className="bg-gray-200 rounded p-4" key={index}>
                         <h3 className="text-lg font-bold">{result.name}</h3>
                         <p className="text-sm">{result.description}</p>
+                        <div>
+                          <span className="font-bold">Sets:</span> {result.sets}
+                        </div>
+                        <div>
+                          <span className="font-bold">Reps:</span> {result.reps}
+                        </div>
                         <div className="flex justify-between mt-2">
                           <button
                             className="bg-red-500 hover:bg-red-600 text-white rounded px-4 py-2"
@@ -191,6 +238,12 @@ function CreateRoutine() {
           </div>
         </div>
       </div>
+      <ModalExerciseSets 
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        handleChanges={handleChanges}
+        exercise={selectedExercise}
+      />
     </div>
   );
 

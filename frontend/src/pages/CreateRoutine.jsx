@@ -80,9 +80,8 @@ const [results, setResults] = useState([
 
     // NEED TO EDIT THIS 
     setSavedExercises((prevExercises) =>
-      prevExercises.filter((prevExercise) => prevExercise !== exercise.name)
-    );
-
+    prevExercises.filter((prevExercise) => prevExercise.exercise !== exercise.name)
+  );
     console.log('Exercise removed:', exercise);
   };
 

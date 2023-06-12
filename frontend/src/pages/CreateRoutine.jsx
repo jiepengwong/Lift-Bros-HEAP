@@ -119,6 +119,8 @@ const [results, setResults] = useState([
   
     // Update the results state with the modified array
     setResults(newResults);
+    // Update the modal to false, to close it
+    setShowModal(false);
       
 }
 

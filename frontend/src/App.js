@@ -6,6 +6,7 @@ import Homepage from "./pages/Homepage";
 import Planner from "./pages/Planner";
 import CreateRoutine from "./pages/CreateRoutine";
 import Endpage from "./pages/Endpage";
+import History from "./pages/History";
 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 function App() {

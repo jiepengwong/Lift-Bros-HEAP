@@ -14,7 +14,7 @@ var (
 
 func InitDatabase() {
 	var err error
-	dataSourceName := "root:password@tcp(mysql:3306)/liftbro?charset=utf8mb4&parseTime=True&loc=Local"
+	dataSourceName := "liftbro:password@tcp(mysql:3306)/liftbro?charset=utf8mb4&parseTime=True&loc=Local"
 	// If you are using a local database
 	// dataSourceName := "root:password@tcp(localhost:3306)/liftbro?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err = gorm.Open(mysql.Open(dataSourceName), &gorm.Config{})

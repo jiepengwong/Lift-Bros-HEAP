@@ -9,3 +9,6 @@ serviceAccountKey.json
 
 # env
 .env
+
+# main executable
+main

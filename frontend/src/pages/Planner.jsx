@@ -28,32 +28,8 @@ function Planner() {
   };
 
   //  === Modal local states ===
-  const [routineName, setRoutineName] = useState('');
   const [showModal, setShowModal] = useState(false);
 
-  const handleRoutineNameChange = (event) => {
-    setRoutineName(event.target.value);
-  };
-
-  const handleSaveRoutine = () => {
-    // Perform the necessary actions with the routine name, e.g., save it to the database
-    console.log('Saving routine:', routineName);
-
-    // Close the modal and clear the routine name
-    setShowModal(false);
-    setRoutineName('');
-  };
-  // ------------------------------
-
-
-  // Redirect to create routine page
-  const handleCreateRoutine = () => {
-    // Redirect to create routine page
-    alert('redirect to routine page');
-    // Popup modal to create routine
-
-    navigate('/createRoutine');
-  };
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -62,9 +38,6 @@ function Planner() {
     setMobileMenuOpen((prevState) => !prevState);
   };
 
-
-
-  // Need to account for content display based on the active tab
 
   // Database data
 
@@ -189,15 +162,6 @@ function Planner() {
         onClose={() => setShowModal(false)}
         
       />
-
-
-      {/* Logic flow */}
-      {/* 1. User to key in routine name, select template */}
-      {/* 2. Store in redux  */}
-      {/* 3. Redirect to the create routine page */}
-      {/* 4. At create new routine page, display - 1. Routine Name, 2. Templates, with certain preloaded exercises in saved; (This can be the exercise ID) 
-       */}
-       {/* 5. At create new routine pages, can have 3 selection. 1 section - For search bar, 2 section - Selected exercises for routine ; 3 section - results for exercises */}
     </div>
   );
 }

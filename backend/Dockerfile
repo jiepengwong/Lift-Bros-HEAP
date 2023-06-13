@@ -8,7 +8,6 @@ ENV PROJECT_DIR=/app \
 
 # Set the working directory inside the container
 WORKDIR /app
-# RUN mkdir "/build"
 
 # Install Git
 RUN apk update && \
@@ -22,12 +21,9 @@ COPY go.mod go.sum ./
 # Download and install the application dependencies
 RUN go mod download && go mod verify
 
-# Install Compile Daemon for go. We'll use it to watch changes in go files
-RUN go install -mod=mod github.com/githubnemo/CompileDaemon
-
 # Copy and build the app
 COPY . .
-COPY ./entrypoint.sh ./entrypoint.sh
+COPY ./entrypoint.sh /entrypoint.sh
 
 # wait-for-it requires bash, which alpine doesn't ship with by default. Use wait-for instead
 ADD https://raw.githubusercontent.com/eficode/wait-for/v2.1.0/wait-for /usr/local/bin/wait-for

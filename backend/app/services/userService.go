@@ -18,12 +18,7 @@ var secretKey = os.Getenv("SECRET_KEY")
 func GetUser(c *fiber.Ctx) error {
 	db := config.GetDB()
 	username := c.Params("username")
-	authUser := c.Locals("authUser")
-	if authUser != username {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": "Unauthorized",
-		})
-	}
+	config.VerifyUser(c, username)
 	var user models.User // creates a null User
 	if err := db.First(&user, "username = ?", username).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
@@ -86,12 +81,7 @@ func CreateUser(c *fiber.Ctx) error {
 func UpdateUser(c *fiber.Ctx) error {
 	db := config.GetDB()
 	username := c.Params("username")
-	authUser := c.Locals("authUser")
-	if authUser != username {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": "Unauthorized",
-		})
-	}
+	config.VerifyUser(c, username)
 	var existingUser models.User
 	if err := db.First(&existingUser, "username = ?", username).Error; err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -142,12 +132,7 @@ func DeleteUser(c *fiber.Ctx) error {
 	// Delete user logic
 	db := config.GetDB()
 	username := c.Params("username")
-	authUser := c.Locals("authUser")
-	if authUser != username {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": "Unauthorized",
-		})
-	}
+	config.VerifyUser(c, username)
 	var user models.User
 	db.First(&user, "username = ?", username)
 	if user.Username == "" {

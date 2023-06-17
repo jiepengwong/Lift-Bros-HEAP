@@ -21,13 +21,14 @@ COPY go.mod go.sum ./
 # Download and install the application dependencies
 RUN go mod download && go mod verify
 
-# Copy and build the app
-COPY . .
 COPY ./entrypoint.sh /entrypoint.sh
 
 # wait-for-it requires bash, which alpine doesn't ship with by default. Use wait-for instead
 ADD https://raw.githubusercontent.com/eficode/wait-for/v2.1.0/wait-for /usr/local/bin/wait-for
 RUN chmod +rx /usr/local/bin/wait-for /entrypoint.sh
+
+# Copy and build the app
+COPY . .
 
 ENTRYPOINT [ "sh", "/entrypoint.sh" ]
 # referenced from https://github.com/icodestuff-io/golang-docker-tutorial (https://www.youtube.com/watch?v=ioa02xkqRII&ab_channel=Icodestuff)

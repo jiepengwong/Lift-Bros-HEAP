@@ -1,7 +1,7 @@
 package services
 
 import (
-	"fmt"
+	"errors"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
@@ -9,6 +9,31 @@ import (
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/models"
 	"gorm.io/gorm"
 )
+
+func processMuscleGroupNames(db *gorm.DB, muscleGroups *[]models.MuscleGroup) error {
+	// retrieve all muscle group id from the database using their name
+	var muscleGroupNames []string
+	for _, muscleGroup := range *muscleGroups {
+		muscleGroupNames = append(muscleGroupNames, muscleGroup.Name)
+	}
+
+	db.Where("name IN ?", muscleGroupNames).Find(muscleGroups)
+	if len(*muscleGroups) != len(muscleGroupNames) {
+		return errors.New("one or more muscle groups not found")
+	}
+	return nil
+}
+
+func getExercise(db *gorm.DB, name string) (*models.Exercise, error) {
+	exercise := new(models.Exercise)
+	if err := db.Preload("MuscleGroups").First(&exercise, "name = ?", name).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, errors.New("exercise not found")
+		}
+		return nil, err
+	}
+	return exercise, nil
+}
 
 // CreateExercise creates a new exercise
 func CreateExercise(c *fiber.Ctx) error {
@@ -19,22 +44,15 @@ func CreateExercise(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-
-	// Find all muscle groups
-	var muscleGroupNames []string
-	for _, muscleGroup := range exercise.MuscleGroups {
-		muscleGroupNames = append(muscleGroupNames, muscleGroup.Name)
-	}
-
-	db.Where("name IN ?", muscleGroupNames).Find(&exercise.MuscleGroups)
-	if len(exercise.MuscleGroups) != len(muscleGroupNames) {
+	// retrieve all muscle group id from the database using their name
+	if err := processMuscleGroupNames(db, &exercise.MuscleGroups); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "One or more muscle groups not found",
+			"error": err.Error(),
 		})
 	}
+
 	// Save the exercise to the database & omit creation of muscle groups
 	if err := db.Omit("MuscleGroups.*").Create(&exercise).Error; err != nil {
-		fmt.Println(exercise)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
 		})
@@ -46,14 +64,10 @@ func CreateExercise(c *fiber.Ctx) error {
 func GetExercise(c *fiber.Ctx) error {
 	db := config.GetDB()
 	name := strings.ReplaceAll(c.Params("name"), "%20", " ")
-	exercise := new(models.Exercise)
-	if err := db.Preload("MuscleGroups").First(&exercise, "name = ?", name).Error; err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Exercise not found"})
-		}
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err})
+	exercise, err := getExercise(db, name)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}
-
 	return c.Status(fiber.StatusOK).JSON(exercise)
 }
 
@@ -73,12 +87,9 @@ func UpdateExercise(c *fiber.Ctx) error {
 	db := config.GetDB()
 	name := strings.ReplaceAll(c.Params("name"), "%20", " ")
 
-	existingExercise := new(models.Exercise)
-	if err := db.Preload("MuscleGroups").First(&existingExercise, "name = ?", name).Error; err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Exercise not found"})
-		}
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Database error"})
+	existingExercise, err := getExercise(db, name)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}
 
 	updatedExercise := new(models.Exercise)
@@ -88,7 +99,7 @@ func UpdateExercise(c *fiber.Ctx) error {
 
 	// TODO: Validation and error handling
 
-	// Update the exercise in the database
+	// Update the existing exercise in the database using submitted updated exercise
 	if updatedExercise.Name != "" {
 		existingExercise.Name = updatedExercise.Name
 	}
@@ -105,24 +116,20 @@ func UpdateExercise(c *fiber.Ctx) error {
 		existingExercise.CaloriesPerMin = updatedExercise.CaloriesPerMin
 	}
 	if updatedExercise.MuscleGroups != nil {
-		var muscleGroupNames []string
-		for _, muscleGroup := range updatedExercise.MuscleGroups {
-			muscleGroupNames = append(muscleGroupNames, muscleGroup.Name)
-		}
-
-		db.Where("name IN ?", muscleGroupNames).Find(&updatedExercise.MuscleGroups)
-		if len(updatedExercise.MuscleGroups) != len(muscleGroupNames) {
+		// retrieve all muscle group id from the database using their name
+		if err := processMuscleGroupNames(db, &updatedExercise.MuscleGroups); err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "One or more muscle groups not found",
+				"error": err.Error(),
 			})
 		}
+		// replace all muscle groups associated to the exercise
 		if err := db.Model(&existingExercise).Association("MuscleGroups").Replace(updatedExercise.MuscleGroups); err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": err,
 			})
 		}
 	}
-
+	// Save the exercise to the database & omit creation of muscle groups
 	if err := db.Omit("MuscleGroups").Save(&existingExercise).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -139,14 +146,12 @@ func DeleteExercise(c *fiber.Ctx) error {
 	db := config.GetDB()
 	name := strings.ReplaceAll(c.Params("name"), "%20", " ")
 
-	exercise := new(models.Exercise)
-	if err := db.Preload("MuscleGroups").First(&exercise, "name = ?", name).Error; err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Exercise not found"})
-		}
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err})
+	exercise, err := getExercise(db, name)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}
 
+	// remove all muscle groups associated to the exercise
 	if err := db.Unscoped().Model(&exercise).Association("MuscleGroups").Unscoped().Clear(); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err,

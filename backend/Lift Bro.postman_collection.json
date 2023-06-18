@@ -334,7 +334,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Bench Press\",\r\n    \"description\": \"description\",\r\n    \"difficulty\": \"BEG\",\r\n    \"defaultRep\": \"MED\",\r\n    \"caloriesPerMin\": 8,\r\n    \"muscleGroups\": [\r\n        {\r\n            \"name\": \"TRICEP\"\r\n        },\r\n        {\r\n            \"name\": \"MIDCHEST\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"name\": \"Jackhammer Pushdown\",\r\n    \"description\": \"description\",\r\n    \"difficulty\": \"INT\",\r\n    \"defaultRep\": \"MED\",\r\n    \"caloriesPerMin\": 8,\r\n    \"muscleGroups\": [\r\n        {\r\n            \"name\": \"MIDCHEST\"\r\n        },\r\n        {\r\n            \"name\": \"TRICEP\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -415,13 +415,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/exercise/Bench Press",
+							"raw": "{{baseUrl}}/exercise/Jackhammer Pushdown",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"exercise",
-								"Bench Press"
+								"Jackhammer Pushdown"
 							]
 						}
 					},
@@ -447,7 +447,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Bench Press\",\r\n    \"description\": \"description\",\r\n    \"difficulty\": \"BEG\",\r\n    \"defaultRep\": \"MED\",\r\n    \"caloriesPerMin\": 8,\r\n    \"muscleGroups\": [\r\n        {\r\n            \"name\": \"TRICEP\"\r\n        },\r\n        {\r\n            \"name\": \"LOWERCHEST\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"name\": \"Jackhammer Pushdown\",\r\n    \"description\": \"This exercise hits the lowerchest\",\r\n    \"muscleGroups\": [\r\n        {\r\n            \"name\": \"TRICEP\"\r\n        },\r\n        {\r\n            \"name\": \"LOWERCHEST\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -455,13 +455,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/exercise/Bench Press",
+							"raw": "{{baseUrl}}/exercise/Jackhammer Pushdown",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"exercise",
-								"Bench Press"
+								"Jackhammer Pushdown"
 							]
 						}
 					},
@@ -486,13 +486,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/exercise/Bench Press",
+							"raw": "{{baseUrl}}/exercise/Jackhammer Pushdown",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"exercise",
-								"Bench Press"
+								"Jackhammer Pushdown"
 							]
 						}
 					},

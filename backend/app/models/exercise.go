@@ -37,7 +37,7 @@ type DefaultRep string
 const (
 	DefaultRepLow DefaultRep = "LOW"
 	DefaultRepMed DefaultRep = "MED"
-	DefaultRepHi  DefaultRep = "HI"
+	DefaultRepHi  DefaultRep = "HIG"
 )
 
 type MuscleGroup struct {

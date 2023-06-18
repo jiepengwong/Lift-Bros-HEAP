@@ -1,4 +1,4 @@
-package routes
+package controllers
 
 import (
 	"github.com/gofiber/fiber/v2"
@@ -6,7 +6,12 @@ import (
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/services"
 )
 
-func SetupUserRoutes(app *fiber.App) {
+func SetupRoutes(app *fiber.App) {
+	setupUserRoutes(app)
+	setupExerciseRoutes(app)
+}
+
+func setupUserRoutes(app *fiber.App) {
 	authorisedUser := app.Group("/user", config.AuthMiddleware())
 	authorisedUser.Get("/:username", services.GetUser)
 	authorisedUser.Get("/", services.GetUsers)
@@ -15,4 +20,13 @@ func SetupUserRoutes(app *fiber.App) {
 	authorisedUser.Post("/logout", services.Logout)
 	app.Post("/login", services.Login)
 	app.Post("/newUser", services.CreateUser)
+}
+
+func setupExerciseRoutes(app *fiber.App) {
+	exercise := app.Group("/exercise", config.AuthMiddleware())
+	exercise.Post("/new", services.CreateExercise)
+	exercise.Get("/:name", services.GetExercise)
+	exercise.Get("/", services.GetExercises)
+	exercise.Put("/:name", services.UpdateExercise)
+	exercise.Delete("/:name", services.DeleteExercise)
 }

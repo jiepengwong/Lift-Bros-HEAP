@@ -10,7 +10,7 @@ import (
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/config"
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/models"
 	"golang.org/x/crypto/bcrypt"
-	// "gorm.io/gorm"
+	"gorm.io/gorm"
 )
 
 var secretKey = os.Getenv("SECRET_KEY")
@@ -18,15 +18,17 @@ var secretKey = os.Getenv("SECRET_KEY")
 func GetUser(c *fiber.Ctx) error {
 	db := config.GetDB()
 	username := c.Params("username")
-	authUser := c.Locals("authUser")
-	if authUser != username {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"message": "Unauthorized",
-		})
-	}
+	config.VerifyUser(c, username)
 	var user models.User // creates a null User
 	if err := db.First(&user, "username = ?", username).Error; err != nil {
-		return err
+		if err == gorm.ErrRecordNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"error": "User not found",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Database error",
+		})
 	}
 	return c.Status(fiber.StatusOK).JSON(user)
 }
@@ -35,7 +37,9 @@ func GetUsers(c *fiber.Ctx) error {
 	db := config.GetDB()
 	var users []models.User
 	if err := db.Find(&users).Error; err != nil {
-		return err
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
 	}
 	return c.Status(fiber.StatusOK).JSON(users)
 }
@@ -44,14 +48,16 @@ func CreateUser(c *fiber.Ctx) error {
 	db := config.GetDB()
 	newUser := new(models.NewUser) // creates a pointer to a null User
 	if err := c.BodyParser(newUser); err != nil {
-		return err
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
 	}
 
 	// Hashing password
 	password, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), bcrypt.DefaultCost) // DefaultCost = 10
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Error hashing password",
+			"error": "Error hashing password",
 		})
 	}
 
@@ -65,7 +71,9 @@ func CreateUser(c *fiber.Ctx) error {
 	user.Email = newUser.Email
 
 	if err := db.Create(user).Error; err != nil {
-		return err
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
 	}
 	return c.Status(fiber.StatusCreated).JSON(user)
 }
@@ -73,27 +81,24 @@ func CreateUser(c *fiber.Ctx) error {
 func UpdateUser(c *fiber.Ctx) error {
 	db := config.GetDB()
 	username := c.Params("username")
-	authUser := c.Locals("authUser")
-	if authUser != username {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"message": "Unauthorized",
-		})
-	}
+	config.VerifyUser(c, username)
 	var existingUser models.User
 	if err := db.First(&existingUser, "username = ?", username).Error; err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": err.Error(),
+			"error": err.Error(),
 		})
 	}
 	updatedUser := new(models.NewUser) // creates a pointer to a null User
 	if err := c.BodyParser(updatedUser); err != nil {
-		return err
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
 	}
 	if updatedUser.Password != "" {
 		password, err := bcrypt.GenerateFromPassword([]byte(updatedUser.Password), bcrypt.DefaultCost) // DefaultCost = 10
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"message": "Error hashing password",
+				"error": "Error hashing password",
 			})
 		}
 		existingUser.Password = password
@@ -113,7 +118,9 @@ func UpdateUser(c *fiber.Ctx) error {
 
 	// Save the changes in the database
 	if err := db.Save(&existingUser).Error; err != nil {
-		return err
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
@@ -125,12 +132,7 @@ func DeleteUser(c *fiber.Ctx) error {
 	// Delete user logic
 	db := config.GetDB()
 	username := c.Params("username")
-	authUser := c.Locals("authUser")
-	if authUser != username {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"message": "Unauthorized",
-		})
-	}
+	config.VerifyUser(c, username)
 	var user models.User
 	db.First(&user, "username = ?", username)
 	if user.Username == "" {
@@ -147,21 +149,23 @@ func Login(c *fiber.Ctx) error {
 	db := config.GetDB()
 	login := new(models.NewUser)
 	if err := c.BodyParser(login); err != nil {
-		return err
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
 	}
 
 	// Check for valid user
 	user := new(models.User)
 	if err := db.First(user, "username = ?", login.Username).Error; err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Invalid username",
+			"error": "Invalid username",
 		})
 	}
 
 	// Check password
 	if err := bcrypt.CompareHashAndPassword(user.Password, []byte(login.Password)); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Incorrect password",
+			"error": "Incorrect password",
 		})
 	}
 
@@ -176,7 +180,7 @@ func Login(c *fiber.Ctx) error {
 	if err != nil {
 		c.Status(fiber.StatusInternalServerError)
 		return c.JSON(fiber.Map{
-			"message": "could not login",
+			"error": "could not login",
 		})
 	}
 

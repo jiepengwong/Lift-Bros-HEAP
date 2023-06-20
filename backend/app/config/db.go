@@ -2,9 +2,8 @@ package config
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 
-	"github.com/jiepengwong/Lift-Bros-HEAP/app/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -25,8 +24,7 @@ func InitDatabase() {
 	}
 	fmt.Println("Database connection successfully opened")
 
-	db.AutoMigrate(&models.User{})
-	MigrateAndSeedMuscleGroup(db)
+	MigrateAndSeedDB(db)
 }
 
 func GetDB() *gorm.DB {
@@ -49,7 +47,7 @@ func CloseDB() {
 
 func RunSQLFile(db *gorm.DB, filePath string) error {
 	// Open the SQL file
-	sqlFile, err := ioutil.ReadFile(filePath)
+	sqlFile, err := os.ReadFile(filePath)
 	if err != nil {
 		return err
 	}

@@ -11,18 +11,53 @@ import (
 	"gorm.io/gorm"
 )
 
-func AssociateMuscleGroup(db *gorm.DB) error {
+func SetUpAssociations(db *gorm.DB) error {
+	// if err := db.SetupJoinTable(&models.User{}, "Routines", &models.Routine{}); err != nil {
+	// 	return err
+	// }
 	if err := db.SetupJoinTable(&models.Exercise{}, "MuscleGroups", &models.ExerciseMuscleGroup{}); err != nil {
+		return err
+	}
+	if err := db.SetupJoinTable(&models.Routine{}, "Exercises", &models.RoutineExercise{}); err != nil {
+		return err
+	}
+	if err := db.SetupJoinTable(&models.Routine{}, "Tags", &models.RoutineTag{}); err != nil {
 		return err
 	}
 	return nil
 }
 
-func MigrateAndSeedMuscleGroup(db *gorm.DB) error {
+// func AssociateMuscleGroup(db *gorm.DB) error {
+// 	if err := db.SetupJoinTable(&models.Exercise{}, "MuscleGroups", &models.ExerciseMuscleGroup{}); err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+// func AssociateExercise(db *gorm.DB) error {
+// 	if err := db.SetupJoinTable(&models.Routine{}, "Exercises", &models.RoutineExercise{}); err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+// func AssociateTag(db *gorm.DB) error {
+// 	if err := db.SetupJoinTable(&models.Routine{}, "Tags", &models.RoutineTag{}); err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
+
+func MigrateAndSeedDB(db *gorm.DB) error {
+	SetUpAssociations(db)
+	// AssociateMuscleGroup(db)
+	// AssociateExercise(db)
+	// AssociateTag(db)
+	db.AutoMigrate(&models.User{})
+
 	hasMuscleGroupTable := db.Migrator().HasTable(&models.MuscleGroup{})
 	hasExerciseTable := db.Migrator().HasTable(&models.Exercise{})
 	db.AutoMigrate(&models.MuscleGroup{}, &models.Exercise{})
-	AssociateMuscleGroup(db)
 	if hasMuscleGroupTable {
 		// do nothing
 	} else if err := seedMuscleGroupData(db); err != nil {
@@ -34,6 +69,22 @@ func MigrateAndSeedMuscleGroup(db *gorm.DB) error {
 		return err
 	}
 
+	hasTagTable := db.Migrator().HasTable(&models.Tag{})
+	db.AutoMigrate(&models.Tag{})
+	if hasTagTable {
+		// do nothing
+	} else if err := seedTagData(db); err != nil {
+		return err
+	}
+
+	// hasRoutineTable = db.Migrator().HasTable(&models.Routine{})
+	db.AutoMigrate(&models.Routine{})
+	// if hasRoutineTable {
+	// 	// do nothing
+	// } else if err := seedRoutineDataFromCSV("app/config/routine.csv"); err != nil {
+	// 	return err
+	// }
+
 	return nil
 }
 
@@ -43,8 +94,8 @@ func seedMuscleGroupData(db *gorm.DB) error {
 		{Name: "FRONTDELTS"},
 		{Name: "MIDDELTS"},
 		{Name: "REARDELTS"},
-		{Name: "TRICEP"},
-		{Name: "BICEP"},
+		{Name: "TRICEPS"},
+		{Name: "BICEPS"},
 		{Name: "FOREARMS"},
 		{Name: "UPPERCHEST"},
 		{Name: "MIDCHEST"},
@@ -57,7 +108,7 @@ func seedMuscleGroupData(db *gorm.DB) error {
 		{Name: "OBLIQUES"},
 		{Name: "GLUTES"},
 		{Name: "QUADS"},
-		{Name: "HAMSTRING"},
+		{Name: "HAMSTRINGS"},
 		{Name: "CALVES"},
 	}
 	db.Create(&muscleGroups)
@@ -115,5 +166,29 @@ func seedExerciseDataFromCSV(filePath string) error {
 		}
 
 	}
+	return nil
+}
+
+func seedTagData(db *gorm.DB) error {
+	tags := []models.Tag{
+		{Name: "UPPERBODY"},
+		{Name: "LOWERBODY"},
+		{Name: "FULLBODY"},
+		{Name: "PUSH"},
+		{Name: "PULL"},
+		{Name: "LEGS"},
+		{Name: "CHEST"},
+		{Name: "BACK"},
+		{Name: "SHOULDERS"},
+		{Name: "ARMS"},
+		{Name: "BACK-BICEPS"},
+		{Name: "CHEST-TRICEPS"},
+		{Name: "SHOULDERS-UPPERTRAPS"},
+		{Name: "ABS"},
+		{Name: "CHEST-BACK"},
+		{Name: "LEG-SHOULDER"},
+		{Name: "GLUTES"},
+	}
+	db.Create(&tags)
 	return nil
 }

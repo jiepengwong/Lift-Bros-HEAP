@@ -6,6 +6,8 @@ import Homepage from "./pages/Homepage";
 import Planner from "./pages/Planner";
 import CreateRoutine from "./pages/CreateRoutine";
 import Endpage from "./pages/Endpage";
+import PrivateRoute from "./utils/PrivateRoute";
+import LoginTest from "./pages/LoginTest";
 
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 function App() {
@@ -13,13 +15,18 @@ function App() {
     <div className="App">
       <Navbar />
       <div>
-        <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
-          <Route path="/" element={<Homepage />} />
-          <Route path="/routine" element={<Planner />} />
-          <Route path="/createRoutine" element={<CreateRoutine />} />
-          <Route path="/end" element={<Endpage />} />
-        </Routes>
+          <Routes>
+            {/* <Route path="/" element={<Home />} /> */}
+            <Route element={<PrivateRoute/>}>
+              <Route path="/" element={<Homepage />} exact />
+              <Route path="/routine" element={<Planner />} />
+              <Route path="/createRoutine" element={<CreateRoutine />} />
+              <Route path="/end" element={<Endpage />} />
+            </Route>
+            
+            <Route path="/login" element={<LoginTest/>} />
+          </Routes>
+
       </div>
     </div>
   );

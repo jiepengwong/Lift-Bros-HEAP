@@ -1,10 +1,12 @@
-import {Outlet, Navigate} from 'react-router-dom';
+import { Outlet, Navigate} from 'react-router-dom';
 
 const PrivateRoute = () => {
-    let auth = {'token': false}
-    return(
-        // Usage of outlets allows us to nest our routes
-        auth.token ? <Outlet/> : <Navigate to="/login"/>
-    )
-}
+  const token = document.cookie;
+
+  // Check if the token exists
+  const isAuthenticated = token ? true : false;
+
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+};
+
 export default PrivateRoute;

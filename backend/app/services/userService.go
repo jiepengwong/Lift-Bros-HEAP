@@ -188,9 +188,15 @@ func Login(c *fiber.Ctx) error {
 	cookie := fiber.Cookie{
 		Name:     "jwt",
 		Value:    token,
-		Expires:  time.Now().Add(time.Hour * 24),
-		HTTPOnly: true,
+		Expires:  time.Now().Add(time.Hour * 1),
+		HTTPOnly: false,
+		// Need to change to false, has something to do with HTTPsOnly , XSs protection
 	}
+
+	// Set CORS headers
+	// Set CORS headers
+	c.Set("Access-Control-Allow-Origin", "http://localhost:3000") // Replace with your frontend URL
+	c.Set("Access-Control-Allow-Credentials", "true")
 
 	c.Cookie(&cookie)
 
@@ -202,7 +208,7 @@ func Logout(c *fiber.Ctx) error {
 		Name:     "jwt",
 		Value:    "",
 		Expires:  time.Now().Add(-time.Hour),
-		HTTPOnly: true,
+		HTTPOnly: false,
 	}
 
 	c.Cookie(&cookie)

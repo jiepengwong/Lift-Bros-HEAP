@@ -1,38 +1,50 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState} from 'react'
 import axios from 'axios'
+import { useNavigate } from "react-router-dom";
+
 
 function LoginTest() {
+  const navigate = useNavigate();
+
   // Usage of axios
   const loginSimulation = async (event) => {
     event.preventDefault();
-  
-    const username = "bao"
-    const password = "password"
-  
+
+    const username = "bao";
+    const password = "password";
+
     try {
       const response = await axios.post('http://localhost:8080/login', {
         username,
         password,
       }, { withCredentials: true });
-  
-      const getCookieValue = (name) => {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].trim();
-          if (cookie.startsWith(name + '=')) {
-            return cookie.substring(name.length + 1);
-          }
-        }
-        return '';
-      };
-    
+
+
+      const cookies = document.cookie.split('=');
+      let token = cookies[1];
+      
+     
+      
+
       // Usage
-      const token = getCookieValue('jwt');
-      console.log(token);
+      // const token = getCookieValue('jwt');
+
+      if (token) {
+        console.log("Token:", token);
+        // Dispatch or perform further actions with the token if needed
+        // Navigate to different page
+        console.log("Navigating to home page.")
+        navigate('/'); // Navigate to the login page if not authenticated
+        console.log("Navigating to home page tset.")
+
+      } else {
+        console.log("Token not found.");
+      }
     } catch (error) {
       console.error('Error:', error);
     }
   };
+
 
 
   const logoutSimulation = async (event) => {
@@ -50,10 +62,13 @@ function LoginTest() {
       // Retrieve the token from the response headers
       console.log(response.headers)
       const token = response.headers['set-cookie'];
+
+      
   
       // Store the token wherever you prefer (e.g., in state, context, or localStorage)
-      // Example using state:
-      console.log(token)
+      // Example using redux 
+
+     
     } catch (error) {
       console.error('Error:', error);
     }

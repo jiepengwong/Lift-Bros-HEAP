@@ -1,10 +1,14 @@
 import React, { useEffect, useState} from 'react'
 import axios from 'axios'
 import { useNavigate } from "react-router-dom";
-
-
+import useAuth from '../utils/useAuth'
+import jwt_decode from "jwt-decode";
+import { useDispatch } from 'react-redux';
+import { setLoginStatus } from '../redux/slice/loginSlice';
 function LoginTest() {
   const navigate = useNavigate();
+  const {setAuth} = useAuth()
+  const dispatch = useDispatch()
 
   // Usage of axios
   const loginSimulation = async (event) => {
@@ -21,7 +25,15 @@ function LoginTest() {
 
 
       const cookies = document.cookie.split('=');
-      let token = cookies[1];
+      let token = cookies[1]
+      let decodedToken = jwt_decode(token);
+      let expirationTime = decodedToken.exp;
+      console.log(decodedToken)
+      setAuth({token, expirationTime})
+      // Push to redux
+      dispatch(setLoginStatus(true))
+      
+      console.log("Token:", token);
       
      
       

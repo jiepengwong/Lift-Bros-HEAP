@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import useAuth from '../utils/useAuth'
 import jwt_decode from "jwt-decode";
 import { useDispatch } from 'react-redux';
-import { setLoginStatus } from '../redux/slice/loginSlice';
+// import { setLoginStatus } from '../redux/slice/loginSlice';
 function LoginTest() {
   const navigate = useNavigate();
   const {setAuth} = useAuth()
@@ -31,7 +31,7 @@ function LoginTest() {
       console.log(decodedToken)
       setAuth({token, expirationTime})
       // Push to redux
-      dispatch(setLoginStatus(true))
+      // dispatch(setLoginStatus(true))
       
       console.log("Token:", token);
       
@@ -54,6 +54,7 @@ function LoginTest() {
       }
     } catch (error) {
       console.error('Error:', error);
+      alert(error)
     }
   };
 

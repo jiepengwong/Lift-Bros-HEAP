@@ -18,15 +18,12 @@ function App() {
   const { auth } = useAuth();
   const { setAuth } = useAuth();
 
-  // Track login state
-  const [initialState, setInitialState] = useState(true)
+  // Set token and expiraTime to null when expired
   var token = null
   var expirationTime = null
 
   useEffect(() => {
-    console.log(auth.expirationTime*1000)
-    console.log(auth.token)
-    console.log("testing function run, in use effect")
+    console.log("useEffect in app.js")
     // Check token not null and expiration time still valid
       if (auth.token != null && auth.expirationTime*1000 < new Date().getTime())  {
         alert("Your session has expired, please log in again")
@@ -35,7 +32,7 @@ function App() {
         
     // Check if toke is not null, and the expiration time is still valid, this sentence here means that the expiration time is still more than current time
       } else if (auth.token != null && auth.expirationTime*1000 > new Date().getTime() ) {
-        console.log(" else clause, in use effect set time out")
+        alert("You are logged in")
         setTimeout(() => {
           alert("Your session has expired, please log in again")
           setAuth({token, expirationTime})
@@ -45,7 +42,7 @@ function App() {
 
     
 
-  }, [auth])
+  }, [document.cookie])
  
 
   return (

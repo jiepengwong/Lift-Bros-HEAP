@@ -15,6 +15,7 @@ type User struct {
 	DOB      time.Time `json:"dob"`
 	PhoneNo  string    `json:"phoneNo"`
 	Email    string    `gorm:"unique" json:"email"`
+	Routines []Routine `gorm:"foreignKey:UserID" json:"routines"`
 }
 
 type NewUser struct {

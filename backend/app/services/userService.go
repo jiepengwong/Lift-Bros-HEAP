@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -14,6 +15,17 @@ import (
 )
 
 var secretKey = os.Getenv("SECRET_KEY")
+
+func GetUserByUsername(username string, user *models.User) error {
+	db := config.GetDB()
+	if err := db.First(&user, "name = ?", username).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return errors.New("user not found")
+		}
+		return err
+	}
+	return nil
+}
 
 func GetUser(c *fiber.Ctx) error {
 	db := config.GetDB()
@@ -69,8 +81,8 @@ func CreateUser(c *fiber.Ctx) error {
 	user.DOB = newUser.DOB
 	user.PhoneNo = newUser.PhoneNo
 	user.Email = newUser.Email
-
-	if err := db.Create(user).Error; err != nil {
+	fmt.Println(user)
+	if err := db.Omit("Routines").Create(user).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
 		})
@@ -204,6 +216,7 @@ func Login(c *fiber.Ctx) error {
 }
 
 func Logout(c *fiber.Ctx) error {
+	fmt.Println("Logout")
 	cookie := fiber.Cookie{
 		Name:     "jwt",
 		Value:    "",

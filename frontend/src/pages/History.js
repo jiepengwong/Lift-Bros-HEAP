@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 //import { useNavigate } from 'react-router-dom';
 //import { useSelector, useDispatch } from 'react-redux'
 import CardHistory from '../component/CardHistory';
-import SearchbarHistory from '../component/SearchbarHistory';
 import Searchbar from '../component/Searchbar';
 
 const History = () => {
@@ -18,9 +17,7 @@ const History = () => {
   ]);
 
 
-
   const [searchResults, setSearchResults] = useState([])
-
 
   const handleSearch = (data, filterString) => {
 
@@ -40,31 +37,6 @@ const History = () => {
       setSearchResults(data);
     }
   };
-
-
-
-
-
-  // const [searchInput, setSearchInput] = useState('');
-  // const [searchResults, setSearchResults] = useState(histories);
-
-  // const handleSearch = (data, filterString) => {
-
-  //   // Handlesearch will be used in the search bar component (Parent to child)
-
-  //   if (filterString !== "") {
-  //     const searchOutput = data.filter((result) => {
-  //       return result.routinename.toLowerCase().includes(filterString.toLowerCase()) ||
-  //         result.description.toLowerCase().includes(filterString.toLowerCase());
-  //     });
-  
-  //     setSearchResults(searchOutput);
-
-  //   } else {
-  //     console.log("in the handlesearch component" + data)
-  //     setSearchResults(data);
-  //   }
-  // };
 
   return(
       <div>

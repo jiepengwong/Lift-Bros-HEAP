@@ -28,11 +28,21 @@ func AuthMiddleware() fiber.Handler {
 		}
 
 		// storing claims in local context to be used by other handlers
-		claims := token.Claims.(jwt.MapClaims) 
+		claims := token.Claims.(jwt.MapClaims)
 		// claims.exp, claims.iss
 		c.Locals("authUser", claims["iss"])
 
 		// Continue to the next handler if the token is valid
 		return c.Next()
 	}
+}
+
+func VerifyUser(c *fiber.Ctx, username string) error {
+	authUser := c.Locals("authUser")
+	if authUser != username {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Unauthorized",
+		})
+	}
+	return nil
 }

@@ -12,11 +12,16 @@ const Modal = ({ isOpen, onClose }) => {
   const [selectedExercises, setSelectedExercises] = useState([])
 
   const dropdownOptions = [
-    // Exercises can be of a particular ID name for exercises, with preloaded of 3 sets 10 reps each for each exercise
-    { value: 'Workout Template 1', label: 'Workout Template 1', exercises: ["Exercise 1", "Exercise 2", "Exercise 3"] },
-    { value: 'Workout Template 2', label: 'Workout Template 2', exercises: ["Exercise 2", "Exercise 3", "Exercise 4"] },
-    { value: 'Workout Template 3', label: 'Workout Template 3', exercises: ["Exercise 3", "Exercise 4", "Exercise 5"]  },
-    // Add more options as needed
+    {
+      value: 'Workout Template 1',
+      label: 'Workout Template 1',
+      exercises: [
+        { exercise: 'Exercise 1', sets: 3, reps: 10 },
+        { exercise: 'Exercise 2', sets: 3, reps: 10 },
+        { exercise: 'Exercise 3', sets: 3, reps: 10 },
+      ],
+    },
+    // Rest of the data
   ];
 
   const handleRoutineNameChange = (event) => {
@@ -26,6 +31,7 @@ const Modal = ({ isOpen, onClose }) => {
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
     setSelectedExercises(dropdownOptions.find(option => option.value === event.target.value).exercises)
+    console.log(dropdownOptions.find(option => option.value === event.target.value).exercises)
   };
 
   if (!isOpen) return null;

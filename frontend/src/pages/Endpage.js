@@ -3,6 +3,7 @@ import GreyBox from "../component/GreyBox";
 import StarRating from "../component/StarRating";
 import Notes from "../component/Notes";
 import Button from "../component/Button";
+import { Link } from "react-router-dom";
 
 function Endpage() {
   return (
@@ -22,7 +23,9 @@ function Endpage() {
         <Notes />
       </div>
       <div className="flex justify-center">
-        <Button text="Save & back to home" />
+        <Link to="/">
+          <Button text="Save & back to home" />
+        </Link>
       </div>
     </div>
   );

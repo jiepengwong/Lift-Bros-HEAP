@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPlusCircle, faBars } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-
 // Import components
 import Modal from '../component/Modal';
 
 // Components
 import CardPlanner from '../component/CardPlanner';
+import { useSelector } from 'react-redux';
+
+import axios from 'axios';
 
 function Planner() {
   const navigate = useNavigate();
+  const [usernameDetails,setUsernameDetails] = useState(useSelector(state => state.login.loginUser))
   // Template buttons
   const [plannerButtons, setPlannerButtons] = useState([
-    'Favourites',
-    'Routines',
+    'My Routines',
     'Other Routines',
     'Add New Routine',
   ]);
@@ -40,6 +42,33 @@ function Planner() {
 
 
   // Database data
+  useEffect(() => {
+    // Fetch data from database
+    // Set data to state
+    
+    if (activeTab == 0) {
+      // Fetch user tabs
+      console.log(usernameDetails.token)
+      axios.get(`http://localhost:8080/routine/${usernameDetails.username}`, {
+      
+      })
+      .then((response) => {
+        console.log(response.data)
+      }
+      )
+      .catch((error) => {
+        console.log(error)
+      }
+      )
+    }
+
+    if (activeTab == 1) {
+       // Fetch other user data
+
+    }
+
+  }, [activeTab]);
+
 
   return (
     <div>

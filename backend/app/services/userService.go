@@ -81,7 +81,6 @@ func CreateUser(c *fiber.Ctx) error {
 	user.DOB = newUser.DOB
 	user.PhoneNo = newUser.PhoneNo
 	user.Email = newUser.Email
-	fmt.Println(user)
 	if err := db.Omit("Routines").Create(user).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),

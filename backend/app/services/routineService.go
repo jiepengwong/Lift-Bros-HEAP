@@ -55,7 +55,7 @@ func getRoutineByName(name string, routine *models.Routine) error {
 func GetRoutineByTemplate(c *fiber.Ctx) error {
 	db := config.GetDB()
 	routines := []models.Routine{}
-	if err := db.Preload("Exercises").Find(&routines, "created_by = ?", "LiftBros").Error; err != nil {
+	if err := db.Preload("Exercises").Find(&routines, "created_by = ?", "LiftBro").Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 				"error": "routine not found",
@@ -72,7 +72,7 @@ func GetRoutineByTemplate(c *fiber.Ctx) error {
 func GetRoutineBySpecificUser(c *fiber.Ctx) error {
 	db := config.GetDB()
 	routines := []models.Routine{}
-	userName := c.Params("name") // Retrieve the user name from the request URL parameter
+	userName := c.Params("username") // Retrieve the user name from the request URL parameter
 
 	if err := db.Preload("Exercises").Find(&routines, "created_by = ?", userName).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
@@ -98,7 +98,7 @@ func CreateRoutine(c *fiber.Ctx) error {
 		})
 	}
 	// retrieve user id from the database using their name
-	if err := GetUserByUsername(routineData.CreatedBy.Name, &routineData.CreatedBy); err != nil {
+	if err := GetUserByUsername(routineData.CreatedBy.Username, &routineData.CreatedBy); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
 		})
@@ -121,7 +121,7 @@ func CreateRoutine(c *fiber.Ctx) error {
 	// assign values to the routine
 	routine.UserID = routineData.CreatedBy.ID
 	routine.Name = routineData.Name
-	routine.CreatedBy = routineData.CreatedBy.Name
+	routine.CreatedBy = routineData.CreatedBy.Username
 	routine.Tags = routineData.Tags
 
 	// Save the routine to the database & omit creation of muscle groups

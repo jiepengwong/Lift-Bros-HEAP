@@ -2,7 +2,7 @@
 Cable Crunches,Focuses on the abdominal muscles and helps develop core strength and definition.,INT,HI,8,ABS
 Crunches,Targets the abdominal muscles and helps develop core strength.,BEG,HI,8,ABS
 Leg Raises,Focuses on the lower abdominal muscles and improves core stability.,BEG,HI,8,ABS
-Plank,Engages the core muscles and helps improve stability and overall core strength.,BEG,HI,8,ABS
+Planks,Engages the core muscles and helps improve stability and overall core strength.,BEG,HI,8,ABS
 Weighted Crunches,Adds resistance to regular crunches for enhanced core strength.,INT,MED,8,ABS
 Hanging Leg Raises,"Engages the core muscles, particularly the lower abs, and helps develop core strength and stability.",INT,MED,8,"ABS, FOREARMS"
 Bicycle Crunches,"Engages the core muscles, particularly the obliques, and aids in building abdominal strength and definition.",BEG,HIG,8,"ABS, OBLIQUES"
@@ -15,15 +15,17 @@ Seated Calf Raises,"Works the calf muscles for improved lower leg strength, prim
 Standing Calf Raises,"Works the calf muscles for improved lower leg strength, primarily targets the gastrocnemius muscle.",BEG,HIG,8,CALVES
 Front Raises,Focuses on the front deltoids to enhance shoulder strength and stability.,BEG,HIG,8,FRONTDELTS
 Arnold Press,Variation of shoulder press that targets all heads of the deltoids.,INT,MED,8,"FRONTDELTS, MIDDELTS, REARDELTS, TRICEPS"
-Barbell Hip Thrust,Activates the glutes and helps strengthen the posterior chain.,INT,MED,8,GLUTES
-Body Weight Hip Thrust,Activates the glutes and helps strengthen the posterior chain.,BEG,HIG,8,GLUTES
+Barbell Hip Thrusts,Activates the glutes and helps strengthen the posterior chain.,INT,MED,8,"GLUTES, HAMSTRINGS"
+Body Weight Hip Thrusts,Activates the glutes and helps strengthen the posterior chain.,BEG,HIG,8,GLUTES
 Lying Hamstring Curls,Isolates the hamstrings and aids in developing leg strength.,BEG,HIG,8,HAMSTRINGS
 Seated Hamstring Curls,Isolates the hamstrings and aids in developing leg strength.,BEG,HIG,8,HAMSTRINGS
-Single-Leg Deadlifts,"Works the hamstrings, glutes, and improves balance and stability.",ADV,MED,8,"HAMSTRINGS, GLUTES"
+Single Leg Deadlifts,"Works the hamstrings, glutes, and improves balance and stability.",ADV,MED,8,"HAMSTRINGS, GLUTES"
 Romanian Deadlifts,"Engages the posterior chain, including the hamstrings and glutes, for improved lower body strength and stability.",INT,MED,8,"HAMSTRINGS, GLUTES, FOREARMS, LATS"
-Barbell Romanian Deadlift,Focuses on the hamstrings and lower back for increased strength.,INT,MED,8,"HAMSTRINGS, GLUTES, FOREARMS, LATS, LOWERBACK"
+Barbell Romanian Deadlifts,Focuses on the hamstrings and lower back for increased strength.,INT,MED,8,"HAMSTRINGS, GLUTES, FOREARMS, LATS, LOWERBACK"
 Deadlifts,"Targets multiple muscle groups, including the back, glutes, and hamstrings, for overall strength development.",ADV,LOW,8,"HAMSTRINGS, GLUTES, FOREARMS, LATS, LOWERBACK"
 Dumbbell Romanian Deadlifts,"Engages the posterior chain, including the hamstrings and glutes, for improved lower body strength and stability.",INT,LOW,8,"HAMSTRINGS, GLUTES, FOREARMS, LATS, LOWERBACK"
+Cable Pullovers,"A cable pull-over, also known as a cable pullover, is a popular exercise in strength training and bodybuilding that primarily targets the muscles of the upper body, particularly the back and shoulders. It is typically performed using a cable machine or a resistance band.",BEG,HI,8,LATS
+Back Extensions,"Back extensions, also known as hyperextensions, are an exercise that primarily targets the muscles of the lower back, including the erector spinae. This exercise can be performed using specialized equipment, such as a back extension machine or a Roman chair, or without equipment by lying prone on the floor.",BEG,HI,8,"LOWERBACK, GLUTES, HAMSTRINGS"
 High to Low Chest Flyes,Works the lower chest muscles and aids in developing pectoral definition.,INT,HIG,8,LOWERCHEST
 Assisted Chest Focused Dips,Focuses on the triceps by keeping the body in a forward tilt position and helps build strength in the arms and chest.,BEG,MED,8,"LOWERCHEST, TRICEPS, FRONTDELTS"
 Decline Bench Press,Focuses on the lower chest muscles and aids in pectoral development.,INT,MED,8,"LOWERCHEST, TRICEPS, FRONTDELTS"
@@ -36,26 +38,26 @@ Dumbbell Flyes,Focuses on the chest muscles and helps develop pectoral definitio
 Barbell Bench Press,A classic compound exercise that targets the chest and triceps using a barbell.,INT,MED,8,"MIDCHEST, TRICEPS, FRONTDELTS"
 Dumbbell Bench Press,"Works the chest, shoulders, and triceps for improved upper body strength and size.",BEG,MED,8,"MIDCHEST, TRICEPS, FRONTDELTS"
 Hammer Strength Press,Machine-based chest press that targets the pectoral muscles.,BEG,MED,8,"MIDCHEST, TRICEPS, FRONTDELTS"
-Push-ups,"A great bodyweight exercise that works the chest, arms, and shoulders.",BEG,HIG,8,"MIDCHEST, TRICEPS, FRONTDELTS"
+Push Ups,"A great bodyweight exercise that works the chest, arms, and shoulders.",BEG,HIG,8,"MIDCHEST, TRICEPS, FRONTDELTS"
 Lateral Raises,Targets the deltoid muscles and helps improve shoulder definition.,BEG,HIG,8,MIDDELTS
 Side Lateral Raises,Targets the lateral deltoids for improved shoulder definition.,BEG,HIG,8,MIDDELTS
 Miltary Press,Works the shoulder and upper body muscles and aids in developing strength and power.,INT,MED,8,"MIDDELTS, FRONTDELTS, TRICEPS"
 Seated Dumbbell Shoulder Press,Focuses on the shoulders and aids in developing overall upper body strength.,BEG,MED,8,"MIDDELTS, FRONTDELTS, TRICEPS"
-Shoulder Press Machine,Targets the shoulder muscles and aids in building upper body strength and stability.,BEG,MED,8,"MIDDELTS, FRONTDELTS, TRICEPS"
+Machine Shoulder Press,Targets the shoulder muscles and aids in building upper body strength and stability.,BEG,MED,8,"MIDDELTS, FRONTDELTS, TRICEPS"
 Standing Dumbbell Shoulder Press,"Focuses on the shoulders and triceps, improving upper body strength.",INT,MED,8,"MIDDELTS, FRONTDELTS, TRICEPS"
-Horizontal Cable Wood Chopper,"Using a cable at shoulder height, twist your body.",INT,MED,8,OBLIQUES
+Horizontal Cable Wood Choppers,"Using a cable at shoulder height, twist your body.",INT,MED,8,OBLIQUES
 Russian Twists,Targets the obliques and improves core rotational strength.,BEG,HIG,8,OBLIQUES
-Side Plank,Engages the obliques and improves lateral core strength.,BEG,HIG,8,OBLIQUES
+Side Planks,Engages the obliques and improves lateral core strength.,BEG,HIG,8,OBLIQUES
 Leg Extensions,Works the quadriceps muscles and helps develop leg strength.,BEG,HIG,8,QUADS
 Barbell Squats,"The king of lower body exercises, great for building leg strength.",INT,LOW,8,"QUADS, GLUTES"
-Bent-Over Reverse Lunges,"Targets the glutes, and quads for improved leg strength.",INT,MED,8,"QUADS, GLUTES"
+Bent Over Reverse Lunges,"Targets the glutes, and quads for improved leg strength.",INT,MED,8,"QUADS, GLUTES"
 Box Jumps,A plyometric exercise that improves lower body power and explosiveness.,ADV,HIG,8,"QUADS, GLUTES"
 Bulgarian Split Squats,"Engages the quads, glutes, and hamstrings for improved leg strength and stability.",INT,MED,8,"QUADS, GLUTES"
 Curtsy Squats,Engages the leg muscles and improves lower body strength and stability.,BEG,HIG,8,"QUADS, GLUTES"
 Dumbbell Split Squat,"Targets the leg muscles, including the quadriceps, hamstrings, and glutes, for overall lower body strength.",BEG,MED,8,"QUADS, GLUTES"
 Goblet Squats,Engages the leg muscles and improves lower body strength and stability.,BEG,MED,8,"QUADS, GLUTES"
 Leg Press,A machine-based exercise that targets the quadriceps and glutes.,BEG,MED,8,"QUADS, GLUTES"
-Side Lunge,Engages the leg muscles and improves lower body strength and stability.,BEG,MED,8,"QUADS, GLUTES"
+Side Lunges,Engages the leg muscles and improves lower body strength and stability.,BEG,MED,8,"QUADS, GLUTES"
 Squat Jumps,Combines squatting and jumping movements to target the lower body and improve explosive power.,ADV,HIG,8,"QUADS, GLUTES"
 Step-Ups,Targets the lower body muscles and improves balance and coordination.,INT,MED,8,"QUADS, GLUTES"
 Barbell Reverse Lunges,"Targets the quads, glutes, and hamstrings for improved leg strength.",ADV,MED,8,"QUADS, GLUTES, HAMSTRINGS"
@@ -63,16 +65,18 @@ Dumbbell Forward Lunges,"Targets the leg muscles, including the quadriceps, hams
 Dumbbell Reverse Lunges,"Targets the leg muscles, including the quadriceps, hamstrings, and glutes, for overall lower body strength.",INT,MED,8,"QUADS, GLUTES, HAMSTRINGS"
 Jumping Lunges,Combines lunge movements with jumping for lower body strength and power.,ADV,MED,8,"QUADS, GLUTES, HAMSTRINGS"
 Walking Lunges,"Targets the leg muscles, including the quadriceps, hamstrings, and glutes, for overall lower body strength.",INT,HIG,8,"QUADS, GLUTES, HAMSTRINGS"
-Bent-Over Reverse Flyes,Works the rear deltoids and helps develop a well-rounded shoulder appearance.,INT,HIG,8,REARDELTS
+Bent Over Reverse Flyes,Works the rear deltoids and helps develop a well-rounded shoulder appearance.,INT,HIG,8,REARDELTS
 Reverse Flyes,Targets the rear deltoids and helps improve posture and shoulder strength.,BEG,HIG,8,REARDELTS
+Tricep Extensions,"Tricep extensions, also known as tricep press-downs, are an exercise that specifically targets the triceps muscles, which are located on the back of the upper arms. This exercise can be performed using various equipment, such as a cable machine, resistance bands, or dumbbells.",BEG,HIG,8,TRICEPS
 Skull Crushers,Isolates the triceps focusing on the long head of the triceps and helps develop arm strength and definition.,INT,MED,8,TRICEPS
+Overhead Tricep Extensions,"Tricep extensions, also known as tricep press-downs, are an exercise that specifically targets the triceps muscles, which are located on the back of the upper arms. This exercise can be performed using various equipment, such as a cable machine, resistance bands, or dumbbells.",BEG,HIG,8,TRICEPS
 Assisted Tricep Focused Dips,Focuses on the triceps by keeping the body in a more upright position and helps build strength in the arms.,BEG,MED,8,"TRICEPS, LOWERCHEST, FRONTDELTS"
 Tricep Focused Dips,Focuses on the triceps by keeping the body in a more upright position and helps build strength in the arms.,ADV,MED,8,"TRICEPS, LOWERCHEST, FRONTDELTS"
 Close-Grip Bench Press,Works the triceps and chest muscles for improved arm and upper body strength.,INT,MED,8,"TRICEPS, MIDCHEST, FRONTDELTS"
-Close Grip Pull-Ups,Focuses on the biceps and back muscles for improved upper body strength.,INT,MED,8,"UPPERBACK, BICEPS, LATS, FOREARMS"
+Close Grip Pull Ups,Focuses on the biceps and back muscles for improved upper body strength.,INT,MED,8,"UPPERBACK, BICEPS, LATS, FOREARMS"
 Barbell Rows (Upper Back),Targets the upper back muscles using a wider grip and pulling the bar to your chest. Helps improve posture and back strength.,INT,MED,8,"UPPERBACK, BICEPS, LOWERBACK"
 Dumbbell Rows (Upper Back),Targets the upper back muscles using a wider grip and pulling the dumbbell to the side of your chest. Helps improve posture and back strength.,INT,MED,8,"UPPERBACK, BICEPS, LOWERBACK"
 Lat Pulldowns,Targets the latissimus dorsi muscles and aids in back development.,BEG,MED,8,"UPPERBACK, LATS, BICEPS, FOREARMS"
-Pull-ups,An excellent upper body exercise that primarily targets the back.,INT,MED,8,"UPPERBACK, LATS, BICEPS, FOREARMS"
+Pull Ups,An excellent upper body exercise that primarily targets the back.,INT,MED,8,"UPPERBACK, LATS, BICEPS, FOREARMS"
 Low to High Chest Flyes,Works the upper chest muscles and aids in developing pectoral definition.,INT,MED,8,UPPERCHEST
 Incline Bench Press,"Similar to the bench press, but with an inclined bench for variation.",INT,MED,8,"UPPERCHEST, TRICEPS, FRONTDELTS"

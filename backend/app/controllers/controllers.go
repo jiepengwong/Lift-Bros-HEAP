@@ -35,7 +35,8 @@ func setupExerciseRoutes(app *fiber.App) {
 func setupRoutineRoutes(app *fiber.App) {
 	routine := app.Group("/routine", config.AuthMiddleware())
 	routine.Post("/new", services.CreateRoutine)
-	routine.Get("/:name", services.GetRoutine)
+	routine.Get("/routineTemplate", services.GetRoutineByTemplate)
+	routine.Get("/:name", services.GetRoutineBySpecificUser)
 	routine.Get("/", services.GetRoutines)
 	// routine.Put("/:name", services.UpdateRoutine)
 	routine.Delete("/:name", services.DeleteRoutine)

@@ -51,6 +51,42 @@ func getRoutineByName(name string, routine *models.Routine) error {
 	return nil
 }
 
+// Get routine by created by created_by column
+func GetRoutineByTemplate(c *fiber.Ctx) error {
+	db := config.GetDB()
+	routines := []models.Routine{}
+	if err := db.Preload("Exercises").Find(&routines, "created_by = ?", "LiftBros").Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"error": "routine not found",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return c.JSON(routines)
+}
+
+// Get routines specific to a user
+func GetRoutineBySpecificUser(c *fiber.Ctx) error {
+	db := config.GetDB()
+	routines := []models.Routine{}
+	userName := c.Params("name") // Retrieve the user name from the request URL parameter
+
+	if err := db.Preload("Exercises").Find(&routines, "created_by = ?", userName).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"error": "routine not found",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return c.JSON(routines)
+}
+
 // CreateRoutine creates a new routine
 func CreateRoutine(c *fiber.Ctx) error {
 	db := config.GetDB()

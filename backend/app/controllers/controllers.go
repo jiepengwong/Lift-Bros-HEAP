@@ -39,6 +39,6 @@ func setupRoutineRoutes(app *fiber.App) {
 	routine.Get("/:name", services.GetRoutine)
 	routine.Get("/user/:username", services.GetRoutineBySpecificUser)
 	routine.Get("/", services.GetRoutines)
-	// routine.Put("/:name", services.UpdateRoutine)
+	routine.Put("/:name", services.UpdateRoutine)
 	routine.Delete("/:name", services.DeleteRoutine)
 }

@@ -334,7 +334,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Jackhammer Pushdown\",\r\n    \"description\": \"description\",\r\n    \"difficulty\": \"INT\",\r\n    \"defaultRep\": \"MED\",\r\n    \"caloriesPerMin\": 8,\r\n    \"muscleGroups\": [\r\n        {\r\n            \"name\": \"MIDCHEST\"\r\n        },\r\n        {\r\n            \"name\": \"TRICEP\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"name\": \"Jackhammer Pushdown\",\r\n    \"description\": \"description\",\r\n    \"difficulty\": \"INT\",\r\n    \"defaultRep\": \"MED\",\r\n    \"caloriesPerMin\": 8,\r\n    \"muscleGroups\": [\r\n        {\r\n            \"name\": \"MIDCHEST\"\r\n        },\r\n        {\r\n            \"name\": \"TRICEPS\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -447,7 +447,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Jackhammer Pushdown\",\r\n    \"description\": \"This exercise hits the lowerchest\",\r\n    \"muscleGroups\": [\r\n        {\r\n            \"name\": \"TRICEP\"\r\n        },\r\n        {\r\n            \"name\": \"LOWERCHEST\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"name\": \"Jackhammer Pushdown\",\r\n    \"description\": \"This exercise hits the lowerchest\",\r\n    \"muscleGroups\": [\r\n        {\r\n            \"name\": \"TRICEPS\"\r\n        },\r\n        {\r\n            \"name\": \"LOWERCHEST\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -699,7 +699,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Bao Test\",\r\n  \"createdBy\": {\r\n    \"name\": \"bao\"\r\n  },\r\n  \"exercises\": [\r\n    {\r\n      \"name\": \"Deadlifts\",\r\n      \"targetReps\": [8, 10, 12],\r\n      \"repBuffer\": 2\r\n    },\r\n    {\r\n      \"name\": \"Barbell Squats\",\r\n      \"targetReps\": [6, 8, 10],\r\n      \"repBuffer\": 3\r\n    }\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"name\": \"LEGS\"\r\n    },\r\n    {\r\n      \"name\": \"GLUTES\"\r\n    }\r\n  ]\r\n}",
+							"raw": "{\r\n  \"name\": \"Bao Test\",\r\n  \"exercises\": [\r\n    {\r\n      \"name\": \"Deadlifts\",\r\n      \"targetReps\": [8, 10, 12],\r\n      \"repBuffer\": 5\r\n    },\r\n    {\r\n      \"name\": \"Barbell Bench Press\",\r\n      \"targetReps\": [6, 8, 10],\r\n      \"repBuffer\": 5\r\n    }\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"name\": \"LEGS\"\r\n    },\r\n    {\r\n      \"name\": \"UPPERBODY\"\r\n    }\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -707,13 +707,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/routine/Baoi Test",
+							"raw": "{{baseUrl}}/routine/Bao Test",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"routine",
-								"Baoi Test"
+								"Bao Test"
 							]
 						}
 					},

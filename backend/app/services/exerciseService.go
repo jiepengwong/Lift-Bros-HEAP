@@ -26,17 +26,15 @@ func ProcessMuscleGroupNames(muscleGroups *[]models.MuscleGroup) error {
 	return nil
 }
 
-// func getExerciseByName(db *gorm.DB, name string) (* models.Exercise, error) {
-func getExerciseByName(name string) (*models.Exercise, error) {
+func getExerciseByName(name string, exercise *models.Exercise) error {
 	db := config.GetDB()
-	exercise := new(models.Exercise)
-	if err := db.Preload("MuscleGroups").First(&exercise, "name = ?", name).Error; err != nil {
+	if err := db.Preload("MuscleGroups").First(exercise, "name = ?", name).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, errors.New("exercise not found")
+			return errors.New("exercise not found")
 		}
-		return nil, err
+		return err
 	}
-	return exercise, nil
+	return nil
 }
 
 // CreateExercise creates a new exercise
@@ -67,7 +65,8 @@ func CreateExercise(c *fiber.Ctx) error {
 // GetExercise retrieves a specific exercise by name
 func GetExercise(c *fiber.Ctx) error {
 	name := strings.ReplaceAll(c.Params("name"), "%20", " ")
-	exercise, err := getExerciseByName(name)
+	exercise := new(models.Exercise) // creates a pointer to a null Exercise
+	err := getExerciseByName(name, exercise)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -90,7 +89,8 @@ func UpdateExercise(c *fiber.Ctx) error {
 	db := config.GetDB()
 	name := strings.ReplaceAll(c.Params("name"), "%20", " ")
 
-	existingExercise, err := getExerciseByName(name)
+	existingExercise := new(models.Exercise) // creates a pointer to a null Exercise
+	err := getExerciseByName(name, existingExercise)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -149,7 +149,8 @@ func DeleteExercise(c *fiber.Ctx) error {
 	db := config.GetDB()
 	name := strings.ReplaceAll(c.Params("name"), "%20", " ")
 
-	exercise, err := getExerciseByName(name)
+	exercise := new(models.Exercise) // creates a pointer to a null Exercise
+	err := getExerciseByName(name, exercise)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}

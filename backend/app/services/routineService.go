@@ -3,6 +3,7 @@ package services
 import (
 	"errors"
 	"strings"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/config"
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/models"
@@ -54,7 +55,6 @@ func getRoutineByName(name string, routine *models.Routine) error {
 func GetRoutineByTemplate(c *fiber.Ctx) error {
 	db := config.GetDB()
 	routines := []models.Routine{}
-	fmt.Println(routines)
 	if err := db.Preload("Exercises").Find(&routines, "created_by = ?", "LiftBros").Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
@@ -67,7 +67,6 @@ func GetRoutineByTemplate(c *fiber.Ctx) error {
 	}
 	return c.JSON(routines)
 }
-
 
 // Get routines specific to a user
 func GetRoutineBySpecificUser(c *fiber.Ctx) error {
@@ -87,9 +86,6 @@ func GetRoutineBySpecificUser(c *fiber.Ctx) error {
 	}
 	return c.JSON(routines)
 }
-
-
-
 
 // CreateRoutine creates a new routine
 func CreateRoutine(c *fiber.Ctx) error {

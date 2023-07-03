@@ -91,8 +91,10 @@ function Login() {
           muted
         ></video>
       ))}
-      <div className="absolute top-0 left-0 bg-white p-2 z-30">
-        <h1 className="text-2xl font-bold">Lift Bros 🦾</h1>
+      <div className="band fixed top-0 left-0 w-full bg-yellow-300 text-black py-4 z-10">
+        <div className="container mx-auto">
+          <h1 className="text-5xl font-bold">Lift Bros 🦾</h1>
+        </div>
       </div>
       <div className="flex justify-center items-center h-screen">
         <div className="relative rounded-lg shadow-md p-6 bg-gray-200 z-20">

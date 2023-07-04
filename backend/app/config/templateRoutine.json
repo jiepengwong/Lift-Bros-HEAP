@@ -1,0 +1,306 @@
+{
+  "routinesData": [
+    {
+      "name": "Liftbro's Back Biceps Routine",
+      "createdBy": {
+        "username": "Liftbro"
+      },
+      "exercises": [
+        {
+          "name": "Pull Ups",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Barbell Rows (Upper Back)",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Cable Pullovers",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Bicep Curls",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Back Extensions",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        }
+      ],
+      "tags": [
+        {
+          "name": "BACK-BICEPS"
+        },
+        {
+          "name": "PULL"
+        },
+        {
+          "name": "BACK"
+        }
+      ]
+    },
+    {
+      "name": "Liftbro's Chest Triceps Routine",
+      "createdBy": {
+        "username": "Liftbro"
+      },
+      "exercises": [
+        {
+          "name": "Barbell Bench Press",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Incline Bench Press",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Miltary Press",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "High to Low Chest Flyes",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Tricep Extensions",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        }
+      ],
+      "tags": [
+        {
+          "name": "CHEST-TRICEPS"
+        },
+        {
+          "name": "PUSH"
+        },
+        {
+          "name": "CHEST"
+        }
+      ]
+    },
+    {
+      "name": "Liftbro's Legs Routine",
+      "createdBy": {
+        "username": "Liftbro"
+      },
+      "exercises": [
+        {
+          "name": "Deadlifts",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Barbell Squats",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Barbell Hip Thrusts",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Leg Extensions",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Standing Calf Raises",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        }
+      ],
+      "tags": [
+        {
+          "name": "LEGS"
+        },
+        {
+          "name": "LOWERBODY"
+        },
+        {
+          "name": "GLUTES"
+        }
+      ]
+    },
+    {
+      "name": "Liftbro's Arms Routine",
+      "createdBy": {
+        "username": "Liftbro"
+      },
+      "exercises": [
+        {
+          "name": "Hammer Curls",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Tricep Extensions",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Reverse Curls",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Skull Crushers",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Preacher Curls",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Overhead Tricep Extensions",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        }
+      ],
+      "tags": [
+        {
+          "name": "ARMS"
+        }
+      ]
+    },
+    {
+      "name": "Liftbro's Full Body Routine",
+      "createdBy": {
+        "username": "Liftbro"
+      },
+      "exercises": [
+        {
+          "name": "Deadlifts",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Barbell Bench Press",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Pull Ups",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Barbell Squats",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Miltary Press",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Barbell Rows (Upper Back)",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        }
+      ],
+      "tags": [
+        {
+          "name": "FULLBODY"
+        }
+      ]
+    },
+    {
+      "name": "Liftbro's Back Upper Body Routine",
+      "createdBy": {
+        "username": "Liftbro"
+      },
+      "exercises": [
+        {
+          "name": "Barbell Bench Press",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Pull Ups",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Incline Bench Press",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Barbell Rows (Upper Back)",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Chest Focused Dips",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Dumbbell Rows (Mid Back)",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        }
+      ],
+      "tags": [
+        {
+          "name": "CHEST-BACK"
+        },
+        {
+          "name": "UPPERBODY"
+        }
+      ]
+    },
+    {
+      "name": "Liftbro's Shoulder Routine",
+      "createdBy": {
+        "username": "Liftbro"
+      },
+      "exercises": [
+        {
+          "name": "Miltary Press",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Arnold Press",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Bent Over Reverse Flyes",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Front Raises",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        },
+        {
+          "name": "Side Lateral Raises",
+          "targetReps": [10, 10, 10, 10],
+          "repBuffer": 2
+        }
+      ],
+      "tags": [
+        {
+          "name": "SHOULDERS"
+        }
+      ]
+    }
+  ]
+}

@@ -1,9 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "tailwindcss/tailwind.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const videoRef = useRef(null);
+  const videos = [
+    "/videos/Video1.mp4",
+    "/videos/Video2.mp4",
+    "/videos/Video3.mp4",
+  ];
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+
+  useEffect(() => {
+    playCurrentVideo();
+
+    const timer = setInterval(changeVideo, 10000);
+
+    return () => clearInterval(timer);
+  }, [currentVideoIndex]);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -20,21 +35,47 @@ function Login() {
     setPassword("");
   };
 
+  const playCurrentVideo = () => {
+    const video = videoRef.current;
+    if (video) {
+      video.src = videos[currentVideoIndex];
+      video.load();
+
+      const playPromise = video.play();
+      if (playPromise) {
+        playPromise.catch(handleAutoplayError);
+      }
+    }
+  };
+
+  const changeVideo = () => {
+    setCurrentVideoIndex((prevIndex) =>
+      prevIndex === videos.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const handleVideoEnded = () => {
+    changeVideo();
+  };
+
+  const handleAutoplayError = () => {
+    // Handle autoplay error here (e.g., display a play button)
+    console.log("Autoplay error occurred");
+  };
+
   return (
     <div className="relative h-screen">
       {/* Video Background */}
       <div className="absolute inset-0 overflow-hidden">
         <video
+          ref={videoRef}
           className="w-full h-full object-cover"
           autoPlay
           loop
           muted
           playsInline
-        >
-          <source src="/videos/Video1.mp4" type="video/mp4" />
-          <source src="/videos/Video2.mp4" type="video/mp4" />
-          <source src="/videos/Video3.mp4" type="video/mp4" />
-        </video>
+          onEnded={handleVideoEnded}
+        />
       </div>
 
       {/* Banner */}

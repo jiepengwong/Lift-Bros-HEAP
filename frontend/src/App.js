@@ -4,6 +4,7 @@ import "./App.css";
 import Navbar from "./component/Navbar";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 // import Home from "./pages/Home";
 // test
 import Planner from "./pages/Planner.js";
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/" element={<Homepage />} />
           <Route path="/routine" element={<Planner />} />
         </Routes>

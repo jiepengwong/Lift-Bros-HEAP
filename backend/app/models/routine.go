@@ -7,12 +7,13 @@ import (
 )
 
 type Routine struct {
-	ID        uuid.UUID  `gorm:"primaryKey" json:"-"`
-	UserID    uuid.UUID  `gorm:"size:191;uniqueIndex:user_routine" json:"-"`
-	Name      string     `gorm:"size:191;uniqueIndex:user_routine" json:"name"`
-	CreatedBy string     `json:"createdBy"`
-	Exercises []Exercise `gorm:"many2many:routine_exercises" json:"exercises"`
-	Tags      []Tag      `gorm:"many2many:routine_tags" json:"tags"`
+	ID                uuid.UUID          `gorm:"primaryKey" json:"-"`
+	UserID            uuid.UUID          `gorm:"size:191;uniqueIndex:user_routine" json:"-"`
+	Name              string             `gorm:"size:191;uniqueIndex:user_routine" json:"name"`
+	CreatedBy         string             `json:"createdBy"`
+	Exercises         []Exercise         `gorm:"many2many:routine_exercises" json:"exercises"`
+	Tags              []Tag              `gorm:"many2many:routine_tags" json:"tags"`
+	CompletedRoutines []CompletedRoutine `gorm:"foreignKey:RoutineID" json:"completedRoutines"`
 }
 
 type RoutineData struct {

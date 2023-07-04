@@ -10,6 +10,7 @@ func SetupRoutes(app *fiber.App) {
 	setupUserRoutes(app)
 	setupExerciseRoutes(app)
 	setupRoutineRoutes(app)
+	setupCompletedRoutineRoutes(app)
 }
 
 func setupUserRoutes(app *fiber.App) {
@@ -41,4 +42,14 @@ func setupRoutineRoutes(app *fiber.App) {
 	routine.Get("/", services.GetRoutines)
 	routine.Put("/:name", services.UpdateRoutine)
 	routine.Delete("/:name", services.DeleteRoutine)
+}
+
+func setupCompletedRoutineRoutes(app *fiber.App) {
+	completedRoutine := app.Group("/completedRoutine", config.AuthMiddleware())
+	completedRoutine.Post("/new", services.CreateCompletedRoutine)
+	completedRoutine.Get("/:id", services.GetCompletedRoutine)
+	completedRoutine.Get("/user/:username", services.GetCompletedRoutineByUser)
+	completedRoutine.Get("/", services.GetCompletedRoutines)
+	// completedRoutine.Put("/:id", services.UpdateCompletedRoutine)
+	completedRoutine.Delete("/:id", services.DeleteCompletedRoutine)
 }

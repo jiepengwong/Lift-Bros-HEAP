@@ -8,14 +8,15 @@ import (
 )
 
 type User struct {
-	ID       uuid.UUID `gorm:"primaryKey" json:"-"`
-	Username string    `gorm:"unique" json:"username"`
-	Password []byte    `json:"-"`
-	Name     string    `json:"name"`
-	DOB      time.Time `json:"dob"`
-	PhoneNo  string    `json:"phoneNo"`
-	Email    string    `gorm:"unique" json:"email"`
-	Routines []Routine `gorm:"foreignKey:UserID" json:"routines"`
+	ID                uuid.UUID          `gorm:"primaryKey" json:"-"`
+	Username          string             `gorm:"unique" json:"username"`
+	Password          []byte             `json:"-"`
+	Name              string             `json:"name"`
+	DOB               time.Time          `json:"dob"`
+	PhoneNo           string             `json:"phoneNo"`
+	Email             string             `gorm:"unique" json:"email"`
+	Routines          []Routine          `gorm:"foreignKey:UserID" json:"routines"`
+	CompletedRoutines []CompletedRoutine `gorm:"foreignKey:UserID" json:"completedRoutines"`
 }
 
 type NewUser struct {

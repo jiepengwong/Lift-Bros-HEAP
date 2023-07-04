@@ -24,7 +24,13 @@ function Login() {
     <div className="relative h-screen">
       {/* Video Background */}
       <div className="absolute inset-0 overflow-hidden">
-        <video className="w-full h-full object-cover" autoPlay loop muted>
+        <video
+          className="w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
           <source src="/videos/Video1.mp4" type="video/mp4" />
           <source src="/videos/Video2.mp4" type="video/mp4" />
           <source src="/videos/Video3.mp4" type="video/mp4" />

@@ -134,7 +134,7 @@ const [results, setResults] = useState([
 
   return (
     <div>
-      <div className="grid grid-cols-4 gap-4 p-3">
+      <div className="grid grid-cols-12 gap-4 p-3">
         <div className="col-span-3 bg-gray-200 rounded">
           <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center m-10 p-2">
             Create and Search for Routines

@@ -8,12 +8,12 @@ function StarRating() {
   };
 
   return (
-    <div>
-      <p className="font-bold">Intensity rating</p>
+    <div className="bg-gray-200 rounded-lg p-4">
+      <p className="font-bold text-xl">Intensity rating</p>
       {[1, 2, 3, 4, 5].map((value) => (
         <span
           key={value}
-          className={`text-yellow-400 ${
+          className={`text-yellow-400 text-3xl ${
             value <= rating ? "text-yellow-500" : "text-gray-300"
           }`}
           onClick={() => handleStarClick(value)}

@@ -12,9 +12,9 @@ function NotesInput() {
       <textarea
         value={notes}
         onChange={handleInputChange}
-        placeholder="Write your notes here..."
-        rows={4}
-        className="w-full bg-gray-100 p-2 rounded-lg"
+        placeholder="Write notes about your workout here..."
+        rows={5}
+        className="w-60 bg-gray-200 p-2 mt-4 rounded-lg"
       ></textarea>
     </div>
   );

@@ -5,14 +5,17 @@ import { useSelector } from "react-redux";
 // Import components
 import Navbar from "./component/Navbar";
 import Homepage from "./pages/Homepage";
-import Planner from "./pages/Planner";
+// import Home from "./pages/Home";
+import Planner from "./pages/Planner.js";
 import CreateRoutine from "./pages/CreateRoutine";
+import DuringRoutine from "./pages/DuringRoutine";
 import Endpage from "./pages/Endpage";
 import LoginTest from "./pages/LoginTest";
 import RequireAuth from "./component/RequireAuth";  
 import useAuth from "./utils/useAuth";
 import { useEffect, useState} from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
 function App() {
   console.log("testing app.js , this is in app.js!")
   const { auth } = useAuth();
@@ -58,6 +61,7 @@ function App() {
               <Route path="/routine" element={<Planner />} />
               <Route path="/createRoutine" element={<CreateRoutine />} />
               <Route path="/end" element={<Endpage />} />
+              <Route path="/during" element={<DuringRoutine />} />
             </Route>
             
             {/* Public routes */}

@@ -42,7 +42,9 @@ func GetUser(c *fiber.Ctx) error {
 			"error": "Database error",
 		})
 	}
-	return c.Status(fiber.StatusOK).JSON(user)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"data": user,
+	})
 }
 
 func GetUsers(c *fiber.Ctx) error {
@@ -53,7 +55,9 @@ func GetUsers(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	return c.Status(fiber.StatusOK).JSON(users)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"data": users,
+	})
 }
 
 func CreateUser(c *fiber.Ctx) error {
@@ -81,7 +85,6 @@ func CreateUser(c *fiber.Ctx) error {
 	user.DOB = newUser.DOB
 	user.PhoneNo = newUser.PhoneNo
 	user.Email = newUser.Email
-	fmt.Println(user)
 	if err := db.Omit("Routines").Create(user).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -177,7 +180,7 @@ func Login(c *fiber.Ctx) error {
 	// Check password
 	if err := bcrypt.CompareHashAndPassword(user.Password, []byte(login.Password)); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Incorrect password",
+			"error": err.Error(),
 		})
 	}
 
@@ -200,13 +203,20 @@ func Login(c *fiber.Ctx) error {
 	cookie := fiber.Cookie{
 		Name:     "jwt",
 		Value:    token,
-		Expires:  time.Now().Add(time.Hour * 24),
-		HTTPOnly: true,
+		Expires:  time.Now().Add(time.Hour * 1),
+		HTTPOnly: false,
+		// Need to change to false, has something to do with HTTPsOnly , XSs protection
 	}
+
+	// Set CORS headers
+	// c.Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	// c.Set("Access-Control-Allow-Credentials", "true")
 
 	c.Cookie(&cookie)
 
-	return c.JSON(user)
+	return c.JSON(fiber.Map{
+		"data": user,
+	})
 }
 
 func Logout(c *fiber.Ctx) error {
@@ -215,7 +225,7 @@ func Logout(c *fiber.Ctx) error {
 		Name:     "jwt",
 		Value:    "",
 		Expires:  time.Now().Add(-time.Hour),
-		HTTPOnly: true,
+		HTTPOnly: false,
 	}
 
 	c.Cookie(&cookie)

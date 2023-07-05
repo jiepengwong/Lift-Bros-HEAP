@@ -53,7 +53,7 @@ function HomePage() {
       </div>
         <section className="max-w-3xl mx-auto">
           <p className="text-gray-600 mb-6">
-            You have schedule "Back and Legs Workout" today, let's get started!
+            You have scheduled "Back and Legs Workout" today, let's get started!
           </p>
           <h2 className="text-xl font-bold mb-4">Exercises</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

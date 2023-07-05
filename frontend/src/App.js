@@ -7,8 +7,8 @@ import Homepage from "./pages/Homepage";
 import Planner from "./pages/Planner.js";
 import DuringRoutine from "./pages/DuringRoutine";
 import Endpage from "./pages/Endpage";
-
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
 function App() {
   return (
     <div className="App">

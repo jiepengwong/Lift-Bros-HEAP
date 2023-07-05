@@ -15,7 +15,7 @@ function Stopwatch({ elapsedTime }) {
     };
   
     return (
-      <div className="text-3xl font-bold">
+      <div className="text-xl font-bold">
         Elapsed Time: {formatTime(elapsedTime)}
       </div>
     );

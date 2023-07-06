@@ -13,12 +13,14 @@ import Register from "./pages/Register";
 
 import Planner from "./pages/Planner";
 import CreateRoutine from "./pages/CreateRoutine";
+import DuringRoutine from "./pages/DuringRoutine";
 import Endpage from "./pages/Endpage";
 import LoginTest from "./pages/LoginTest";
 import RequireAuth from "./component/RequireAuth";
 import useAuth from "./utils/useAuth";
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
 function App() {
   console.log("testing app.js , this is in app.js!");
   const { auth } = useAuth();
@@ -60,6 +62,7 @@ function App() {
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
 
+<<<<<<< HEAD
           {/* Protected Routes */}
           <Route element={<RequireAuth />}>
             <Route path="/" element={<Homepage />} exact />
@@ -67,6 +70,20 @@ function App() {
             <Route path="/createRoutine" element={<CreateRoutine />} />
             <Route path="/end" element={<Endpage />} />
           </Route>
+=======
+            {/* Protected Routes */}
+            <Route element={<RequireAuth/>}>
+              <Route path="/" element={<Homepage />} exact />
+              <Route path="/routine" element={<Planner />} />
+              <Route path="/createRoutine" element={<CreateRoutine />} />
+              <Route path="/end" element={<Endpage />} />
+              <Route path="/during" element={<DuringRoutine />} />
+            </Route>
+            
+            {/* Public routes */}
+            <Route path="/login" element={<LoginTest/>} />
+          </Routes>
+>>>>>>> 7179b7a2cae2413c10971419c431df597af9e5a4
 
           {/* Public routes */}
           <Route path="/login" element={<Login />} />

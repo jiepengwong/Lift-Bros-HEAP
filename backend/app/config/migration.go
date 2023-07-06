@@ -76,11 +76,13 @@ func MigrateAndSeedDB(db *gorm.DB) error {
 		return err
 	}
 
+	db.AutoMigrate(&models.CompletedRoutine{})
+	db.AutoMigrate(&models.CompletedExercise{})
 	return nil
 }
 
 func CreateAdminUser(db *gorm.DB) error {
-	adminPassword := os.Getenv("ADMIN_PASSWORD")
+	var adminPassword = os.Getenv("ADMIN_PASSWORD")
 	bytePassword, err := bcrypt.GenerateFromPassword([]byte(adminPassword), bcrypt.DefaultCost) // DefaultCost = 10
 	if err != nil {
 		return err

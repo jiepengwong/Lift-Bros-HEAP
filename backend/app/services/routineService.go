@@ -66,7 +66,9 @@ func GetRoutineByTemplate(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	return c.JSON(routines)
+	return c.JSON(fiber.Map{
+		"data": routines,
+	})
 }
 
 // Get routines specific to a user
@@ -85,7 +87,9 @@ func GetRoutineBySpecificUser(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	return c.JSON(routines)
+	return c.JSON(fiber.Map{
+		"data": routines,
+	})
 }
 
 // CreateRoutine creates a new routine
@@ -150,8 +154,10 @@ func CreateRoutine(c *fiber.Ctx) error {
 		routineExercises = append(routineExercises, routineExercise)
 	}
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
-		"routine":         routine,
-		"routineExercise": routineExercises,
+		"data": fiber.Map{
+			"routine":         routine,
+			"routineExercise": routineExercises,
+		},
 	})
 }
 
@@ -185,7 +191,9 @@ func GetRoutines(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	return c.Status(fiber.StatusOK).JSON(routines)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"data": routines,
+	})
 }
 
 // UpdateRoutine updates an existing routine

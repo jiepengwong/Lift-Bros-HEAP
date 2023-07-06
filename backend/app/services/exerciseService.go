@@ -59,7 +59,9 @@ func CreateExercise(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	return c.Status(fiber.StatusCreated).JSON(exercise)
+	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
+		"data": exercise,
+	})
 }
 
 // GetExercise retrieves a specific exercise by name
@@ -70,7 +72,9 @@ func GetExercise(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}
-	return c.Status(fiber.StatusOK).JSON(exercise)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"data": exercise,
+	})
 }
 
 func GetExercises(c *fiber.Ctx) error {
@@ -81,7 +85,9 @@ func GetExercises(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	return c.Status(fiber.StatusOK).JSON(exercises)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"data": exercises,
+	})
 }
 
 // UpdateExercise updates an existing exercise

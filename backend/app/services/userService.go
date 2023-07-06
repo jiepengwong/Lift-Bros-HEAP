@@ -42,7 +42,9 @@ func GetUser(c *fiber.Ctx) error {
 			"error": "Database error",
 		})
 	}
-	return c.Status(fiber.StatusOK).JSON(user)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"data": user,
+	})
 }
 
 func GetUsers(c *fiber.Ctx) error {
@@ -53,7 +55,9 @@ func GetUsers(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	return c.Status(fiber.StatusOK).JSON(users)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"data": users,
+	})
 }
 
 func CreateUser(c *fiber.Ctx) error {
@@ -176,7 +180,7 @@ func Login(c *fiber.Ctx) error {
 	// Check password
 	if err := bcrypt.CompareHashAndPassword(user.Password, []byte(login.Password)); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Incorrect password",
+			"error": err.Error(),
 		})
 	}
 
@@ -205,13 +209,14 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	// Set CORS headers
-	// Set CORS headers
-	c.Set("Access-Control-Allow-Origin", "http://localhost:3000") // Replace with your frontend URL
-	c.Set("Access-Control-Allow-Credentials", "true")
+	// c.Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	// c.Set("Access-Control-Allow-Credentials", "true")
 
 	c.Cookie(&cookie)
 
-	return c.JSON(user)
+	return c.JSON(fiber.Map{
+		"data": user,
+	})
 }
 
 func Logout(c *fiber.Ctx) error {

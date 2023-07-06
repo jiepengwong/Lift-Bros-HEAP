@@ -6,13 +6,14 @@ import (
 )
 
 type Exercise struct {
-	ID             uuid.UUID     `gorm:"primaryKey" json:"-"`
-	Name           string        `gorm:"unique" json:"name"`
-	Description    string        `json:"description"`
-	Difficulty     Difficulty    `json:"difficulty"`
-	DefaultRep     DefaultRep    `json:"defaultRep"`
-	CaloriesPerMin int           `json:"caloriesPerMin"`
-	MuscleGroups   []MuscleGroup `gorm:"many2many:exercise_muscle_groups;foreignKey:ID;joinForeignKey:ExerciseID;References:ID;joinReferences:MuscleGroupID" json:"muscleGroups"`
+	ID                 uuid.UUID           `gorm:"primaryKey" json:"-"`
+	Name               string              `gorm:"unique" json:"name"`
+	Description        string              `json:"description"`
+	Difficulty         Difficulty          `json:"difficulty"`
+	DefaultRep         DefaultRep          `json:"defaultRep"`
+	CaloriesPerMin     int                 `json:"caloriesPerMin"`
+	MuscleGroups       []MuscleGroup       `gorm:"many2many:exercise_muscle_groups;foreignKey:ID;joinForeignKey:ExerciseID;References:ID;joinReferences:MuscleGroupID" json:"muscleGroups"`
+	CompletedExercises []CompletedExercise `gorm:"foreignKey:ExerciseID" json:"completedExercises"`
 }
 
 func (exercise *Exercise) BeforeCreate(tx *gorm.DB) (err error) {

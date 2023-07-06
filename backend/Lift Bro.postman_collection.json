@@ -28,7 +28,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"bao\",\r\n    \"name\": \"bao\",\r\n    \"password\": \"password\",\r\n    \"dob\": \"2023-05-28T10:30:00Z\",\r\n    \"phoneNo\": \"999\",\r\n    \"email\": \"bao@gmail.com\"\r\n}",
+							"raw": "{\r\n    \"username\": \"bao\",\r\n    \"name\": \"bao\",\r\n    \"password\": \"password\",\r\n    \"dob\": \"2023-05-28T10:30:00+08:00\",\r\n    \"phoneNo\": \"999\",\r\n    \"email\": \"bao@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -315,6 +315,45 @@
 			"name": "Exercise",
 			"item": [
 				{
+					"name": "Login Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"LiftBro\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Exercise",
 					"event": [
 						{
@@ -503,6 +542,45 @@
 		{
 			"name": "Routine",
 			"item": [
+				{
+					"name": "Login Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"LiftBro\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Create Routine",
 					"event": [
@@ -721,6 +799,273 @@
 				},
 				{
 					"name": "Delete Routine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/routine/Bao Test",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"routine",
+								"Bao Test"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Completed Routine",
+			"item": [
+				{
+					"name": "Login Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"LiftBro\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Completed Routine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"liftBro\",\r\n  \"routineName\": \"Liftbro's Full Body Routine\",\r\n  \"dateTimeCompleted\": \"2023-07-04T10:30:00+08:00\",\r\n  \"routineDuration\": \"1:30:00\",\r\n  \"routineIntensity\": 4,\r\n  \"completedExercises\": [\r\n    {\r\n      \"exerciseName\": \"Deadlifts\",\r\n      \"targetReps\": [10, 10, 10, 10],\r\n      \"targetWeights\": [100, 100, 100, 100],\r\n      \"actualReps\": [10, 8, 9, 10],\r\n      \"actualWeights\": [100, 100, 100, 100]\r\n    },\r\n    {\r\n      \"exerciseName\": \"Barbell Bench Press\",\r\n      \"targetReps\": [10, 10, 10, 10],\r\n      \"targetWeights\": [10, 10, 10, 10],\r\n      \"actualReps\": [10, 10, 10, 10],\r\n      \"actualWeights\": [10, 10, 10, 10]\r\n    },\r\n    {\r\n      \"exerciseName\": \"Pull Ups\",\r\n      \"targetReps\": [10, 10, 10, 10],\r\n      \"targetWeights\": [10, 10, 10, 10],\r\n      \"actualReps\": [10, 10, 10, 10],\r\n      \"actualWeights\": [10, 10, 10, 10]\r\n    },\r\n    {\r\n      \"exerciseName\": \"Barbell Squats\",\r\n      \"targetReps\": [10, 10, 10, 10],\r\n      \"targetWeights\": [10, 10, 10, 10],\r\n      \"actualReps\": [10, 10, 10, 10],\r\n      \"actualWeights\": [10, 10, 10, 10]\r\n    },\r\n    {\r\n      \"exerciseName\": \"Miltary Press\",\r\n      \"targetReps\": [10, 10, 10, 10],\r\n      \"targetWeights\": [10, 10, 10, 10],\r\n      \"actualReps\": [10, 10, 10, 10],\r\n      \"actualWeights\": [10, 10, 10, 10]\r\n    },\r\n    {\r\n      \"exerciseName\": \"Barbell Rows (Upper Back)\",\r\n      \"targetReps\": [10, 10, 10, 10],\r\n      \"targetWeights\": [10, 10, 10, 10],\r\n      \"actualReps\": [10, 10, 10, 10],\r\n      \"actualWeights\": [10, 10, 10, 10]\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/completedRoutine/new",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"completedRoutine",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Completed Routines",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"completedRoutineId\", jsonData.data[0].id);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/completedRoutine/user/LiftBro",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"completedRoutine",
+								"user",
+								"LiftBro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Completed Routine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/completedRoutine/{{completedRoutineId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"completedRoutine",
+								"{{completedRoutineId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User's Completed Routines",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"completedRoutineId\", jsonData.data[0].id);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/completedRoutine/user/LiftBro",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"completedRoutine",
+								"user",
+								"LiftBro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Completed Routine",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Bao Test\",\r\n  \"exercises\": [\r\n    {\r\n      \"name\": \"Deadlifts\",\r\n      \"targetReps\": [8, 10, 12],\r\n      \"repBuffer\": 5\r\n    },\r\n    {\r\n      \"name\": \"Barbell Bench Press\",\r\n      \"targetReps\": [6, 8, 10],\r\n      \"repBuffer\": 5\r\n    }\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"name\": \"LEGS\"\r\n    },\r\n    {\r\n      \"name\": \"UPPERBODY\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/completedRoutine/{{completedRoutineId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"completedRoutine",
+								"{{completedRoutineId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Completed Routine",
 					"event": [
 						{
 							"listen": "test",

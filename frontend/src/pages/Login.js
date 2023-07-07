@@ -87,7 +87,7 @@ function Login() {
     console.log("lol");
   };
 
-  const loginSimulation = async (event) => {
+  const login = async (event) => {
     event.preventDefault();
 
     try {
@@ -100,11 +100,11 @@ function Login() {
         },
         { withCredentials: true }
       );
-      const jwtToken = getCookieValue("jwt");
-      let decodedToken = jwt_decode(jwtToken);
-      let expirationTime = decodedToken.exp;
-      console.log(decodedToken);
-      setAuth({ jwtToken, expirationTime });
+      const jwtToken = response.data.cookie;
+      let expirationTime = jwtToken.expires;
+      let jwtValue = jwtToken.value;
+      document.cookie = `${jwtToken.name}=${jwtToken.value}; expires=${expirationTime}; path=/;`;
+      setAuth({ jwtValue, expirationTime });
       // Push to redux
       // dispatch(setLoginStatus(true))
       dispatch(setLoginUser({ username: email, token: jwtToken }));
@@ -192,7 +192,7 @@ function Login() {
               </div>
               <button
                 className="bg-yellow-300 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                onClick={loginSimulation}
+                onClick={login}
               >
                 Login
               </button>

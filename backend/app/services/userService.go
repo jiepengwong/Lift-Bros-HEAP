@@ -206,6 +206,8 @@ func Login(c *fiber.Ctx) error {
 		Expires:  time.Now().Add(time.Hour * 1),
 		HTTPOnly: false,
 		// Need to change to false, has something to do with HTTPsOnly , XSs protection
+		SameSite: "none",
+		Secure:   true,
 	}
 
 	// Set CORS headers
@@ -215,7 +217,8 @@ func Login(c *fiber.Ctx) error {
 	c.Cookie(&cookie)
 
 	return c.JSON(fiber.Map{
-		"data": user,
+		"data":   user,
+		"cookie": cookie,
 	})
 }
 

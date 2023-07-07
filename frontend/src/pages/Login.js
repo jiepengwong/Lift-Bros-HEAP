@@ -1,9 +1,28 @@
 import React, { useState, useEffect, useRef } from "react";
 import "tailwindcss/tailwind.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../utils/useAuth";
+import jwt_decode from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { setLoginUser } from "../redux/slice/loginSlice";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const { setAuth } = useAuth();
+  const dispatch = useDispatch();
+
+  const getCookieValue = (name) => {
+    const cookies = document.cookie.split("; ");
+    const cookie = cookies.find((row) => row.startsWith(name));
+    if (cookie) {
+      return cookie.split("=")[1];
+    }
+    return null;
+  };
+
   const videoRef = useRef(null);
   const videos = [
     "/videos/Video1.mp4",
@@ -22,6 +41,7 @@ function Login() {
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
+    console.log(email);
   };
 
   const handlePasswordChange = (e) => {
@@ -61,6 +81,53 @@ function Login() {
   const handleAutoplayError = () => {
     // Handle autoplay error here (e.g., display a play button)
     console.log("Autoplay error occurred");
+  };
+
+  const testlol = () => {
+    console.log("lol");
+  };
+
+  const loginSimulation = async (event) => {
+    event.preventDefault();
+
+    try {
+      console.log(email, password);
+      const response = await axios.post(
+        "http://localhost:8080/login",
+        {
+          username: email,
+          password: password,
+        },
+        { withCredentials: true }
+      );
+      const jwtToken = getCookieValue("jwt");
+      let decodedToken = jwt_decode(jwtToken);
+      let expirationTime = decodedToken.exp;
+      console.log(decodedToken);
+      setAuth({ jwtToken, expirationTime });
+      // Push to redux
+      // dispatch(setLoginStatus(true))
+      dispatch(setLoginUser({ username: email, token: jwtToken }));
+
+      console.log("Token:", jwtToken);
+
+      // Usage
+      // const token = getCookieValue('jwt');
+
+      if (jwtToken) {
+        console.log("Token:", jwtToken);
+        // Dispatch or perform further actions with the token if needed
+        // Navigate to different page
+        console.log("Navigating to home page.");
+        navigate("/"); // Navigate to the login page if not authenticated
+        console.log("Navigating to home page tset.");
+      } else {
+        console.log("Token not found.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert(error);
+    }
   };
 
   return (
@@ -125,7 +192,7 @@ function Login() {
               </div>
               <button
                 className="bg-yellow-300 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="submit"
+                onClick={loginSimulation}
               >
                 Login
               </button>

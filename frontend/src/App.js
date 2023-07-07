@@ -62,28 +62,17 @@ function App() {
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
 
-<<<<<<< HEAD
           {/* Protected Routes */}
           <Route element={<RequireAuth />}>
             <Route path="/" element={<Homepage />} exact />
             <Route path="/routine" element={<Planner />} />
             <Route path="/createRoutine" element={<CreateRoutine />} />
             <Route path="/end" element={<Endpage />} />
+            <Route path="/during" element={<DuringRoutine />} />
           </Route>
-=======
-            {/* Protected Routes */}
-            <Route element={<RequireAuth/>}>
-              <Route path="/" element={<Homepage />} exact />
-              <Route path="/routine" element={<Planner />} />
-              <Route path="/createRoutine" element={<CreateRoutine />} />
-              <Route path="/end" element={<Endpage />} />
-              <Route path="/during" element={<DuringRoutine />} />
-            </Route>
-            
-            {/* Public routes */}
-            <Route path="/login" element={<LoginTest/>} />
-          </Routes>
->>>>>>> 7179b7a2cae2413c10971419c431df597af9e5a4
+
+          {/* Public routes */}
+          {/* <Route path="/login" element={<LoginTest />} /> */}
 
           {/* Public routes */}
           <Route path="/login" element={<Login />} />

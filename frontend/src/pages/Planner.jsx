@@ -54,11 +54,13 @@ function Planner() {
       // Fetch user tabs
       console.log(usernameDetails.token);
       axios
-        .get(`http://localhost:8080/routine/${usernameDetails.username}`, {
+        .get(`http://localhost:8080/routine/user/${usernameDetails.username}`, {
           withCredentials: true,
         })
         .then((response) => {
-          console.log(response.data);
+          console.log(response.date.exercises);
+
+
         })
         .catch((error) => {
           console.log(error);
@@ -186,6 +188,18 @@ function Planner() {
         </div>
 
         {/* Grid act as the container here */}
+
+        {activeTab === 0 && (
+  <>
+    {/* Show my routines */}
+
+  </>
+)}
+{activeTab === 1 && (
+  <>
+    {/* Show other routines */}
+  </>
+)}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 place-items-center">
           {/* CardPlanner Components Hardcoded */}
           <CardPlanner />

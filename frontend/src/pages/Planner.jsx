@@ -97,6 +97,24 @@ function Planner() {
     }
   }, [activeTab]);
 
+  // Template data
+  const [templateExercises, setTemplateExercises] = useState([]);
+  // Database template data
+  useEffect(() => {
+    // Fetch data from the database
+    axios.get(`http://localhost:8080/routine/templates`,  {
+      withCredentials: true,
+    })
+      .then((response) => {
+        console.log("tempalte data" , response.data.data);
+        setTemplateExercises(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle the error here, such as displaying an error message or setting a default value for the state
+      });
+  }, []);
+
   return (
     <div>
       <div>
@@ -247,7 +265,7 @@ function Planner() {
         </div>
       </div>
 
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} />
+      <Modal templateExercises={templateExercises} isOpen={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 }

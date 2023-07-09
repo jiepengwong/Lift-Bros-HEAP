@@ -682,13 +682,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/routine/Bao Test",
+							"raw": "{{baseUrl}}/routine/Liftbro's Full Body Routine",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"routine",
-								"Bao Test"
+								"Liftbro's Full Body Routine"
 							]
 						}
 					},
@@ -1044,7 +1044,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Bao Test\",\r\n  \"exercises\": [\r\n    {\r\n      \"name\": \"Deadlifts\",\r\n      \"targetReps\": [8, 10, 12],\r\n      \"repBuffer\": 5\r\n    },\r\n    {\r\n      \"name\": \"Barbell Bench Press\",\r\n      \"targetReps\": [6, 8, 10],\r\n      \"repBuffer\": 5\r\n    }\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"name\": \"LEGS\"\r\n    },\r\n    {\r\n      \"name\": \"UPPERBODY\"\r\n    }\r\n  ]\r\n}",
+							"raw": "{\r\n  \"username\": \"liftBro\",\r\n  \"routineName\": \"Liftbro's Full Body Routine\",\r\n  \"dateTimeCompleted\": \"2023-07-04T10:30:00+08:00\",\r\n  \"routineDuration\": \"1:30:00\",\r\n  \"routineIntensity\": 4,\r\n  \"caloriesBurned\": 200,\r\n  \"completedExercises\": [\r\n    {\r\n      \"exerciseName\": \"Deadlifts\",\r\n      \"targetReps\": [10, 10, 10, 10],\r\n      \"targetWeights\": [200, 100, 100, 100],\r\n      \"actualReps\": [10, 8, 9, 10],\r\n      \"actualWeights\": [100, 100, 100, 100]\r\n    },\r\n    {\r\n      \"exerciseName\": \"Barbell Bench Press\",\r\n      \"targetReps\": [10, 10, 10, 10],\r\n      \"targetWeights\": [10, 10, 10, 10],\r\n      \"actualReps\": [10, 10, 10, 10],\r\n      \"actualWeights\": [10, 10, 10, 10]\r\n    },\r\n    {\r\n      \"exerciseName\": \"Pull Ups\",\r\n      \"targetReps\": [10, 10, 10, 10],\r\n      \"targetWeights\": [10, 10, 10, 10],\r\n      \"actualReps\": [10, 10, 10, 10],\r\n      \"actualWeights\": [10, 10, 10, 10]\r\n    },\r\n    {\r\n      \"exerciseName\": \"Barbell Squats\",\r\n      \"targetReps\": [10, 10, 10, 10],\r\n      \"targetWeights\": [10, 10, 10, 10],\r\n      \"actualReps\": [10, 10, 10, 10],\r\n      \"actualWeights\": [10, 10, 10, 10]\r\n    },\r\n    {\r\n      \"exerciseName\": \"Miltary Press\",\r\n      \"targetReps\": [10, 10, 10, 10],\r\n      \"targetWeights\": [10, 10, 10, 10],\r\n      \"actualReps\": [10, 10, 10, 10],\r\n      \"actualWeights\": [10, 10, 10, 10]\r\n    },\r\n    {\r\n      \"exerciseName\": \"Barbell Rows (Upper Back)\",\r\n      \"targetReps\": [10, 10, 10, 10],\r\n      \"targetWeights\": [10, 10, 10, 10],\r\n      \"actualReps\": [10, 10, 10, 10],\r\n      \"actualWeights\": [10, 10, 10, 10]\r\n    }\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1083,13 +1083,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/routine/Bao Test",
+							"raw": "{{baseUrl}}/completedRoutine/{{completedRoutineId}}",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"routine",
-								"Bao Test"
+								"completedRoutine",
+								"{{completedRoutineId}}"
 							]
 						}
 					},

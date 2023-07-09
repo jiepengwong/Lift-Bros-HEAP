@@ -50,6 +50,6 @@ func setupCompletedRoutineRoutes(app *fiber.App) {
 	completedRoutine.Get("/:id", services.GetCompletedRoutine)
 	completedRoutine.Get("/user/:username", services.GetCompletedRoutineByUser)
 	completedRoutine.Get("/", services.GetCompletedRoutines)
-	// completedRoutine.Put("/:id", services.UpdateCompletedRoutine)
+	completedRoutine.Put("/:id", services.UpdateCompletedRoutine)
 	completedRoutine.Delete("/:id", services.DeleteCompletedRoutine)
 }

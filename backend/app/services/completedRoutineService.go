@@ -7,14 +7,13 @@ import (
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/config"
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/models"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
 func getCompletedRoutineById(id string, completedRoutine *models.CompletedRoutine) error {
 	db := config.GetDB()
-	if err := db.Preload(clause.Associations).First(&completedRoutine, "id = ?", id).Error; err != nil {
+	if err := db.Preload("CompletedExercises").First(&completedRoutine, "id = ?", id).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return errors.New("Completed routine not found")
+			return errors.New("completed routine not found")
 		}
 		return err
 	}
@@ -127,104 +126,68 @@ func GetCompletedRoutines(c *fiber.Ctx) error {
 	})
 }
 
-// // UpdateCompletedRoutine updates an existing completed routine
-// func UpdateCompletedRoutine(c *fiber.Ctx) error {
-// 	db := config.GetDB()
-// 	name := strings.ReplaceAll(c.Params("name"), "%20", " ")
-// 	existingCompletedRoutine := new(models.CompletedRoutine)
+// UpdateCompletedRoutine updates an existing completed routine
+func UpdateCompletedRoutine(c *fiber.Ctx) error {
+	db := config.GetDB()
+	id := c.Params("id")
+	existingCompletedRoutine := new(models.CompletedRoutine)
+	err := getCompletedRoutineById(id, existingCompletedRoutine)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
+	}
 
-// 	err := getCompletedRoutineByName(name, existingCompletedRoutine)
-// 	if err != nil {
-// 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
-// 	}
+	updatedCompletedRoutine := new(models.CompletedRoutine)
+	if err := c.BodyParser(&updatedCompletedRoutine); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request payload"})
+	}
 
-// 	updatedCompletedRoutineData := new(models.CompletedRoutineData)
-// 	if err := c.BodyParser(&updatedCompletedRoutineData); err != nil {
-// 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request payload"})
-// 	}
+	// TODO: Validation and error handling
 
-// 	// TODO: Validation and error handling
+	// Update the existing completed routine in the database using submitted updated completed routine
+	if updatedCompletedRoutine.DateTimeCompleted.IsZero() {
+		existingCompletedRoutine.DateTimeCompleted = updatedCompletedRoutine.DateTimeCompleted
+	}
 
-// 	// Update the existing completed routine in the database using submitted updated completed routine
-// 	if updatedCompletedRoutineData.Name != "" {
-// 		existingCompletedRoutine.Name = updatedCompletedRoutineData.Name
-// 	}
-// 	if updatedCompletedRoutineData.ExerciseData != nil {
-// 		// remove all muscle groups associated to the exercise
-// 		if err := db.Unscoped().Model(&existingCompletedRoutine).Association("Exercises").Unscoped().Clear(); err != nil {
-// 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-// 				"error": err,
-// 			})
-// 		}
-// 		// retrieve all exercise id from the database using their name
-// 		if err := ProcessExerciseNames(&updatedCompletedRoutineData.ExerciseData, &existingCompletedRoutine.Exercises); err != nil {
-// 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-// 				"error": err.Error(),
-// 			})
-// 		}
-// 		for i, exerciseData := range updatedCompletedRoutineData.ExerciseData {
-// 			routineExercise := models.CompletedRoutineExercise{
-// 				CompletedRoutineID:   existingCompletedRoutine.ID,
-// 				CompletedRoutineName: updatedCompletedRoutineData.Name,
-// 				ExerciseID:           existingCompletedRoutine.Exercises[i].ID,
-// 				ExerciseName:         exerciseData.Name,
-// 				TargetReps:           exerciseData.TargetReps,
-// 				RepBuffer:            exerciseData.RepBuffer,
-// 			}
-// 			if err := db.Create(&routineExercise).Error; err != nil {
-// 				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-// 					"error": err.Error(),
-// 				})
-// 			}
-// 		}
-// 		// // retrieve all exercise id from the database using their name
-// 		// for _, exerciseData := range updatedCompletedRoutineData.ExerciseData {
-// 		// 	exercise := new(models.Exercise)
-// 		// 	if err := getExerciseByName(exerciseData.Name, exercise); err != nil {
-// 		// 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
-// 		// 	}
-// 		// 	routineExercise := new(models.CompletedRoutineExercise)
-// 		// 	if err := db.Where("routine_id = ? AND exercise_id = ?", existingCompletedRoutine.ID, exercise.ID).First(&routineExercise).Error; err != nil {
-// 		// 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
-// 		// 	}
-// 		// 	if exerciseData.TargetReps != nil {
-// 		// 		routineExercise.TargetReps = exerciseData.TargetReps
-// 		// 	}
-// 		// 	if exerciseData.RepBuffer != 0 {
-// 		// 		routineExercise.RepBuffer = exerciseData.RepBuffer
-// 		// 	}
-// 		// 	if err := db.Save(&routineExercise).Error; err != nil {
-// 		// 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-// 		// 			"error": err,
-// 		// 		})
-// 		// 	}
-// 		// }
-// 	}
-// 	if updatedCompletedRoutineData.Tags != nil {
-// 		// retrieve all muscle group id from the database using their name
-// 		if err := ProcessTagNames(&updatedCompletedRoutineData.Tags); err != nil {
-// 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-// 				"error": err.Error(),
-// 			})
-// 		}
-// 		// replace all muscle groups associated to the routine
-// 		if err := db.Model(&existingCompletedRoutine).Association("Tags").Replace(updatedCompletedRoutineData.Tags); err != nil {
-// 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-// 				"error": err,
-// 			})
-// 		}
-// 	}
-// 	// Save the routine to the database & omit creation of muscle groups
-// 	if err := db.Omit("Tags").Save(&existingCompletedRoutine).Error; err != nil {
-// 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-// 			"error": err.Error(),
-// 		})
-// 	}
+	if updatedCompletedRoutine.RoutineDuration != "" {
+		existingCompletedRoutine.RoutineDuration = updatedCompletedRoutine.RoutineDuration
+	}
 
-// 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-// 		"message": "CompletedRoutine successfully updated",
-// 	})
-// }
+	if updatedCompletedRoutine.CaloriesBurned != 0 {
+		existingCompletedRoutine.CaloriesBurned = updatedCompletedRoutine.CaloriesBurned
+	}
+
+	if updatedCompletedRoutine.RoutineIntensity != 0 {
+		existingCompletedRoutine.RoutineIntensity = updatedCompletedRoutine.RoutineIntensity
+	}
+	if updatedCompletedRoutine.CompletedExercises != nil {
+		// fetch Exercise IDs from Exercise Name
+		for i, completedExercise := range updatedCompletedRoutine.CompletedExercises {
+			exercise := new(models.Exercise)
+			if err := getExerciseByName(completedExercise.ExerciseName, exercise); err != nil {
+				return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+					"error": err.Error(),
+				})
+			}
+			updatedCompletedRoutine.CompletedExercises[i].ExerciseID = exercise.ID
+		}
+		// replace all completed Exercise associated to the routine
+		if err := db.Model(&existingCompletedRoutine).Association("CompletedExercises").Replace(updatedCompletedRoutine.CompletedExercises); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": err,
+			})
+		}
+	}
+	// Save the routine to the database & omit creation of muscle groups
+	if err := db.Omit("CompletedExercises").Save(&existingCompletedRoutine).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "CompletedRoutine successfully updated",
+	})
+}
 
 // DeleteCompletedRoutine deletes an existing completed routine
 func DeleteCompletedRoutine(c *fiber.Ctx) error {

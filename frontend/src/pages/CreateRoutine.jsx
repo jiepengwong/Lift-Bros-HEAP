@@ -55,32 +55,22 @@ function CreateRoutine() {
 
 
 
-
-  const handleSearch = (data, filterString) => {
-    // Handlesearch will be used in the search bar component (Parent to child)
-    if (filterString != "") {
-      const searchOutput = data.filter((result) => {
-        return result.name.toLowerCase().includes(filterString.toLowerCase()) ||
-          result.description.toLowerCase().includes(filterString.toLowerCase());
-      });
-
-      setSearchResults(searchOutput);
-
-    } else {
-      console.log("in the handlesearch component" + data)
-      setSearchResults(data);
-    }
+  // Clear data on close
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedExercise({});
   };
 
   // Logic for buttons (Have to filter between ARRAY (saved exercises) and OBJECT (search results))
   const handleAddExercise = (exercise) => {
+    console.log("triggered add exercise function")
     console.log(exercise)
 
     // Push to redux store then navigate to manage exercise
     // Push the exercise name to the redux store
 
-    var tempResult = { "exercise": exercise.name, "sets": exercise.sets, "reps": exercise.reps }
-    setSavedExercises((prevExercises) => [...prevExercises, tempResult]);
+    setSavedExercises((prevExercises) => [...prevExercises, exercise]);
+    console.log("line 65" + savedExercises)
     console.log('Added exercise:', exercise.name);
   };
 

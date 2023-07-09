@@ -55,12 +55,6 @@ function CreateRoutine() {
 
 
 
-  // Clear data on close
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedExercise({});
-  };
-
   // Logic for buttons (Have to filter between ARRAY (saved exercises) and OBJECT (search results))
   const handleAddExercise = (exercise) => {
     console.log("triggered add exercise function")
@@ -79,7 +73,7 @@ function CreateRoutine() {
 
     // NEED TO EDIT THIS 
     setSavedExercises((prevExercises) =>
-      prevExercises.filter((prevExercise) => prevExercise.exercise !== exercise.name)
+      prevExercises.filter((prevExercise) => prevExercise.name !== exercise.name)
     );
     console.log('Exercise removed:', exercise);
   };
@@ -177,7 +171,7 @@ function CreateRoutine() {
                     <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full">
                       Edit
                     </button>
-                    <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">
+                    <button onClick={() => {handleRemoveExercise(exercise)}}className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">
                       Remove
                     </button>
                   </div>

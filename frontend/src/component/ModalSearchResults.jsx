@@ -8,79 +8,46 @@ import axios from 'axios';
 // 2. Search to filter accordingly to the saved exercises, do not show the saved exercises
 
 
-function ModalSearchResults({ isOpen, onClose, savedExercises, exercisesData, addExercises, removeExercisesOnClose }) {
-
-  console.log(exercisesData, "this is the exercises data")
-  console.log(savedExercises, "this is the exercises data")
-
-  // Exclude savedExercises from exercisesData
-  const savedExerciseNames = savedExercises.map(exercise => exercise.name);
-  const filteredExercises = exercisesData.filter(exercise => !savedExerciseNames.includes(exercise.name));
-  console.log(filteredExercises, "this is the filtered exercises")
-
-  const [exercises, setExercises] = useState([]);
-
+function ModalSearchResults({ isOpen, onClose, savedExercises, exercisesData, addExercises }) {
   const [searchResults, setSearchResults] = useState([]);
-
   const [searchInput, setSearchInput] = useState('');
 
+  useEffect(() => {
+    const savedExerciseNames = savedExercises.map(exercise => exercise.name);
+    const filteredExercises = exercisesData.filter(exercise => !savedExerciseNames.includes(exercise.name));
+    setSearchResults(filteredExercises);
+  }, [savedExercises, exercisesData]);
 
-  // Handle search function 
   const handleSearch = (data, filterString) => {
-    // Handlesearch will be used in the search bar component (Parent to child)
-    if (filterString != "") {
+    if (filterString !== '') {
       setSearchInput(filterString);
-      console.log("filter string", filterString)
-      const searchOutput = data.filter((result) => {
-        return result.name.toLowerCase().includes(filterString.toLowerCase()) ||
-          result.description.toLowerCase().includes(filterString.toLowerCase());
+      const searchOutput = data.filter(result => {
+        return (
+          result.name.toLowerCase().includes(filterString.toLowerCase()) ||
+          result.description.toLowerCase().includes(filterString.toLowerCase())
+        );
       });
-      console.log(data)
-
-      console.log(searchOutput, "this is the search output")
-
       setSearchResults(searchOutput);
-
     } else {
-      console.log("in the handlesearch component" + filteredExercises)
-      setSearchResults(filteredExercises);
+      setSearchInput('');
+      setSearchResults(exercisesData);
     }
   };
 
-
-
-
-
-
   useEffect(() => {
-    // Lock scroll when the modal is open
     if (isOpen) {
       document.body.style.overflow = 'hidden';
     } else {
-      // Restore scroll when the modal is closed
       document.body.style.overflow = 'auto';
     }
-
-    return () => {
-      // Restore scroll when the component is unmounted
-      document.body.style.overflow = 'auto';
-    };
   }, [isOpen]);
-
-
-  // Reset search results to all exercises when modal is closed
-  useEffect(() => {
-    return () => {
-      setSearchResults(filteredExercises);
-      setSearchInput('');
-    };
-  }, [onClose, exercisesData]);
 
   if (!isOpen) return null;
 
-
-
-
+  const handleAddExercise = exercise => {
+    addExercises(exercise);
+    setSearchResults(prevResults => prevResults.filter(result => result.name !== exercise.name));
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -93,7 +60,7 @@ function ModalSearchResults({ isOpen, onClose, savedExercises, exercisesData, ad
               <h2 className="text-lg font-bold mb-2">Search for Exercises</h2>
 
               <div>
-                <Searchbar exerciseData={filteredExercises} handleSearch={handleSearch} />
+                <Searchbar exerciseData={exercisesData} handleSearch={handleSearch} />
                 {console.log("search results", searchResults)}
               </div>
 
@@ -106,12 +73,11 @@ function ModalSearchResults({ isOpen, onClose, savedExercises, exercisesData, ad
                   {searchResults.length === 0 && searchInput !== '' && (
                     <h2 className="text-md font-bold mb-2 text-start font-italicized text-red-600">No results found, Try to search or select one of the other exercises below!</h2>
                   )}
-
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {searchResults.length > 0 ? (
-                    searchResults.map((exercise) => (
+                    searchResults.map(exercise => (
                       <div key={exercise.name} className="bg-white overflow-hidden shadow rounded-lg">
                         <div className="px-4 py-5 sm:p-4">
                           <h3 className="text-lg leading-6 font-medium text-gray-900">{exercise.name}</h3>
@@ -119,27 +85,15 @@ function ModalSearchResults({ isOpen, onClose, savedExercises, exercisesData, ad
                             <p>{exercise.description}</p>
                           </div>
                           <div className="mt-5">
-                            <button onClick={addExercises} >Add</button>
+                            <button onClick={() => handleAddExercise(exercise)}>Add</button>
                           </div>
                         </div>
                       </div>
                     ))
                   ) : (
-                    
-                  
-                    filteredExercises.map((exercise) => (
-                      <div key={exercise.name} className="bg-white overflow-hidden shadow rounded-lg">
-                        <div className="px-4 py-5 sm:p-6">
-                          <h3 className="text-lg leading-6 font-medium text-gray-900">{exercise.name}</h3>
-                          <div className="mt-2 max-w-xl text-sm text-gray-500">
-                            <p>{exercise.description}</p>
-                          </div>
-                          <div className="mt-5">
-                            <button onClick={() => addExercises(exercise)}>Add</button>
-                          </div>
-                        </div>
-                      </div>
-                    ))
+                    <div className="text-center">
+                      <p>No results found.</p>
+                    </div>
                   )}
                 </div>
               </div>

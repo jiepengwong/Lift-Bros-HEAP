@@ -70,7 +70,7 @@ func CreateCompletedRoutine(c *fiber.Ctx) error {
 
 	routine := new(models.Routine)
 	// retrieve all exercise id from the database using their name
-	if err := getRoutineByName(completedRoutine.RoutineName, routine); err != nil {
+	if err := getRoutineByUserIdAndName(user.ID, completedRoutine.RoutineName, routine); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
 		})

@@ -682,13 +682,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/routine/Liftbro's Full Body Routine",
+							"raw": "{{baseUrl}}/routine/find?username=LiftBro&name=Liftbro's Full Body Routine",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"routine",
-								"Liftbro's Full Body Routine"
+								"find"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "LiftBro"
+								},
+								{
+									"key": "name",
+									"value": "Liftbro's Full Body Routine"
+								}
 							]
 						}
 					},
@@ -785,13 +795,23 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/routine/Bao Test",
+							"raw": "{{baseUrl}}/routine/?username=Bao&name=Bao Test",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"routine",
-								"Bao Test"
+								""
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "Bao"
+								},
+								{
+									"key": "name",
+									"value": "Bao Test"
+								}
 							]
 						}
 					},
@@ -816,13 +836,23 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/routine/Bao Test",
+							"raw": "{{baseUrl}}/routine/?username=bao&name=Bao Test",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"routine",
-								"Bao Test"
+								""
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "bao"
+								},
+								{
+									"key": "name",
+									"value": "Bao Test"
+								}
 							]
 						}
 					},
@@ -946,14 +976,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/completedRoutine/user/LiftBro",
+							"raw": "{{baseUrl}}/completedRoutine",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"completedRoutine",
-								"user",
-								"LiftBro"
+								"completedRoutine"
 							]
 						}
 					},

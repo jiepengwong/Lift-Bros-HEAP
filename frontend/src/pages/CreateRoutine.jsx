@@ -24,29 +24,8 @@ function CreateRoutine() {
   const [selecctedExercises, setSelectedExercises] = useState(routineDetails.exercises);
   const [allExercises, setAllExercisesFromDB] = useState([]);
 
-  const [results, setResults] = useState([
-    { name: 'Exercise 1', description: 'Exercise 1 description', sets: 3, reps: 10 },
-    { name: 'Exercise 2', description: 'Exercise 2 description', sets: 3, reps: 10 },
-    { name: 'Exercise 3', description: 'Exercise 3 description', sets: 3, reps: 10 },
-    { name: 'Exercise 4', description: 'Exercise 4 description', sets: 3, reps: 10 },
-    { name: 'Exercise 5', description: 'Exercise 5 description', sets: 3, reps: 10 },
-    { name: 'Exercise 6', description: 'Exercise 6 description', sets: 3, reps: 10 },
-    { name: 'Exercise 7', description: 'Exercise 7 description', sets: 3, reps: 10 },
-    { name: 'Exercise 8', description: 'Exercise 8 description', sets: 3, reps: 10 },
-    { name: 'Exercise 9', description: 'Exercise 9 description', sets: 3, reps: 10 },
-    { name: 'Exercise 10', description: 'Exercise 10 description', sets: 3, reps: 10 },
-    { name: 'Exercise 11', description: 'Exercise 11 description', sets: 3, reps: 10 },
-    { name: 'Exercise 12', description: 'Exercise 12 description', sets: 3, reps: 10 },
-    { name: 'Exercise 13', description: 'Exercise 13 description', sets: 3, reps: 10 },
-    { name: 'Exercise 14', description: 'Exercise 14 description', sets: 3, reps: 10 },
-    { name: 'Exercise 15', description: 'Exercise 15 description', sets: 3, reps: 10 }
 
 
-  ])
-
-
-  const [searchInput, setSearchInput] = useState('');
-  const [searchResults, setSearchResults] = useState(results);
   const [savedExercises, setSavedExercises] = useState(routineDetails.exercises)
   // For modal
   const [showModal, setShowModal] = useState(false);
@@ -96,25 +75,7 @@ function CreateRoutine() {
     // navigate('/manageExercise')
   };
 
-  const handleChanges = (sets, reps, exerciseName) => {
-    // Filter through the results and find the exercise that matches the exercise name, and then replace the sets and reps
-    const newResults = results.map((result) => {
-      if (result.name === exerciseName) {
-        return {
-          ...result,
-          sets,
-          reps,
-        };
-      }
-      return result;
-    });
 
-    // Update the results state with the modified array
-    setResults(newResults);
-    // Update the modal to false, to close it
-    setShowModal(false);
-
-  }
   
 
 
@@ -141,7 +102,7 @@ function CreateRoutine() {
       <div className="flex flex-col">
         <div className=" bg-gray-200 rounded">
           <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center m-10 p-10">
-            Create and Search for Exercises
+            Modifying Your Routine
           </h1>
         </div>
 
@@ -157,10 +118,15 @@ function CreateRoutine() {
       <div className="py-4">
         {/* Current exercises added into "cart" */}
         <div>
-          <p className="font-bold  text-lg text-start px-4">Current Exercises:</p>
+            <p className="font-bold  text-lg text-start px-4">Current Exercises:</p>
+            
           <div className="text-center">
 
             <div className="flex flex-col p-4">
+              {/* If there are no exercises, display a message */}
+              {savedExercises.length === 0 && (
+                <p className="text-center font-bold">No exercises added yet. Click on the plus button to get started!</p>
+              )}
               {savedExercises.map((exercise, index) => (
                 <div key={index} className="bg-gray-300 rounded p-2 m-1 flex items-center justify-center">
                   <div className="flex-1 ">
@@ -189,6 +155,14 @@ function CreateRoutine() {
                     />
               </div>
             </div>
+
+            {savedExercises.length > 0 && (
+              <div className="p-4">
+                <button className="bg-green-500 hover:bg-green-600 text-white rounded py-3 font-bold w-full">
+                Save Routine</button>
+
+              </div>)}
+
           </div>
         </div>
         {/* =============================================== */}
@@ -197,12 +171,12 @@ function CreateRoutine() {
 
 
       </div>
-      <ModalExerciseSets
+      {/* <ModalExerciseSets
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         handleChanges={handleChanges}
         exercise={selectedExercise}
-      />
+      /> */}
 
       <ModalSearchResults
         isOpen={showModalSearch}

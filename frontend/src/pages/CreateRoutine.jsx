@@ -3,7 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import Searchbar from '../component/Searchbar';
 import ModalExerciseSets from '../component/ModalExerciseSets';
+import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import {
+  faPlay,
+  faPlusCircle,
+  faBars,
+} from "@fortawesome/free-solid-svg-icons";
+import ModalSearchResults from '../component/ModalSearchResults';
 function CreateRoutine() {
   const navigate = useNavigate();
   const [routineDescription, setRoutineDescription] = useState('');
@@ -13,65 +21,29 @@ function CreateRoutine() {
 
   // Set to local states
   const [newRoutineName, setNewRoutineName] = useState(routineDetails.routineName);
-  const [selectedTemplateExercises, setScteeledTemplateExercises] = useState(routineDetails.exercises);
+  const [selecctedExercises, setSelectedExercises] = useState(routineDetails.exercises);
+  const [allExercises, setAllExercisesFromDB] = useState([]);
 
 
-const [results, setResults] = useState([
-  { name: 'Exercise 1', description: 'Exercise 1 description', sets: 3, reps: 10 },
-    { name: 'Exercise 2', description: 'Exercise 2 description', sets: 3, reps: 10 },
-    { name: 'Exercise 3', description: 'Exercise 3 description', sets: 3, reps: 10 },
-    { name: 'Exercise 4', description: 'Exercise 4 description', sets: 3, reps: 10 },
-    { name: 'Exercise 5', description: 'Exercise 5 description', sets: 3, reps: 10 },
-    { name: 'Exercise 6', description: 'Exercise 6 description', sets: 3, reps: 10 },
-    { name: 'Exercise 7', description: 'Exercise 7 description', sets: 3, reps: 10 },
-    { name: 'Exercise 8', description: 'Exercise 8 description', sets: 3, reps: 10 },
-    { name: 'Exercise 9', description: 'Exercise 9 description', sets: 3, reps: 10 },
-    { name: 'Exercise 10', description: 'Exercise 10 description', sets: 3, reps: 10 },
-    { name: 'Exercise 11', description: 'Exercise 11 description', sets: 3, reps: 10 },
-    { name: 'Exercise 12', description: 'Exercise 12 description', sets: 3, reps: 10 },
-    { name: 'Exercise 13', description: 'Exercise 13 description', sets: 3, reps: 10 },
-    { name: 'Exercise 14', description: 'Exercise 14 description', sets: 3, reps: 10 },
-    { name: 'Exercise 15', description: 'Exercise 15 description', sets: 3, reps: 10 }
 
-
-])
-
-
-  const [searchInput, setSearchInput] = useState('');
-  const [searchResults, setSearchResults] = useState(results);
   const [savedExercises, setSavedExercises] = useState(routineDetails.exercises)
   // For modal
   const [showModal, setShowModal] = useState(false);
+  const [showModalSearch, setShowModalSearch] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState({});
 
 
 
-
-  const handleSearch = (data, filterString) => {
-    // Handlesearch will be used in the search bar component (Parent to child)
-    if (filterString != "") {
-      const searchOutput = data.filter((result) => {
-        return result.name.toLowerCase().includes(filterString.toLowerCase()) ||
-          result.description.toLowerCase().includes(filterString.toLowerCase());
-      });
-  
-      setSearchResults(searchOutput);
-
-    } else {
-      console.log("in the handlesearch component" + data)
-      setSearchResults(data);
-    }
-  };
-
   // Logic for buttons (Have to filter between ARRAY (saved exercises) and OBJECT (search results))
   const handleAddExercise = (exercise) => {
+    console.log("triggered add exercise function")
     console.log(exercise)
 
     // Push to redux store then navigate to manage exercise
     // Push the exercise name to the redux store
 
-    var tempResult = {"exercise": exercise.name, "sets": exercise.sets, "reps": exercise.reps}
-    setSavedExercises((prevExercises) => [...prevExercises, tempResult]);
+    setSavedExercises((prevExercises) => [...prevExercises, exercise]);
+    console.log("line 65" + savedExercises)
     console.log('Added exercise:', exercise.name);
   };
 
@@ -80,8 +52,8 @@ const [results, setResults] = useState([
 
     // NEED TO EDIT THIS 
     setSavedExercises((prevExercises) =>
-    prevExercises.filter((prevExercise) => prevExercise.exercise !== exercise.name)
-  );
+      prevExercises.filter((prevExercise) => prevExercise.name !== exercise.name)
+    );
     console.log('Exercise removed:', exercise);
   };
 
@@ -103,25 +75,8 @@ const [results, setResults] = useState([
     // navigate('/manageExercise')
   };
 
-  const handleChanges = (sets,reps, exerciseName) => {
-    // Filter through the results and find the exercise that matches the exercise name, and then replace the sets and reps
-    const newResults = results.map((result) => {
-      if (result.name === exerciseName) {
-        return {
-          ...result,
-          sets,
-          reps,
-        };
-      }
-      return result;
-    });
+
   
-    // Update the results state with the modified array
-    setResults(newResults);
-    // Update the modal to false, to close it
-    setShowModal(false);
-      
-}
 
 
 
@@ -130,121 +85,107 @@ const [results, setResults] = useState([
     console.log('Saved exercises changed:', savedExercises);
   }, [savedExercises]);
 
+  // Exercise from database
+  useEffect(() => {
+    axios.get('http://localhost:8080/exercise', { withCredentials: true })
+      .then((response) => {
+        console.log("In create routine use effect", response.data.data)
+        setAllExercisesFromDB(response.data.data)
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
 
 
   return (
     <div>
-      <div className="grid grid-cols-12 gap-4 p-3">
-        <div className="col-span-3 bg-gray-200 rounded">
-          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center m-10 p-2">
-            Create and Search for Routines
+      <div className="flex flex-col">
+        <div className=" bg-gray-200 rounded">
+          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center m-10 p-10">
+            Modifying Your Routine
           </h1>
         </div>
-        <div className="col-span-1 flex flex-col justify-center bg-gray-200 p-4">
-          <p className="font-bold text-center mb-2">Routine Name:</p>
-          <p className="text-center">{newRoutineName}</p>
-          <p className="font-bold text-center mt-4 mb-2">Current Exercises:</p>
-          <ul className="text-center">
-            {savedExercises.map((exercise, index) => (
-              <li key={index} className="capitalize">{exercise.exercise}</li>
-            ))}
-          </ul>
+
+        <div className="flex flex-row justify-evenly bg-gray-200 p-10">
+          <div>
+            <p className="font-bold text-center  text-lg mb-2">Current Selected Routine Name:</p>
+            <p className="text-center">{newRoutineName}</p>
+
+          </div>
         </div>
       </div>
 
       <div className="py-4">
+        {/* Current exercises added into "cart" */}
+        <div>
+            <p className="font-bold  text-lg text-start px-4">Current Exercises:</p>
+            
+          <div className="text-center">
 
+            <div className="flex flex-col p-4">
+              {/* If there are no exercises, display a message */}
+              {savedExercises.length === 0 && (
+                <p className="text-center font-bold">No exercises added yet. Click on the plus button to get started!</p>
+              )}
+              {savedExercises.map((exercise, index) => (
+                <div key={index} className="bg-gray-300 rounded p-2 m-1 flex items-center justify-center">
+                  <div className="flex-1 ">
+                    <p className="font-bold">{exercise.name}</p>
+                  </div>
 
-        {/* Searchbar component */}
-        <div className="py-4">
-          <h2 className="text-lg font-bold mb-2">Search for Routines</h2>
-
-          <Searchbar exerciseData={results} handleSearch={handleSearch}/>
-
-         
-
-          {/* Saved exercises, from the preloaded exercises + Any other exercises that comes */}
-          {/* If selectedTemplateExercises not empty and it exists, filter through the list and add it as saved */}
-          {savedExercises.length > 0 ? (
-            <div className="py-4">
-              <h2 className="text-lg font-bold mb-2">Exercises in: Routine {newRoutineName}</h2>
-              <div className="grid grid-cols-2 gap-4">
-                {savedExercises.map((exerciseName, index) => {
-                  const result = results.find((result) => result.name === exerciseName.exercise);
-
-                  if (result) {
-                    return (
-                      <div className="bg-gray-200 rounded p-4" key={index}>
-                        <h3 className="text-lg font-bold">{result.name}</h3>
-                        <p className="text-sm">{result.description}</p>
-                        <div>
-                          <span className="font-bold">Sets:</span> {result.sets}
-                        </div>
-                        <div>
-                          <span className="font-bold">Reps:</span> {result.reps}
-                        </div>
-                        <div className="flex justify-between mt-2">
-                          <button
-                            className="bg-red-500 hover:bg-red-600 text-white rounded px-4 py-2"
-                            onClick={() => handleRemoveExercise(result)}
-                          >
-                            Remove Exercise
-                          </button>
-
-                          <button
-                            className="bg-orange-500 hover:bg-orange-600 text-white rounded px-4 py-2 ml-2"
-                            onClick={() => handleEditExercise(result)}
-                          >
-                            Edit Exercise
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  } else {
-                    return null; // Exercise not found in results
-                  }
-                })}
-              </div>
-            </div>
-          ) : (
-            <p>No exercises found.</p>
-          )}
-
-          {/* Search results */}
-          <div>
-            <h2 className="text-lg font-bold mb-2">Search Results</h2>
-            <div className="grid grid-cols-2 gap-4">
-              {searchResults.map((result, index) => {
-                // savedExercises is an array, check it it matches the name of the result
-                const isExerciseAdded = savedExercises.some(
-                  (exercise) => exercise.exercise === result.name
-                );
-
-                return (
-                  <div className="bg-gray-200 rounded p-4" key={index}>
-                    <h3 className="text-lg font-bold">{result.name}</h3>
-                    <p className="text-sm">{result.description}</p>
-                    <button
-                      className={`bg-blue-500 hover:bg-blue-600 text-white rounded px-4 py-2 mt-2 ${isExerciseAdded ? 'opacity-50 cursor-not-allowed' : ''
-                        }`}
-                      onClick={() => handleAddExercise(result)}
-                      disabled={isExerciseAdded}
-                    >
-                      {isExerciseAdded ? 'Exercise Added' : 'Add Exercise'}
+                  <div className="flex-3 flex items-center justify-end space-x-2">
+                    <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full">
+                      Edit
+                    </button>
+                    <button onClick={() => {handleRemoveExercise(exercise)}}className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">
+                      Remove
                     </button>
                   </div>
-                );
-              })}
+                </div>
+              ))}
+
+           
             </div>
+            <div className="p-1">
+              <div className=" font-bold py-2 px-4 rounded-full">
+              <FontAwesomeIcon
+                      icon={faPlusCircle}
+                      className="w-7 h-7 cursor-pointer text-green-500 hover:text-green-600 "
+                      onClick={() => setShowModalSearch(true)}
+                    />
+              </div>
+            </div>
+
+            {savedExercises.length > 0 && (
+              <div className="p-4">
+                <button className="bg-green-500 hover:bg-green-600 text-white rounded py-3 font-bold w-full">
+                Save Routine</button>
+
+              </div>)}
+
           </div>
         </div>
+        {/* =============================================== */}
+
+
+
+
       </div>
-      <ModalExerciseSets 
+      {/* <ModalExerciseSets
         isOpen={showModal}
         onClose={() => setShowModal(false)}
         handleChanges={handleChanges}
         exercise={selectedExercise}
-      />
+      /> */}
+
+      <ModalSearchResults
+        isOpen={showModalSearch}
+        onClose={() => setShowModalSearch(false)}
+        savedExercises={savedExercises}
+        exercisesData={allExercises}
+        addExercises={handleAddExercise}
+
+        />
     </div>
   );
 

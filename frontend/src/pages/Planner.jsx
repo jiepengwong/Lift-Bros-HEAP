@@ -45,20 +45,24 @@ function Planner() {
     setMobileMenuOpen((prevState) => !prevState);
   };
 
+  // === Local states for routine cards ===
+  const [routineCards, setRoutineCards] = useState([]);
+  const [otherUserRoutineCards, setOtherUserRoutineCards] = useState([]);
+
   // Database data
   useEffect(() => {
     // Fetch data from database
-    // Set data to state
-
     if (activeTab == 0) {
       // Fetch user tabs
-      console.log(usernameDetails.token);
+      console.log(usernameDetails.username);
       axios
-        .get(`http://localhost:8080/routine/${usernameDetails.username}`, {
+        .get(`http://localhost:8080/routine/user/${usernameDetails.username}`, {
           withCredentials: true,
         })
         .then((response) => {
-          console.log(response.data);
+          // Get routines of user here 
+          console.log(response.data.data);
+          setRoutineCards(response.data.data);
         })
         .catch((error) => {
           console.log(error);
@@ -67,8 +71,49 @@ function Planner() {
 
     if (activeTab == 1) {
       // Fetch other user data
+
+      // Fetch OTHER user data
+      axios
+        .get(`http://localhost:8080/routine`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          // Get routines of user here 
+          // Get routines of user here 
+          console.log(response.data.data);
+          // Filter out the routines that are not usernameDetails.username
+          // Filter out the routines that are not created by a specific user
+          const filteredRoutines = response.data.data.filter((routine) => {
+            return routine.createdBy != usernameDetails.username; // Replace 'yourUsername' with the desired username
+          });
+
+          console.log(filteredRoutines)
+
+          setOtherUserRoutineCards(filteredRoutines);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }, [activeTab]);
+
+  // Template data
+  const [templateExercises, setTemplateExercises] = useState([]);
+  // Database template data
+  useEffect(() => {
+    // Fetch data from the database
+    axios.get(`http://localhost:8080/routine/templates`,  {
+      withCredentials: true,
+    })
+      .then((response) => {
+        console.log("tempalte data" , response.data.data);
+        setTemplateExercises(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle the error here, such as displaying an error message or setting a default value for the state
+      });
+  }, []);
 
   return (
     <div>
@@ -88,9 +133,8 @@ function Planner() {
                 return (
                   <button
                     key={index}
-                    className={`text-xl text-gray-500 hover:text-gray-800 focus:outline-none ${
-                      activeTab === index ? "border-b-2 border-blue-500" : ""
-                    }`}
+                    className={`text-xl text-gray-500 hover:text-gray-800 focus:outline-none ${activeTab === index ? "border-b-2 border-blue-500" : ""
+                      }`}
                     onClick={() => handleTabChange(index)}
                   >
                     {button}
@@ -154,9 +198,8 @@ function Planner() {
                         <li key={index}>
                           <a
                             href="#"
-                            className={`block font-bold px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white ${
-                              activeTab === index ? "text-blue-500" : ""
-                            }`}
+                            className={`block font-bold px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white ${activeTab === index ? "text-blue-500" : ""
+                              }`}
                             onClick={() => handleTabChange(index)}
                           >
                             {button}
@@ -186,19 +229,43 @@ function Planner() {
         </div>
 
         {/* Grid act as the container here */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 place-items-center">
-          {/* CardPlanner Components Hardcoded */}
-          <CardPlanner />
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 place-items-center">
 
-          <CardPlanner />
 
-          <CardPlanner />
 
-          <CardPlanner />
+
+
+        {activeTab === 0 && (
+          <>
+            {/* Show my routines */}
+            {routineCards.map((routineCard, index) => {
+              return (
+                <CardPlanner
+                  key={index}
+                  routineInfo={routineCard} />
+              )
+            }
+            )}
+
+          </>
+        )}
+        {activeTab === 1 && (
+          <>
+            {/* Show other routines */}
+            {otherUserRoutineCards.map((routineCard, index) => {
+              return (
+                <CardPlanner
+                  key={index}
+                  routineInfo={routineCard} />
+              )
+            }
+            )}
+          </>
+        )}
         </div>
       </div>
 
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} />
+      <Modal templateExercises={templateExercises} isOpen={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 }

@@ -1,37 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Redux
 import { useSelector, useDispatch } from 'react-redux'
 import { setRoutineDetails } from '../redux/slice/createRoutineSlice';
+import axios from "axios";
 
-const Modal = ({ isOpen, onClose }) => {
+const Modal = ({ isOpen, onClose, templateExercises}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [routineName, setRoutineName] = useState( '');
   const [selectedOption, setSelectedOption] = useState('');
   const [selectedExercises, setSelectedExercises] = useState([])
 
-  const dropdownOptions = [
-    {
-      value: 'Workout Template 1',
-      label: 'Workout Template 1',
-      exercises: [
-        { exercise: 'Exercise 1', sets: 3, reps: 10 },
-        { exercise: 'Exercise 2', sets: 3, reps: 10 },
-        { exercise: 'Exercise 3', sets: 3, reps: 10 },
-      ],
-    },
-    // Rest of the data
-  ];
+  
 
   const handleRoutineNameChange = (event) => {
     setRoutineName(event.target.value);
   };
 
   const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
-    setSelectedExercises(dropdownOptions.find(option => option.value === event.target.value).exercises)
-    console.log(dropdownOptions.find(option => option.value === event.target.value).exercises)
+    setSelectedOption( event.target.value);
+    console.log("handleOptionChange", event.target.value)
+    setSelectedExercises(templateExercises.find(option => option.name === event.target.value).exercises)
+    console.log("selected exercises for:" , event.target.value, templateExercises.find(option => option.name === event.target.value).exercises)
   };
 
   if (!isOpen) return null;
@@ -51,9 +42,12 @@ const Modal = ({ isOpen, onClose }) => {
     navigate('/createRoutine')
   };
 
+
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 bg-gray-800 opacity-75" onClick={onClose} />
+      {console.log(templateExercises)}
 
       <div className="bg-white p-8 rounded shadow-lg z-10">
         <h2 className="text-2xl font-bold mb-4">Create New Routine</h2>
@@ -72,9 +66,10 @@ const Modal = ({ isOpen, onClose }) => {
           onChange={handleOptionChange}
         >
           <option value="">Select an option</option>
-          {dropdownOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
+          {templateExercises.map((option) => (
+            <option key={option.name} value={option.name}>
+              {option.name}
+              {console.log(option)}
             </option>
           ))}
         </select>

@@ -5,7 +5,8 @@ import Searchbar from '../component/Searchbar';
 import ModalExerciseSets from '../component/ModalExerciseSets';
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import CreateRoutineCard from '../component/CreateRoutineCard';
 import {
   faPlay,
   faPlusCircle,
@@ -18,7 +19,7 @@ function CreateRoutine() {
 
   // Use Selector to get the routine details from the redux store (Dispatched from Modal)
   const routineDetails = useSelector((state) => state.routine.routineDetails);
-  console.log("these are the routine details",routineDetails)
+  console.log("these are the routine details", routineDetails)
 
   // Set to local states
   const [newRoutineName, setNewRoutineName] = useState(routineDetails.routineName);
@@ -65,7 +66,7 @@ function CreateRoutine() {
     console.log('Exercise edited:', exercise);
 
     // Set the selected exercise to pass to modal
-    
+
     setSelectedExercise(exercise);
 
     // Click to open the modal
@@ -78,8 +79,12 @@ function CreateRoutine() {
   };
 
 
-  
 
+  const [expanded, setExpanded] = useState(false);
+
+  const handleToggleExpand = () => {
+    setExpanded(!expanded);
+  };
 
 
   // Monitor changes in savedExercises and refresh when it changes
@@ -120,8 +125,8 @@ function CreateRoutine() {
       <div className="py-4">
         {/* Current exercises added into "cart" */}
         <div>
-            <p className="font-bold  text-lg text-start px-4">Current Exercises:</p>
-            
+          <p className="font-bold  text-lg text-start px-4">Current Exercises:</p>
+
           <div className="text-center">
 
             <div className="flex flex-col p-4">
@@ -130,38 +135,26 @@ function CreateRoutine() {
                 <p className="text-center font-bold">No exercises added yet. Click on the plus button to get started!</p>
               )}
               {savedExercises.map((exercise, index) => (
-                <div key={index} className="bg-gray-300 rounded p-2 m-1 flex items-center justify-center">
-                  <div className="flex-1 ">
-                    <p className="font-bold">{exercise.name}</p>
-                  </div>
-
-                  <div className="flex-3 flex items-center justify-end space-x-2">
-                    <button onClick={()=> {handleEditExercise(exercise)}} className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full">
-                      Edit
-                    </button>
-                    <button onClick={() => {handleRemoveExercise(exercise)}}className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">
-                      Remove
-                    </button>
-                  </div>
-                </div>
+                <CreateRoutineCard exercise={exercise} handleEditExercise={handleEditExercise} handleRemoveExercise={handleRemoveExercise}/>
+              
               ))}
 
-           
+
             </div>
             <div className="p-1">
               <div className=" font-bold py-2 px-4 rounded-full">
-              <FontAwesomeIcon
-                      icon={faPlusCircle}
-                      className="w-7 h-7 cursor-pointer text-green-500 hover:text-green-600 "
-                      onClick={() => setShowModalSearch(true)}
-                    />
+                <FontAwesomeIcon
+                  icon={faPlusCircle}
+                  className="w-7 h-7 cursor-pointer text-green-500 hover:text-green-600 "
+                  onClick={() => setShowModalSearch(true)}
+                />
               </div>
             </div>
 
             {savedExercises.length > 0 && (
               <div className="p-4">
                 <button className="bg-green-500 hover:bg-green-600 text-white rounded py-3 font-bold w-full">
-                Save Routine</button>
+                  Save Routine</button>
 
               </div>)}
 
@@ -187,7 +180,7 @@ function CreateRoutine() {
         exercisesData={allExercises}
         addExercises={handleAddExercise}
 
-        />
+      />
     </div>
   );
 

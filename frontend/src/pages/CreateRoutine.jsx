@@ -18,6 +18,7 @@ function CreateRoutine() {
 
   // Use Selector to get the routine details from the redux store (Dispatched from Modal)
   const routineDetails = useSelector((state) => state.routine.routineDetails);
+  console.log("these are the routine details",routineDetails)
 
   // Set to local states
   const [newRoutineName, setNewRoutineName] = useState(routineDetails.routineName);
@@ -28,7 +29,7 @@ function CreateRoutine() {
 
   const [savedExercises, setSavedExercises] = useState(routineDetails.exercises)
   // For modal
-  const [showModal, setShowModal] = useState(false);
+  const [showModalExerciseSet, setShowModalExerciseSet] = useState(false);
   const [showModalSearch, setShowModalSearch] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState({});
 
@@ -64,10 +65,11 @@ function CreateRoutine() {
     console.log('Exercise edited:', exercise);
 
     // Set the selected exercise to pass to modal
+    
     setSelectedExercise(exercise);
 
     // Click to open the modal
-    setShowModal(true);
+    setShowModalExerciseSet(true);
 
 
 
@@ -134,7 +136,7 @@ function CreateRoutine() {
                   </div>
 
                   <div className="flex-3 flex items-center justify-end space-x-2">
-                    <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full">
+                    <button onClick={()=> {handleEditExercise(exercise)}} className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full">
                       Edit
                     </button>
                     <button onClick={() => {handleRemoveExercise(exercise)}}className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">
@@ -171,12 +173,12 @@ function CreateRoutine() {
 
 
       </div>
-      {/* <ModalExerciseSets
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        handleChanges={handleChanges}
+      <ModalExerciseSets
+        isOpen={showModalExerciseSet}
+        onClose={() => setShowModalExerciseSet(false)}
+        // handleChanges={handleChanges}
         exercise={selectedExercise}
-      /> */}
+      />
 
       <ModalSearchResults
         isOpen={showModalSearch}

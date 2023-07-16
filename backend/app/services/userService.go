@@ -205,9 +205,10 @@ func Login(c *fiber.Ctx) error {
 		Value:    token,
 		Expires:  time.Now().Add(time.Hour * 1),
 		HTTPOnly: false,
-		// Need to change to false, has something to do with HTTPsOnly , XSs protection
-		SameSite: "none",
-		Secure:   true,
+		// Need to change to false, has something to do with HTTPsOnly , XSS protection
+		// SameSite: "none",
+		// Secure:   true,
+		// Secure: The Secure attribute instructs the browser to only send the cookie over secure HTTPS connections. When Secure is set to true, the cookie will not be sent over non-HTTPS connections. 
 	}
 
 	// Set CORS headers

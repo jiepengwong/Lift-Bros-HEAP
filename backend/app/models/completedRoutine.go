@@ -38,6 +38,12 @@ type CompletedExercise struct {
 	ActualWeightsString string    `json:"-"`
 }
 
+type DailyRoutineInfo struct {
+	Weekday        string `json:"weekday"`
+	CaloriesBurned int    `json:"caloriesBurned"`
+	Date           string `json:"date"`
+}
+
 func (completedRoutine *CompletedRoutine) BeforeCreate(tx *gorm.DB) (err error) {
 	if completedRoutine.ID == uuid.Nil {
 		completedRoutine.ID = uuid.New()

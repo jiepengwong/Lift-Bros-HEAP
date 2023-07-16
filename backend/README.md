@@ -1,8 +1,13 @@
 # How to create a virtual environment for development
 
-python -m venv <env-name>
-<env-name>\Scripts\activate
-pip install -r requirements.txt
+## Create Virtual Environment
+`python -m venv <env-name>` 
+
+## Activate Virtual Environment
+`<env-name>\Scripts\activate` 
+
+## Install requirements
+`pip install -r requirements.txt` 
 
 ## Deactive Environment
 

@@ -35,7 +35,7 @@ const Modal = ({ isOpen, onClose, templateExercises}) => {
     setSelectedOption('');
 
     // Store the routine name and selected option in the redux store
-    dispatch(setRoutineDetails({ "routineName" :routineName, exercises: selectedExercises }));
+    dispatch(setRoutineDetails({ "routineName" :routineName, exercises: selectedExercises, "templateName": selectedOption }));
     
 
     // Redirect to create routine page

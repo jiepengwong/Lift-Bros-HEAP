@@ -40,7 +40,7 @@ const CreateRoutineCard = ({ exercise, handleEditExercise, handleRemoveExercise 
         <div className="bg-gray-300 rounded p-4 m-1 flex flex-col" >
             <div className="flex items-center justify-between">
                 <div>
-                    <h3 className={`text-lg font-bold ${expanded ? 'mb-2' : ''}`}>{exercise.name}</h3>
+                    <h3 className={`text-lg font-bold ${expanded ? 'mb-2' : ''}`}>{exercise.exerciseName}</h3>
                 </div>
                 <div>
                     <button onClick={handleToggleExpand}>
@@ -58,16 +58,17 @@ const CreateRoutineCard = ({ exercise, handleEditExercise, handleRemoveExercise 
                 />
                 <div className="ml-2">
                     <h3 className="text-lg text-left text-gray-700 font-bold">Description</h3>
-                    <p className="text-sm text-left">{exercise.description}</p>
+                    <p className="text-sm text-left">Some placeholder text first becacuse it is not included inside the "find" endpoint</p>
                 </div>
 
                 <div className="mt-4">
                     <div className="flex items-center mb-2 font-bold">
                         <div className="bg-blue-600 text-white p-2 rounded flex items-center s">
-                            Sets <span className="bg-white p-1 rounded text-blue-600 text-xs sm:text-sm ml-2">4 (HARDCODED)</span>
+                            Sets <span className="bg-white p-1 rounded text-blue-600 text-xs sm:text-sm ml-2">{exercise.targetReps.length}</span>
                         </div>
                         <div className="bg-blue-600 text-white p-2 rounded flex items-center ml-2">
-                            Reps <span className="bg-white p-1 rounded text-blue-600 text-xs sm:text-sm ml-2">4 (HARDCODED)</span>
+                            {/* Assume that for each set, each Rep IS the SAME for now  === CFM w baoshin and team on this */}
+                            Reps <span className="bg-white p-1 rounded text-blue-600 text-xs sm:text-sm ml-2">{exercise.targetReps[0]}</span>
                         </div>
                     </div>
                     <div className="flex sm:justify-end justify-start">

@@ -23,17 +23,17 @@ function CreateRoutine() {
 
   // Set to local states
   const [newRoutineName, setNewRoutineName] = useState(routineDetails.routineName);
-  const [selecctedExercises, setSelectedExercises] = useState(routineDetails.exercises);
+  const [templateName, setTemplateName] = useState(routineDetails.templateName);
   const [allExercises, setAllExercisesFromDB] = useState([]);
 
 
 
-  const [savedExercises, setSavedExercises] = useState(routineDetails.exercises)
+  const [savedExercises, setSavedExercises] = useState([])
   // For modal
   const [showModalExerciseSet, setShowModalExerciseSet] = useState(false);
   const [showModalSearch, setShowModalSearch] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState({});
-
+  const [modifiedExercise, setModifiedExercise] = useState({});
 
 
   // Logic for buttons (Have to filter between ARRAY (saved exercises) and OBJECT (search results))
@@ -78,6 +78,35 @@ function CreateRoutine() {
     // navigate('/manageExercise')
   };
 
+  // Passed into the modalExerciseSet component
+  const modifyExerciseSets = (exercise, set, reps) => {
+    set = parseInt(set);
+    reps = parseInt(reps);
+  
+    if (Number.isInteger(set) && set > 0 && Number.isInteger(reps) && reps > 0) {
+      const modifiedExercise = {
+        ...exercise,
+        targetReps: Array.from({ length: set }, () => reps),
+      };
+  
+      // Find the index of the exercise in savedExercises
+      const index = savedExercises.findIndex((x) => x.exerciseName === exercise.exerciseName);
+  
+      // Create a new array with the modified exercise
+      const updatedExercises = [...savedExercises];
+      updatedExercises[index] = modifiedExercise;
+  
+      // Update the local state with the updated exercises
+      setSavedExercises(updatedExercises);
+      // Close modal
+      setShowModalExerciseSet(false);
+  
+      console.log("Exercise edited to include new sets and reps:", updatedExercises[index]);
+    } else {
+      console.error("Invalid values for 'set' or 'reps'. Please provide positive integers.");
+    }
+  };
+
 
 
   const [expanded, setExpanded] = useState(false);
@@ -101,6 +130,23 @@ function CreateRoutine() {
       })
       .catch((error) => console.log(error));
   }, []);
+
+  // Exercises, sets and reps from Routine 
+  useEffect(() => {
+    
+    axios.get(`http://localhost:8080/routine/find?username=LiftBro&name=${templateName}`, { withCredentials: true })
+      .then((response) => {
+        console.log(templateName, "template name")
+        console.log("In create routine use effect", response.data.exercises)
+        alert("i am triggered")
+        setSavedExercises(response.data.exercises)
+        setShowModalExerciseSet(false)
+      }
+      )
+      .catch((error) => console.log(error));
+
+
+  },[])
 
 
 
@@ -166,10 +212,13 @@ function CreateRoutine() {
 
 
       </div>
+      {/* Set conditiononly if exercises not empty*/}
+
       <ModalExerciseSets
         isOpen={showModalExerciseSet}
         onClose={() => setShowModalExerciseSet(false)}
         // handleChanges={handleChanges}
+        handleEditExercise={modifyExerciseSets}
         exercise={selectedExercise}
       />
 

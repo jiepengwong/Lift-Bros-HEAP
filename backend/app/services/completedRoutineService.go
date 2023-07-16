@@ -2,7 +2,6 @@ package services
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 	"time"
 
@@ -237,8 +236,6 @@ func GetCompletedRoutinesPastWeek(c *fiber.Ctx) error {
 	timeNow := time.Now()
 	end := time.Date(timeNow.Year(), timeNow.Month(), timeNow.Day(), 23, 59, 59, 999999999, time.Local).AddDate(0, 0, -7*weekOffset)
 	start := time.Date(timeNow.Year(), timeNow.Month(), timeNow.Day(), 23, 59, 59, 999999999, time.Local).AddDate(0, 0, -7*(weekOffset+1))
-	fmt.Println(end)
-	fmt.Println(start)
 	// find all completed routines between the start and end date
 	var completedRoutines []models.CompletedRoutine
 	if err := db.Preload("CompletedExercises").Where("date_time_completed > ? AND date_time_completed < ? AND username = ?", start, end, username).Find(&completedRoutines).Error; err != nil {

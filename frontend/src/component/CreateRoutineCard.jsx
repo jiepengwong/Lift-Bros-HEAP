@@ -15,6 +15,22 @@ const CreateRoutineCard = ({ exercise, handleEditExercise, handleRemoveExercise 
         setContentHeight(expanded ? `${contentRef.current.scrollHeight}px` : '0px');
     }, [expanded]);
 
+    // Use Effect if screen size changes, then expanded is false
+    
+    useEffect(() => {
+        const handleResize = () => {
+        if (expanded) {
+            setExpanded(false);
+        }
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+        window.removeEventListener('resize', handleResize);
+        };
+    }, [expanded]);
+
 
 
     const handleToggleExpand = () => {
@@ -47,14 +63,14 @@ const CreateRoutineCard = ({ exercise, handleEditExercise, handleRemoveExercise 
 
                 <div className="mt-4">
                     <div className="flex items-center mb-2 font-bold">
-                        <div className="bg-blue-600 text-white p-2 rounded flex items-center">
-                            Sets <span className="bg-white p-1 rounded text-blue-600 text-xs ml-2">4 (HARDCODED)</span>
+                        <div className="bg-blue-600 text-white p-2 rounded flex items-center s">
+                            Sets <span className="bg-white p-1 rounded text-blue-600 text-xs sm:text-sm ml-2">4 (HARDCODED)</span>
                         </div>
                         <div className="bg-blue-600 text-white p-2 rounded flex items-center ml-2">
-                            Reps <span className="bg-white p-1 rounded text-blue-600 text-xs ml-2">4 (HARDCODED)</span>
+                            Reps <span className="bg-white p-1 rounded text-blue-600 text-xs sm:text-sm ml-2">4 (HARDCODED)</span>
                         </div>
                     </div>
-                    <div className="flex justify-end">
+                    <div className="flex sm:justify-end justify-start">
                         <button
                             onClick={() => handleEditExercise(exercise)}
                             className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full"

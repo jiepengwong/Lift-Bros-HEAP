@@ -2,6 +2,9 @@ package services
 
 import (
 	"errors"
+	"fmt"
+	"strconv"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/config"
@@ -18,6 +21,14 @@ func getCompletedRoutineById(id string, completedRoutine *models.CompletedRoutin
 		return err
 	}
 	return nil
+}
+
+func countCaloriesBurned(completedRoutines *[]models.CompletedRoutine) int {
+	caloriesBurned := 0
+	for _, completedRoutine := range *completedRoutines {
+		caloriesBurned += completedRoutine.CaloriesBurned
+	}
+	return caloriesBurned
 }
 
 // Get completed routines specific to a user
@@ -210,5 +221,52 @@ func DeleteCompletedRoutine(c *fiber.Ctx) error {
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "Completed Routine successfully deleted",
+	})
+}
+
+func GetCompletedRoutinesPastWeek(c *fiber.Ctx) error {
+	db := config.GetDB()
+	// get the week offset from request params and create an end date var with the following week offset
+	weekOffset, err := strconv.Atoi(c.Query("weekOffset"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	username := c.Query("username")
+	timeNow := time.Now()
+	end := time.Date(timeNow.Year(), timeNow.Month(), timeNow.Day(), 23, 59, 59, 999999999, time.Local).AddDate(0, 0, -7*weekOffset)
+	start := time.Date(timeNow.Year(), timeNow.Month(), timeNow.Day(), 23, 59, 59, 999999999, time.Local).AddDate(0, 0, -7*(weekOffset+1))
+	fmt.Println(end)
+	fmt.Println(start)
+	// find all completed routines between the start and end date
+	var completedRoutines []models.CompletedRoutine
+	if err := db.Preload("CompletedExercises").Where("date_time_completed > ? AND date_time_completed < ? AND username = ?", start, end, username).Find(&completedRoutines).Error; err != nil {
+		// you can also use Preload(clause.Associations) to preload all associations
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	// created a map of days since start till the end and store the calories burnt in that day, date and day of the week
+	caloriesBurnedPerDay := make(map[string]models.DailyRoutineInfo)
+	for i := 1; i <= 7; i++ {
+		caloriesBurnedPerDay[start.AddDate(0, 0, i).Format("2006-01-02")] = models.DailyRoutineInfo{
+			Weekday:        start.AddDate(0, 0, i).Weekday().String(),
+			CaloriesBurned: 0,
+			Date:           start.AddDate(0, 0, i).Format("2006-01-02"),
+		}
+	}
+	for _, completedRoutine := range completedRoutines {
+		dateKey := completedRoutine.DateTimeCompleted.Format("2006-01-02")
+		if dailyInfo, ok := caloriesBurnedPerDay[dateKey]; ok {
+			dailyInfo.CaloriesBurned += completedRoutine.CaloriesBurned
+			caloriesBurnedPerDay[dateKey] = dailyInfo
+		}
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"completedRoutines":       completedRoutines,
+		"caloriesBurnedInTheWeek": countCaloriesBurned(&completedRoutines),
+		"caloriesBurnedPerDay":    caloriesBurnedPerDay,
 	})
 }

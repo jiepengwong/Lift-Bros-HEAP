@@ -24,7 +24,7 @@ function LoginTest() {
   const loginSimulation = async (event) => {
     event.preventDefault();
 
-    const username = "LiftBro";
+    const username = "bao";
     const password = "password";
 
     try {

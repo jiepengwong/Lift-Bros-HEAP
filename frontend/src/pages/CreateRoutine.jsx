@@ -19,6 +19,7 @@ function CreateRoutine() {
 
   // Use Selector to get the routine details from the redux store (Dispatched from Modal)
   const routineDetails = useSelector((state) => state.routine.routineDetails);
+  const userName = useSelector((state) => state.login.loginUser);
   console.log("these are the routine details", routineDetails)
 
   // Set to local states
@@ -102,10 +103,64 @@ function CreateRoutine() {
       setShowModalExerciseSet(false);
   
       console.log("Exercise edited to include new sets and reps:", updatedExercises[index]);
+      console.log(savedExercises)
     } else {
       console.error("Invalid values for 'set' or 'reps'. Please provide positive integers.");
     }
   };
+
+  const saveRoutineToDB = () => {
+    console.log("line 130" + savedExercises)
+    console.log("this is username", userName)
+    console.log("this is the routine name", newRoutineName)
+    var createdBy = userName.username
+
+    // === DESIRED FORMAT ===
+    // {
+    //   "name": "Deadlifts",
+    //   "targetReps": [8, 10, 12],
+    //   "repBuffer": 2
+    // },
+
+    var exerciseInCorrectFormat = []
+    // === Convert savedExercises to the correct format ===
+    for (var i = 0; i < savedExercises.length; i++) {
+      var name = savedExercises[i].exerciseName
+      var targetReps = savedExercises[i].targetReps
+      var repBuffer = savedExercises[i].repBuffer
+      var exercise = {
+        "name": name,
+        "targetReps": targetReps,
+        "repBuffer": repBuffer
+      }
+      exerciseInCorrectFormat.push(exercise)
+    }
+
+
+
+    var postPayLoad = {
+      "name": newRoutineName,
+      "createdBy": {
+        "username": createdBy
+      }
+      ,
+      "exercises": exerciseInCorrectFormat,
+      // Right now put nothing for now
+      "tags": []
+  }
+
+  console.log(postPayLoad)
+  axios.post('http://localhost:8080/routine/new', postPayLoad, { withCredentials: true })
+  .then((response) => {
+    console.log(response.data.data.routineName)
+    alert("Routine created!")
+    navigate('/routine')
+  }
+  )
+  .catch((error) => alert(error)
+  );
+
+}
 
 
 
@@ -199,7 +254,7 @@ function CreateRoutine() {
 
             {savedExercises.length > 0 && (
               <div className="p-4">
-                <button className="bg-green-500 hover:bg-green-600 text-white rounded py-3 font-bold w-full">
+                <button className="bg-green-500 hover:bg-green-600 text-white rounded py-3 font-bold w-full" onClick={()=> saveRoutineToDB()}> 
                   Save Routine</button>
 
               </div>)}

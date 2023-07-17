@@ -137,6 +137,7 @@ func CreateRoutine(c *fiber.Ctx) error {
 	routine.Name = routineData.Name
 	routine.CreatedBy = routineData.CreatedBy.Username
 	routine.Tags = routineData.Tags
+	routine.Image = routineData.Image
 
 	// Save the routine to the database & omit creation of muscle groups
 	if err := db.Omit("Exercises", "Tags.*").Create(&routine).Error; err != nil {
@@ -245,6 +246,9 @@ func UpdateRoutine(c *fiber.Ctx) error {
 	// Update the existing routine in the database using submitted updated routine
 	if updatedRoutineData.Name != "" {
 		existingRoutine.Name = updatedRoutineData.Name
+	}
+	if updatedRoutineData.Image != "" {
+		existingRoutine.Image = updatedRoutineData.Image
 	}
 	if updatedRoutineData.ExerciseData != nil {
 		// remove all muscle groups associated to the exercise

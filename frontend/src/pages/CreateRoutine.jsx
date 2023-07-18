@@ -5,7 +5,8 @@ import Searchbar from '../component/Searchbar';
 import ModalExerciseSets from '../component/ModalExerciseSets';
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import CreateRoutineCard from '../component/CreateRoutineCard';
 import {
   faPlay,
   faPlusCircle,
@@ -18,20 +19,22 @@ function CreateRoutine() {
 
   // Use Selector to get the routine details from the redux store (Dispatched from Modal)
   const routineDetails = useSelector((state) => state.routine.routineDetails);
+  const userName = useSelector((state) => state.login.loginUser);
+  console.log("these are the routine details", routineDetails)
 
   // Set to local states
   const [newRoutineName, setNewRoutineName] = useState(routineDetails.routineName);
-  const [selecctedExercises, setSelectedExercises] = useState(routineDetails.exercises);
+  const [templateName, setTemplateName] = useState(routineDetails.templateName);
   const [allExercises, setAllExercisesFromDB] = useState([]);
 
 
 
-  const [savedExercises, setSavedExercises] = useState(routineDetails.exercises)
+  const [savedExercises, setSavedExercises] = useState([])
   // For modal
-  const [showModal, setShowModal] = useState(false);
+  const [showModalExerciseSet, setShowModalExerciseSet] = useState(false);
   const [showModalSearch, setShowModalSearch] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState({});
-
+  const [modifiedExercise, setModifiedExercise] = useState({});
 
 
   // Logic for buttons (Have to filter between ARRAY (saved exercises) and OBJECT (search results))
@@ -64,10 +67,11 @@ function CreateRoutine() {
     console.log('Exercise edited:', exercise);
 
     // Set the selected exercise to pass to modal
+
     setSelectedExercise(exercise);
 
     // Click to open the modal
-    setShowModal(true);
+    setShowModalExerciseSet(true);
 
 
 
@@ -75,9 +79,96 @@ function CreateRoutine() {
     // navigate('/manageExercise')
   };
 
-
+  // Passed into the modalExerciseSet component
+  const modifyExerciseSets = (exercise, set, reps) => {
+    set = parseInt(set);
+    reps = parseInt(reps);
   
+    if (Number.isInteger(set) && set > 0 && Number.isInteger(reps) && reps > 0) {
+      const modifiedExercise = {
+        ...exercise,
+        targetReps: Array.from({ length: set }, () => reps),
+      };
+  
+      // Find the index of the exercise in savedExercises
+      const index = savedExercises.findIndex((x) => x.exerciseName === exercise.exerciseName);
+  
+      // Create a new array with the modified exercise
+      const updatedExercises = [...savedExercises];
+      updatedExercises[index] = modifiedExercise;
+  
+      // Update the local state with the updated exercises
+      setSavedExercises(updatedExercises);
+      // Close modal
+      setShowModalExerciseSet(false);
+  
+      console.log("Exercise edited to include new sets and reps:", updatedExercises[index]);
+      console.log(savedExercises)
+    } else {
+      console.error("Invalid values for 'set' or 'reps'. Please provide positive integers.");
+    }
+  };
 
+  const saveRoutineToDB = () => {
+    console.log("line 130" + savedExercises)
+    console.log("this is username", userName)
+    console.log("this is the routine name", newRoutineName)
+    var createdBy = userName.username
+
+    // === DESIRED FORMAT ===
+    // {
+    //   "name": "Deadlifts",
+    //   "targetReps": [8, 10, 12],
+    //   "repBuffer": 2
+    // },
+
+    var exerciseInCorrectFormat = []
+    // === Convert savedExercises to the correct format ===
+    for (var i = 0; i < savedExercises.length; i++) {
+      var name = savedExercises[i].exerciseName
+      var targetReps = savedExercises[i].targetReps
+      var repBuffer = savedExercises[i].repBuffer
+      var exercise = {
+        "name": name,
+        "targetReps": targetReps,
+        "repBuffer": repBuffer
+      }
+      exerciseInCorrectFormat.push(exercise)
+    }
+
+
+
+    var postPayLoad = {
+      "name": newRoutineName,
+      "createdBy": {
+        "username": createdBy
+      }
+      ,
+      "exercises": exerciseInCorrectFormat,
+      // Right now put nothing for now
+      "tags": []
+  }
+
+  console.log(postPayLoad)
+  axios.post('http://localhost:8080/routine/new', postPayLoad, { withCredentials: true })
+  .then((response) => {
+    console.log(response.data.data.routineName)
+    alert("Routine created!")
+    navigate('/routine')
+  }
+  )
+  .catch((error) => alert(error)
+  );
+
+}
+
+
+
+  const [expanded, setExpanded] = useState(false);
+
+  const handleToggleExpand = () => {
+    setExpanded(!expanded);
+  };
 
 
   // Monitor changes in savedExercises and refresh when it changes
@@ -94,6 +185,23 @@ function CreateRoutine() {
       })
       .catch((error) => console.log(error));
   }, []);
+
+  // Exercises, sets and reps from Routine 
+  useEffect(() => {
+    
+    axios.get(`http://localhost:8080/routine/find?username=LiftBro&name=${templateName}`, { withCredentials: true })
+      .then((response) => {
+        console.log(templateName, "template name")
+        console.log("In create routine use effect", response.data.exercises)
+        alert("i am triggered")
+        setSavedExercises(response.data.exercises)
+        setShowModalExerciseSet(false)
+      }
+      )
+      .catch((error) => console.log(error));
+
+
+  },[])
 
 
 
@@ -118,8 +226,8 @@ function CreateRoutine() {
       <div className="py-4">
         {/* Current exercises added into "cart" */}
         <div>
-            <p className="font-bold  text-lg text-start px-4">Current Exercises:</p>
-            
+          <p className="font-bold  text-lg text-start px-4">Current Exercises:</p>
+
           <div className="text-center">
 
             <div className="flex flex-col p-4">
@@ -128,38 +236,26 @@ function CreateRoutine() {
                 <p className="text-center font-bold">No exercises added yet. Click on the plus button to get started!</p>
               )}
               {savedExercises.map((exercise, index) => (
-                <div key={index} className="bg-gray-300 rounded p-2 m-1 flex items-center justify-center">
-                  <div className="flex-1 ">
-                    <p className="font-bold">{exercise.name}</p>
-                  </div>
-
-                  <div className="flex-3 flex items-center justify-end space-x-2">
-                    <button className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full">
-                      Edit
-                    </button>
-                    <button onClick={() => {handleRemoveExercise(exercise)}}className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full">
-                      Remove
-                    </button>
-                  </div>
-                </div>
+                <CreateRoutineCard exercise={exercise} handleEditExercise={handleEditExercise} handleRemoveExercise={handleRemoveExercise}/>
+              
               ))}
 
-           
+
             </div>
             <div className="p-1">
               <div className=" font-bold py-2 px-4 rounded-full">
-              <FontAwesomeIcon
-                      icon={faPlusCircle}
-                      className="w-7 h-7 cursor-pointer text-green-500 hover:text-green-600 "
-                      onClick={() => setShowModalSearch(true)}
-                    />
+                <FontAwesomeIcon
+                  icon={faPlusCircle}
+                  className="w-7 h-7 cursor-pointer text-green-500 hover:text-green-600 "
+                  onClick={() => setShowModalSearch(true)}
+                />
               </div>
             </div>
 
             {savedExercises.length > 0 && (
               <div className="p-4">
-                <button className="bg-green-500 hover:bg-green-600 text-white rounded py-3 font-bold w-full">
-                Save Routine</button>
+                <button className="bg-green-500 hover:bg-green-600 text-white rounded py-3 font-bold w-full" onClick={()=> saveRoutineToDB()}> 
+                  Save Routine</button>
 
               </div>)}
 
@@ -171,12 +267,15 @@ function CreateRoutine() {
 
 
       </div>
-      {/* <ModalExerciseSets
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        handleChanges={handleChanges}
+      {/* Set conditiononly if exercises not empty*/}
+
+      <ModalExerciseSets
+        isOpen={showModalExerciseSet}
+        onClose={() => setShowModalExerciseSet(false)}
+        // handleChanges={handleChanges}
+        handleEditExercise={modifyExerciseSets}
         exercise={selectedExercise}
-      /> */}
+      />
 
       <ModalSearchResults
         isOpen={showModalSearch}
@@ -185,7 +284,7 @@ function CreateRoutine() {
         exercisesData={allExercises}
         addExercises={handleAddExercise}
 
-        />
+      />
     </div>
   );
 

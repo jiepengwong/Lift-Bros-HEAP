@@ -54,9 +54,9 @@ function ModalSearchResults({ isOpen, onClose, savedExercises, exercisesData, ad
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="bg-gray-800 opacity-75 fixed inset-0" onClick={onClose}></div>
 
-        <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg z-10">
-          <div className="p-4 overflow-y-auto max-h-screen">
-            <div className="py-4">
+        <div className="w-4/5 h-4/5 max-w-3xl mx-auto bg-white rounded-lg p-1 shadow-lg overflow-y-auto z-10">
+        <div className="max-h-full overflow-y-auto modal-content">
+            <div className="p-4">
               <h2 className="text-lg font-bold mb-2">Search for Exercises</h2>
 
               <div>

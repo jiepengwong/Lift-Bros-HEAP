@@ -26,11 +26,11 @@ func (exercise *Exercise) BeforeCreate(tx *gorm.DB) (err error) {
 
 func (exercise *Exercise) AfterFind(tx *gorm.DB) (err error) {
 	if exercise.DefaultRep == DefaultRepLow {
-		exercise.DefaultReps = []int{6, 6, 6}
+		exercise.DefaultReps = []int{6, 6, 6, 6}
 	} else if exercise.DefaultRep == DefaultRepMed {
-		exercise.DefaultReps = []int{10, 10, 10}
+		exercise.DefaultReps = []int{10, 10, 10, 10}
 	} else if exercise.DefaultRep == DefaultRepHig {
-		exercise.DefaultReps = []int{12, 12, 12}
+		exercise.DefaultReps = []int{12, 12, 12, 12}
 	}
 	return
 }

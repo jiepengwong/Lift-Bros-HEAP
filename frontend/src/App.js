@@ -73,7 +73,9 @@ function App() {
           {/* <Route path="/login" element={<LoginTest />} /> */}
 
           {/* Public routes */}
-          <Route path="/login" element={<Login />} />
+          {/* <Route path="/login" element={<Login />} /> */}
+          {/* For development purposes */}
+          <Route path="/login" element={<LoginTest />} />
           <Route path="/Register" element={<Register />} />
         </Routes>
       </div>

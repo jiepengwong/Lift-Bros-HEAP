@@ -7,6 +7,8 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const videoRef = useRef(null);
   const videos = [
     "/videos/Video1.mp4",
@@ -43,18 +45,44 @@ function Register() {
     setPasswordConfirmation(e.target.value);
   };
 
+  const handleDateOfBirthChange = (e) => {
+    setDateOfBirth(e.target.value);
+  };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
+
     if (password === passwordConfirmation) {
-      console.log("Registering with:", email, password, firstName, lastName);
-      setFirstName("");
-      setLastName("");
-      setEmail("");
-      setPassword("");
-      setPasswordConfirmation("");
+      if (isPasswordValid(password)) {
+        console.log(
+          "Registering with:",
+          email,
+          password,
+          firstName,
+          lastName,
+          dateOfBirth
+        );
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
+        setPasswordConfirmation("");
+        setDateOfBirth("");
+        setPasswordError("");
+      } else {
+        setPasswordError(
+          "Password must have at least 8 characters with a mix of uppercase and lowercase letters, and at least one number and one special character."
+        );
+      }
     } else {
-      console.log("Passwords do not match");
+      setPasswordError("Passwords do not match");
     }
+  };
+
+  const isPasswordValid = (password) => {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
   };
 
   const playCurrentVideo = () => {
@@ -101,24 +129,25 @@ function Register() {
       </div>
 
       {/* Banner */}
-      <div className="band fixed top-0 left-0 w-full bg-yellow-300 text-black py-4 z-10">
+      <div className="band fixed inset-x-0 top-0 bg-yellow-300 text-black py-4 z-10">
         <div className="container mx-auto">
-          <h1 className="text-5xl font-bold">Lift Bros 🦾</h1>
+          <h1 className="text-5xl font-bold text-center">Lift Bros 🦾</h1>
         </div>
       </div>
 
       {/* Register Form */}
-      <div className="flex justify-center items-center h-screen">
-        <div className="relative rounded-lg shadow-md p-6 bg-gray-200 z-20">
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="relative rounded-lg shadow-md p-6 bg-gray-200 z-20 max-w-lg w-full">
           <div>
             <h2 className="text-3xl font-bold mb-4">Register</h2>
+
             <form onSubmit={handleFormSubmit}>
               <div className="mb-4">
                 <label
                   className="block text-gray-700 font-bold mb-2"
                   htmlFor="firstName"
                 >
-                  First Name
+                  Username
                 </label>
                 <input
                   className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
@@ -133,16 +162,6 @@ function Register() {
                 <label
                   className="block text-gray-700 font-bold mb-2"
                   htmlFor="lastName"
-                >
-                  Last Name
-                </label>
-                <input
-                  className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-                  type="text"
-                  id="lastName"
-                  value={lastName}
-                  onChange={handleLastNameChange}
-                  required
                 />
               </div>
               <div className="mb-4">
@@ -168,6 +187,12 @@ function Register() {
                 >
                   Password
                 </label>
+                {/* Password Requirements Notice */}
+                <p className="mb-4 text-gray-600">
+                  password must have at least 8 characters and contain at least
+                  one of the following: upper case letters, lower case letters,
+                  numbers and symbols.
+                </p>
                 <input
                   className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                   type="password"
@@ -193,8 +218,25 @@ function Register() {
                   required
                 />
               </div>
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 font-bold mb-2"
+                  htmlFor="dateOfBirth"
+                >
+                  Date of Birth
+                </label>
+                <input
+                  className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                  type="date"
+                  id="dateOfBirth"
+                  value={dateOfBirth}
+                  onChange={handleDateOfBirthChange}
+                  required
+                />
+              </div>
+              {passwordError && <p className="text-red-500">{passwordError}</p>}
               <button
-                className="bg-yellow-300 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-yellow-300 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="submit"
               >
                 Register

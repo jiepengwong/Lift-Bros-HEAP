@@ -163,7 +163,7 @@ function Login() {
                   className="block text-gray-700 font-bold mb-2"
                   htmlFor="email"
                 >
-                  Email
+                  Username
                 </label>
                 <input
                   className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"

@@ -290,6 +290,7 @@ func CreateRoutineFromJson(db *gorm.DB) error {
 		routine.Name = routineData.Name
 		routine.CreatedBy = routineData.CreatedBy.Name
 		routine.Tags = routineData.Tags
+		routine.Image = routineData.Image
 
 		// Save the routine to the database & omit creation of muscle groups
 		if err := db.Omit("Exercises", "Tags.*").Create(&routine).Error; err != nil {

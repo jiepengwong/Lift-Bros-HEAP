@@ -1,8 +1,8 @@
 ﻿Exercise Name,Description,Difficulty,DefaultRep,CaloriesPerMin,Muscle Group
-Cable Crunches,Focuses on the abdominal muscles and helps develop core strength and definition.,INT,HI,8,ABS
-Crunches,Targets the abdominal muscles and helps develop core strength.,BEG,HI,8,ABS
-Leg Raises,Focuses on the lower abdominal muscles and improves core stability.,BEG,HI,8,ABS
-Planks,Engages the core muscles and helps improve stability and overall core strength.,BEG,HI,8,ABS
+Cable Crunches,Focuses on the abdominal muscles and helps develop core strength and definition.,INT,HIG,8,ABS
+Crunches,Targets the abdominal muscles and helps develop core strength.,BEG,HIG,8,ABS
+Leg Raises,Focuses on the lower abdominal muscles and improves core stability.,BEG,HIG,8,ABS
+Planks,Engages the core muscles and helps improve stability and overall core strength.,BEG,HIG,8,ABS
 Weighted Crunches,Adds resistance to regular crunches for enhanced core strength.,INT,MED,8,ABS
 Hanging Leg Raises,"Engages the core muscles, particularly the lower abs, and helps develop core strength and stability.",INT,MED,8,"ABS, FOREARMS"
 Bicycle Crunches,"Engages the core muscles, particularly the obliques, and aids in building abdominal strength and definition.",BEG,HIG,8,"ABS, OBLIQUES"
@@ -24,8 +24,8 @@ Romanian Deadlifts,"Engages the posterior chain, including the hamstrings and gl
 Barbell Romanian Deadlifts,Focuses on the hamstrings and lower back for increased strength.,INT,MED,8,"HAMSTRINGS, GLUTES, FOREARMS, LATS, LOWERBACK"
 Deadlifts,"Targets multiple muscle groups, including the back, glutes, and hamstrings, for overall strength development.",ADV,LOW,8,"HAMSTRINGS, GLUTES, FOREARMS, LATS, LOWERBACK"
 Dumbbell Romanian Deadlifts,"Engages the posterior chain, including the hamstrings and glutes, for improved lower body strength and stability.",INT,LOW,8,"HAMSTRINGS, GLUTES, FOREARMS, LATS, LOWERBACK"
-Cable Pullovers,"A cable pull-over, also known as a cable pullover, is a popular exercise in strength training and bodybuilding that primarily targets the muscles of the upper body, particularly the back and shoulders. It is typically performed using a cable machine or a resistance band.",BEG,HI,8,LATS
-Back Extensions,"Back extensions, also known as hyperextensions, are an exercise that primarily targets the muscles of the lower back, including the erector spinae. This exercise can be performed using specialized equipment, such as a back extension machine or a Roman chair, or without equipment by lying prone on the floor.",BEG,HI,8,"LOWERBACK, GLUTES, HAMSTRINGS"
+Cable Pullovers,"A cable pull-over, also known as a cable pullover, is a popular exercise in strength training and bodybuilding that primarily targets the muscles of the upper body, particularly the back and shoulders. It is typically performed using a cable machine or a resistance band.",BEG,HIG,8,LATS
+Back Extensions,"Back extensions, also known as hyperextensions, are an exercise that primarily targets the muscles of the lower back, including the erector spinae. This exercise can be performed using specialized equipment, such as a back extension machine or a Roman chair, or without equipment by lying prone on the floor.",BEG,HIG,8,"LOWERBACK, GLUTES, HAMSTRINGS"
 High to Low Chest Flyes,Works the lower chest muscles and aids in developing pectoral definition.,INT,HIG,8,LOWERCHEST
 Assisted Chest Focused Dips,Focuses on the triceps by keeping the body in a forward tilt position and helps build strength in the arms and chest.,BEG,MED,8,"LOWERCHEST, TRICEPS, FRONTDELTS"
 Decline Bench Press,Focuses on the lower chest muscles and aids in pectoral development.,INT,MED,8,"LOWERCHEST, TRICEPS, FRONTDELTS"

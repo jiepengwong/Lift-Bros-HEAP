@@ -11,6 +11,7 @@ type Exercise struct {
 	Description        string              `json:"description"`
 	Difficulty         Difficulty          `json:"difficulty"`
 	DefaultRep         DefaultRep          `json:"defaultRep"`
+	DefaultReps        []int               `gorm:"-" json:"defaultReps"`
 	CaloriesPerMin     int                 `json:"caloriesPerMin"`
 	MuscleGroups       []MuscleGroup       `gorm:"many2many:exercise_muscle_groups;foreignKey:ID;joinForeignKey:ExerciseID;References:ID;joinReferences:MuscleGroupID" json:"muscleGroups"`
 	CompletedExercises []CompletedExercise `gorm:"foreignKey:ExerciseID" json:"completedExercises"`
@@ -19,6 +20,17 @@ type Exercise struct {
 func (exercise *Exercise) BeforeCreate(tx *gorm.DB) (err error) {
 	if exercise.ID == uuid.Nil {
 		exercise.ID = uuid.New()
+	}
+	return
+}
+
+func (exercise *Exercise) AfterFind(tx *gorm.DB) (err error) {
+	if exercise.DefaultRep == DefaultRepLow {
+		exercise.DefaultReps = []int{6, 6, 6, 6}
+	} else if exercise.DefaultRep == DefaultRepMed {
+		exercise.DefaultReps = []int{10, 10, 10, 10}
+	} else if exercise.DefaultRep == DefaultRepHig {
+		exercise.DefaultReps = []int{12, 12, 12, 12}
 	}
 	return
 }
@@ -38,7 +50,7 @@ type DefaultRep string
 const (
 	DefaultRepLow DefaultRep = "LOW"
 	DefaultRepMed DefaultRep = "MED"
-	DefaultRepHi  DefaultRep = "HIG"
+	DefaultRepHig DefaultRep = "HIG"
 )
 
 type MuscleGroup struct {

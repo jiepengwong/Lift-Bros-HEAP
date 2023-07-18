@@ -7,7 +7,9 @@ import Navbar from "./component/Navbar";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Planner from "./pages/Planner";
+
+// import Home from "./pages/Home";
+import Planner from "./pages/Planner.jsx";
 import CreateRoutine from "./pages/CreateRoutine";
 import DuringRoutine from "./pages/DuringRoutine";
 import Endpage from "./pages/Endpage";

@@ -37,19 +37,20 @@ func setupRoutineRoutes(app *fiber.App) {
 	routine := app.Group("/routine", config.AuthMiddleware())
 	routine.Post("/new", services.CreateRoutine)
 	routine.Get("/templates", services.GetRoutineByTemplate)
-	routine.Get("/:name", services.GetRoutine)
+	routine.Get("/find", services.GetRoutine)
 	routine.Get("/user/:username", services.GetRoutineBySpecificUser)
 	routine.Get("/", services.GetRoutines)
-	routine.Put("/:name", services.UpdateRoutine)
-	routine.Delete("/:name", services.DeleteRoutine)
+	routine.Put("/", services.UpdateRoutine)
+	routine.Delete("/", services.DeleteRoutine)
 }
 
 func setupCompletedRoutineRoutes(app *fiber.App) {
 	completedRoutine := app.Group("/completedRoutine", config.AuthMiddleware())
 	completedRoutine.Post("/new", services.CreateCompletedRoutine)
-	completedRoutine.Get("/:id", services.GetCompletedRoutine)
+	completedRoutine.Get("/pastWeek", services.GetCompletedRoutinesPastWeek)
 	completedRoutine.Get("/user/:username", services.GetCompletedRoutineByUser)
+	completedRoutine.Get("/:id", services.GetCompletedRoutine)
 	completedRoutine.Get("/", services.GetCompletedRoutines)
-	// completedRoutine.Put("/:id", services.UpdateCompletedRoutine)
+	completedRoutine.Put("/:id", services.UpdateCompletedRoutine)
 	completedRoutine.Delete("/:id", services.DeleteCompletedRoutine)
 }

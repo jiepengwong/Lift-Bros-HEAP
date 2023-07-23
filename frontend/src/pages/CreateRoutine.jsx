@@ -13,10 +13,24 @@ import {
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import ModalSearchResults from '../component/ModalSearchResults';
+
 import baseAxios from "../axios/baseAxios"
 function CreateRoutine() {
   const navigate = useNavigate();
   const [routineDescription, setRoutineDescription] = useState('');
+
+  useEffect(() => {
+    baseAxios.get("/exercise")
+      .then((response) => {
+        console.log("Testing base axios - SUCCESS"	)
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+        console.log("Testing base axios - ERROR")
+      })
+    console.log("Testing base axios")
+  }, [])
 
   // Use Selector to get the routine details from the redux store (Dispatched from Modal)
   const routineDetails = useSelector((state) => state.routine.routineDetails);

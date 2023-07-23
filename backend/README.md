@@ -27,8 +27,8 @@ docker compose up
 if there are update in go.mod & go.sum
 
 ```
-docker compose up --build
-```
+
+```docker compose up --build
 
 # 3. Using Docker Image if you are using local mysql
 

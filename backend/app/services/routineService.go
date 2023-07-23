@@ -5,9 +5,11 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/config"
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/models"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 func ProcessExerciseNames(exercisesData *[]models.ExerciseData, exercises *[]models.Exercise) error {
@@ -40,15 +42,63 @@ func ProcessTagNames(tags *[]models.Tag) error {
 	return nil
 }
 
-func getRoutineByName(name string, routine *models.Routine) error {
+func getRoutineByUserIdAndName(userId uuid.UUID, name string, routine *models.Routine) error {
 	db := config.GetDB()
-	if err := db.Preload("Tags").First(&routine, "name = ?", name).Error; err != nil {
+	if err := db.Preload(clause.Associations).First(&routine, "user_id = ? AND name = ?", userId, name).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return errors.New("routine not found")
 		}
 		return err
 	}
 	return nil
+}
+
+// Get routine by created by created_by column
+func GetRoutineByTemplate(c *fiber.Ctx) error {
+	db := config.GetDB()
+	routines := []models.Routine{}
+	if err := db.Preload("Exercises").Find(&routines, "created_by = ?", "LiftBro").Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"error": "routine not found",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return c.JSON(fiber.Map{
+		"data": routines,
+	})
+}
+
+// Get routines specific to a user
+func GetRoutineBySpecificUser(c *fiber.Ctx) error {
+	db := config.GetDB()
+	routines := []models.Routine{}
+	username := c.Params("username") // Retrieve the user name from the request URL parameter
+
+	// Get user using username
+	user := new(models.User)
+	if err := GetUserByUsername(username, user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	if err := db.Preload("Exercises").Find(&routines, "user_id = ?", user.ID).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"error": "routine not found",
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return c.JSON(fiber.Map{
+		"data": routines,
+	})
 }
 
 // CreateRoutine creates a new routine
@@ -62,7 +112,7 @@ func CreateRoutine(c *fiber.Ctx) error {
 		})
 	}
 	// retrieve user id from the database using their name
-	if err := GetUserByUsername(routineData.CreatedBy.Name, &routineData.CreatedBy); err != nil {
+	if err := GetUserByUsername(routineData.CreatedBy.Username, &routineData.CreatedBy); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
 		})
@@ -85,8 +135,9 @@ func CreateRoutine(c *fiber.Ctx) error {
 	// assign values to the routine
 	routine.UserID = routineData.CreatedBy.ID
 	routine.Name = routineData.Name
-	routine.CreatedBy = routineData.CreatedBy.Name
+	routine.CreatedBy = routineData.CreatedBy.Username
 	routine.Tags = routineData.Tags
+	routine.Image = routineData.Image
 
 	// Save the routine to the database & omit creation of muscle groups
 	if err := db.Omit("Exercises", "Tags.*").Create(&routine).Error; err != nil {
@@ -113,17 +164,29 @@ func CreateRoutine(c *fiber.Ctx) error {
 		routineExercises = append(routineExercises, routineExercise)
 	}
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
-		"routine":         routine,
-		"routineExercise": routineExercises,
+		"data": fiber.Map{
+			"routine":         routine,
+			"routineExercise": routineExercises,
+		},
 	})
 }
 
 // GetRoutine retrieves a specific routine by name
 func GetRoutine(c *fiber.Ctx) error {
 	db := config.GetDB()
-	name := strings.ReplaceAll(c.Params("name"), "%20", " ")
+	username := strings.ReplaceAll(c.Query("username"), "%20", " ")
+	name := strings.ReplaceAll(c.Query("name"), "%20", " ")
+
+	// Get user using username
+	user := new(models.User)
+	if err := GetUserByUsername(username, user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
 	routine := new(models.Routine)
-	err := getRoutineByName(name, routine)
+	err := getRoutineByUserIdAndName(user.ID, name, routine)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}
@@ -148,74 +211,115 @@ func GetRoutines(c *fiber.Ctx) error {
 			"error": err.Error(),
 		})
 	}
-	return c.Status(fiber.StatusOK).JSON(routines)
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"data": routines,
+	})
 }
 
-// // UpdateRoutine updates an existing routine
-// func UpdateRoutine(c *fiber.Ctx) error {
-// 	db := config.GetDB()
-// 	name := strings.ReplaceAll(c.Params("name"), "%20", " ")
+// UpdateRoutine updates an existing routine
+func UpdateRoutine(c *fiber.Ctx) error {
+	db := config.GetDB()
+	username := strings.ReplaceAll(c.Query("username"), "%20", " ")
+	name := strings.ReplaceAll(c.Query("name"), "%20", " ")
 
-// 	existingRoutine, err := getRoutineByName(name)
-// 	if err != nil {
-// 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
-// 	}
+	// Get user using username
+	user := new(models.User)
+	if err := GetUserByUsername(username, user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	existingRoutine := new(models.Routine)
 
-// 	updatedRoutine := new(models.Routine)
-// 	if err := c.BodyParser(&updatedRoutine); err != nil {
-// 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request payload"})
-// 	}
+	err := getRoutineByUserIdAndName(user.ID, name, existingRoutine)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
+	}
 
-// 	// TODO: Validation and error handling
+	updatedRoutineData := new(models.RoutineData)
+	if err := c.BodyParser(&updatedRoutineData); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request payload"})
+	}
 
-// 	// Update the existing routine in the database using submitted updated routine
-// 	if updatedRoutine.Name != "" {
-// 		existingRoutine.Name = updatedRoutine.Name
-// 	}
-// 	if updatedRoutine.Description != "" {
-// 		existingRoutine.Description = updatedRoutine.Description
-// 	}
-// 	if updatedRoutine.Difficulty != "" {
-// 		existingRoutine.Difficulty = updatedRoutine.Difficulty
-// 	}
-// 	if updatedRoutine.DefaultRep != "" {
-// 		existingRoutine.DefaultRep = updatedRoutine.DefaultRep
-// 	}
-// 	if updatedRoutine.CaloriesPerMin != 0 {
-// 		existingRoutine.CaloriesPerMin = updatedRoutine.CaloriesPerMin
-// 	}
-// 	if updatedRoutine.MuscleGroups != nil {
-// 		// retrieve all muscle group id from the database using their name
-// 		if err := ProcessMuscleGroupNames(&updatedRoutine.MuscleGroups); err != nil {
-// 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-// 				"error": err.Error(),
-// 			})
-// 		}
-// 		// replace all muscle groups associated to the routine
-// 		if err := db.Model(&existingRoutine).Association("MuscleGroups").Replace(updatedRoutine.MuscleGroups); err != nil {
-// 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-// 				"error": err,
-// 			})
-// 		}
-// 	}
-// 	// Save the routine to the database & omit creation of muscle groups
-// 	if err := db.Omit("MuscleGroups").Save(&existingRoutine).Error; err != nil {
-// 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-// 			"error": err.Error(),
-// 		})
-// 	}
+	// TODO: Validation and error handling
 
-// 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-// 		"message": "Routine successfully updated",
-// 	})
-// }
+	// Update the existing routine in the database using submitted updated routine
+	if updatedRoutineData.Name != "" {
+		existingRoutine.Name = updatedRoutineData.Name
+	}
+	if updatedRoutineData.Image != "" {
+		existingRoutine.Image = updatedRoutineData.Image
+	}
+	if updatedRoutineData.ExerciseData != nil {
+		// remove all muscle groups associated to the exercise
+		if err := db.Unscoped().Model(&existingRoutine).Association("Exercises").Unscoped().Clear(); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": err,
+			})
+		}
+		// retrieve all exercise id from the database using their name
+		if err := ProcessExerciseNames(&updatedRoutineData.ExerciseData, &existingRoutine.Exercises); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": err.Error(),
+			})
+		}
+		for i, exerciseData := range updatedRoutineData.ExerciseData {
+			routineExercise := models.RoutineExercise{
+				RoutineID:    existingRoutine.ID,
+				RoutineName:  updatedRoutineData.Name,
+				ExerciseID:   existingRoutine.Exercises[i].ID,
+				ExerciseName: exerciseData.Name,
+				TargetReps:   exerciseData.TargetReps,
+				RepBuffer:    exerciseData.RepBuffer,
+			}
+			if err := db.Create(&routineExercise).Error; err != nil {
+				return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+					"error": err.Error(),
+				})
+			}
+		}
+	}
+	if updatedRoutineData.Tags != nil {
+		// retrieve all muscle group id from the database using their name
+		if err := ProcessTagNames(&updatedRoutineData.Tags); err != nil {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": err.Error(),
+			})
+		}
+		// replace all muscle groups associated to the routine
+		if err := db.Model(&existingRoutine).Association("Tags").Replace(updatedRoutineData.Tags); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": err,
+			})
+		}
+	}
+	// Save the routine to the database & omit creation of muscle groups
+	if err := db.Omit("Tags").Save(&existingRoutine).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "Routine successfully updated",
+	})
+}
 
 // DeleteRoutine deletes an existing routine
 func DeleteRoutine(c *fiber.Ctx) error {
 	db := config.GetDB()
-	name := strings.ReplaceAll(c.Params("name"), "%20", " ")
+	username := strings.ReplaceAll(c.Query("username"), "%20", " ")
+	name := strings.ReplaceAll(c.Query("name"), "%20", " ")
+
+	// Get user using username
+	user := new(models.User)
+	if err := GetUserByUsername(username, user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
 	routine := new(models.Routine)
-	err := getRoutineByName(name, routine)
+	err := getRoutineByUserIdAndName(user.ID, name, routine)
 	if err != nil {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}

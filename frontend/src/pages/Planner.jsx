@@ -1,22 +1,30 @@
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPlusCircle, faBars } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
-
+import React, { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPlay,
+  faPlusCircle,
+  faBars,
+} from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 // Import components
-import Modal from '../component/Modal';
+import Modal from "../component/Modal";
 
 // Components
-import CardPlanner from '../component/CardPlanner';
+import CardPlanner from "../component/CardPlanner";
+import { useSelector } from "react-redux";
+
+import axios from "axios";
 
 function Planner() {
   const navigate = useNavigate();
+  const [usernameDetails, setUsernameDetails] = useState(
+    useSelector((state) => state.login.loginUser)
+  );
   // Template buttons
   const [plannerButtons, setPlannerButtons] = useState([
-    'Favourites',
-    'Routines',
-    'Other Routines',
-    'Add New Routine',
+    "My Routines",
+    "Other Routines",
+    "Add New Routine",
   ]);
 
   // === Tabs ===
@@ -30,7 +38,6 @@ function Planner() {
   //  === Modal local states ===
   const [showModal, setShowModal] = useState(false);
 
-
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Function to toggle mobile menu
@@ -38,8 +45,75 @@ function Planner() {
     setMobileMenuOpen((prevState) => !prevState);
   };
 
+  // === Local states for routine cards ===
+  const [routineCards, setRoutineCards] = useState([]);
+  const [otherUserRoutineCards, setOtherUserRoutineCards] = useState([]);
 
   // Database data
+  useEffect(() => {
+    // Fetch data from database
+    if (activeTab == 0) {
+      // Fetch user tabs
+      console.log(usernameDetails.username);
+      axios
+        .get(`http://localhost:8080/routine/user/${usernameDetails.username}`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          // Get routines of user here 
+          console.log(response.data.data);
+          setRoutineCards(response.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    if (activeTab == 1) {
+      // Fetch other user data
+
+      // Fetch OTHER user data
+      axios
+        .get(`http://localhost:8080/routine`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          // Get routines of user here 
+          // Get routines of user here 
+          console.log(response.data.data);
+          // Filter out the routines that are not usernameDetails.username
+          // Filter out the routines that are not created by a specific user
+          const filteredRoutines = response.data.data.filter((routine) => {
+            return routine.createdBy != usernameDetails.username; // Replace 'yourUsername' with the desired username
+          });
+
+          console.log(filteredRoutines)
+
+          setOtherUserRoutineCards(filteredRoutines);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [activeTab]);
+
+  // Template data
+  const [templateExercises, setTemplateExercises] = useState([]);
+  // Database template data
+  useEffect(() => {
+    // Fetch data from the database
+    axios.get(`http://localhost:8080/routine/templates`,  {
+      withCredentials: true,
+    })
+      .then((response) => {
+        console.log("tempalte data" , response.data.data);
+        setTemplateExercises(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle the error here, such as displaying an error message or setting a default value for the state
+      });
+  }, []);
 
   return (
     <div>
@@ -55,11 +129,12 @@ function Planner() {
             {/* Desktop navigation items */}
             {/* Array map the buttons*/}
             {plannerButtons.map((button, index) => {
-              if (button !== 'Add New Routine') {
+              if (button !== "Add New Routine") {
                 return (
                   <button
                     key={index}
-                    className={`text-xl text-gray-500 hover:text-gray-800 focus:outline-none ${activeTab === index ? 'border-b-2 border-blue-500' : ''}`}
+                    className={`text-xl text-gray-500 hover:text-gray-800 focus:outline-none ${activeTab === index ? "border-b-2 border-blue-500" : ""
+                      }`}
                     onClick={() => handleTabChange(index)}
                   >
                     {button}
@@ -89,7 +164,7 @@ function Planner() {
               type="button"
               onClick={toggleMobileMenu}
             >
-              Dropdown button{' '}
+              Dropdown button{" "}
               <svg
                 className="w-4 h-4 ml-2"
                 aria-hidden="true"
@@ -98,7 +173,12 @@ function Planner() {
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
               </svg>
             </button>
             {mobileMenuOpen && (
@@ -106,16 +186,20 @@ function Planner() {
                 id="dropdown"
                 className="z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
               >
-                <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                <ul
+                  className="py-2 text-sm text-gray-700 dark:text-gray-200"
+                  aria-labelledby="dropdownDefaultButton"
+                >
                   {/* Array map the buttons*/}
                   {plannerButtons.map((button, index) => {
                     // Map all the buttons
-                    if (button !== 'Add New Routine') {
+                    if (button !== "Add New Routine") {
                       return (
                         <li key={index}>
                           <a
                             href="#"
-                            className={`block font-bold px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white ${activeTab === index ? 'text-blue-500' : ''}`}
+                            className={`block font-bold px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white ${activeTab === index ? "text-blue-500" : ""
+                              }`}
                             onClick={() => handleTabChange(index)}
                           >
                             {button}
@@ -124,7 +208,7 @@ function Planner() {
                       );
                     } else {
                       return (
-                        <li  key={index}>
+                        <li key={index}>
                           <a
                             href="#"
                             className="block font-bold px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -145,23 +229,43 @@ function Planner() {
         </div>
 
         {/* Grid act as the container here */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 place-items-center">
-          {/* CardPlanner Components Hardcoded */}
-          <CardPlanner />
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 place-items-center">
 
-          <CardPlanner />
 
-          <CardPlanner />
 
-          <CardPlanner />
+
+
+        {activeTab === 0 && (
+          <>
+            {/* Show my routines */}
+            {routineCards.map((routineCard, index) => {
+              return (
+                <CardPlanner
+                  key={index}
+                  routineInfo={routineCard} />
+              )
+            }
+            )}
+
+          </>
+        )}
+        {activeTab === 1 && (
+          <>
+            {/* Show other routines */}
+            {otherUserRoutineCards.map((routineCard, index) => {
+              return (
+                <CardPlanner
+                  key={index}
+                  routineInfo={routineCard} />
+              )
+            }
+            )}
+          </>
+        )}
         </div>
       </div>
 
-      <Modal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        
-      />
+      <Modal templateExercises={templateExercises} isOpen={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 }

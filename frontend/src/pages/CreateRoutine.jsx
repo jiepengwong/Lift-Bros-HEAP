@@ -13,6 +13,7 @@ import {
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import ModalSearchResults from '../component/ModalSearchResults';
+import baseAxios from "../axios/baseAxios"
 function CreateRoutine() {
   const navigate = useNavigate();
   const [routineDescription, setRoutineDescription] = useState('');
@@ -47,7 +48,7 @@ function CreateRoutine() {
 
     setSavedExercises((prevExercises) => [...prevExercises, exercise]);
     console.log("line 65" + savedExercises)
-    console.log('Added exercise:', exercise.name);
+    console.log('Added exercise:', exercise);
   };
 
   const handleRemoveExercise = (exercise) => {
@@ -109,6 +110,12 @@ function CreateRoutine() {
     }
   };
 
+  // Close exerciseset modal
+  const handleCloseModalExerciseSet = () => {
+    setShowModalExerciseSet(false);
+    
+  }
+
   const saveRoutineToDB = () => {
     console.log("line 130" + savedExercises)
     console.log("this is username", userName)
@@ -127,11 +134,20 @@ function CreateRoutine() {
     for (var i = 0; i < savedExercises.length; i++) {
       var name = savedExercises[i].exerciseName
       var targetReps = savedExercises[i].targetReps
-      var repBuffer = savedExercises[i].repBuffer
-      var exercise = {
-        "name": name,
-        "targetReps": targetReps,
-        "repBuffer": repBuffer
+
+      // Need to account if there is a rep buffer, default on the backend this is being set to 2
+      if (savedExercises[i].repBuffer) {
+        var repBuffer = savedExercises[i].repBuffer
+        var exercise = {
+          "name": name,
+          "targetReps": targetReps,
+          "repBuffer": repBuffer
+        }
+      } else {
+        var exercise = {
+          "name": name,
+          "targetReps": targetReps,
+        }
       }
       exerciseInCorrectFormat.push(exercise)
     }

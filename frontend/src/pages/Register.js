@@ -1,14 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import { useDispatch } from "react-redux"; // Import useDispatch from 'react-redux' to access the store's dispatch function
+import { setRegisterUser } from "../redux/slice/loginSlice";
 import "tailwindcss/tailwind.css";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../utils/useAuth";
 
 function Register() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [Name, setName] = useState("");
+  const navigate = useNavigate();
   const videoRef = useRef(null);
   const videos = [
     "/videos/Video1.mp4",
@@ -25,12 +32,8 @@ function Register() {
     return () => clearInterval(timer);
   }, [currentVideoIndex]);
 
-  const handleFirstNameChange = (e) => {
-    setFirstName(e.target.value);
-  };
-
-  const handleLastNameChange = (e) => {
-    setLastName(e.target.value);
+  const handleUserNameChange = (e) => {
+    setUserName(e.target.value);
   };
 
   const handleEmailChange = (e) => {
@@ -49,30 +52,43 @@ function Register() {
     setDateOfBirth(e.target.value);
   };
 
-  const handleFormSubmit = (e) => {
+  const handlePhoneNumberChange = (e) => {
+    setPhoneNumber(e.target.value);
+  };
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     if (password === passwordConfirmation) {
       if (isPasswordValid(password)) {
-        console.log(
-          "Registering with:",
-          email,
-          password,
-          firstName,
-          lastName,
-          dateOfBirth
-        );
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setPassword("");
-        setPasswordConfirmation("");
-        setDateOfBirth("");
-        setPasswordError("");
+        try {
+          // Assuming you have a registration API endpoint on your backend
+          console.log(dateOfBirth + "T08:00:00.000Z");
+          console.log(Date.parse(dateOfBirth));
+          console.log(new Date().toJSON());
+          const response = await axios.post(
+            "http://localhost:8080/newUser",
+            {
+              username: userName, // Use the 'firstName' as the username
+              name: Name,
+              password: password,
+              dob: dateOfBirth + "T08:00:00.000Z",
+              phoneNo: phoneNumber,
+              email: email,
+            },
+            { withCredentials: true }
+          );
+          navigate("/login");
+        } catch (error) {
+          console.error("Error:", error);
+          alert("An error occurred during registration.");
+        }
       } else {
-        setPasswordError(
-          "Password must have at least 8 characters with a mix of uppercase and lowercase letters, and at least one number and one special character."
-        );
+        setPasswordError("Password does not meet criteria.");
       }
     } else {
       setPasswordError("Passwords do not match");
@@ -136,35 +152,47 @@ function Register() {
       </div>
 
       {/* Register Form */}
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="relative rounded-lg shadow-md p-6 bg-gray-200 z-20 max-w-lg w-full">
+      <div className="flex justify-center items-center min-h-screen mt-9">
+        <div className="relative rounded-lg shadow-md p-3.5 bg-gray-200 z-0 max-w-lg w-full">
+          {" "}
+          {/* z axis to make form behind banner and mt-9 to push register form down */}
           <div>
             <h2 className="text-3xl font-bold mb-4">Register</h2>
 
             <form onSubmit={handleFormSubmit}>
-              <div className="mb-4">
+              <div className="mb-1">
                 <label
                   className="block text-gray-700 font-bold mb-2"
-                  htmlFor="firstName"
+                  htmlFor="userName"
                 >
                   Username
                 </label>
                 <input
                   className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                   type="text"
-                  id="firstName"
-                  value={firstName}
-                  onChange={handleFirstNameChange}
+                  id="userName"
+                  value={userName}
+                  onChange={handleUserNameChange}
                   required
                 />
               </div>
-              <div className="mb-4">
+              <div className="mb-1">
                 <label
                   className="block text-gray-700 font-bold mb-2"
-                  htmlFor="lastName"
+                  htmlFor="Name"
+                >
+                  Name
+                </label>
+                <input
+                  className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                  type="text"
+                  id="Name"
+                  value={Name}
+                  onChange={handleNameChange}
+                  required
                 />
               </div>
-              <div className="mb-4">
+              <div className="mb-1">
                 <label
                   className="block text-gray-700 font-bold mb-2"
                   htmlFor="email"
@@ -180,7 +208,7 @@ function Register() {
                   required
                 />
               </div>
-              <div className="mb-4">
+              <div className="mb-0">
                 <label
                   className="block text-gray-700 font-bold mb-2"
                   htmlFor="password"
@@ -188,7 +216,10 @@ function Register() {
                   Password
                 </label>
                 {/* Password Requirements Notice */}
-                <p className="mb-4 text-gray-600">
+                <p
+                  className="mb-0 text-gray-600"
+                  style={{ fontSize: "0.8rem" }}
+                >
                   password must have at least 8 characters and contain at least
                   one of the following: upper case letters, lower case letters,
                   numbers and symbols.
@@ -202,7 +233,7 @@ function Register() {
                   required
                 />
               </div>
-              <div className="mb-4">
+              <div className="mb-1">
                 <label
                   className="block text-gray-700 font-bold mb-2"
                   htmlFor="passwordConfirmation"
@@ -218,7 +249,7 @@ function Register() {
                   required
                 />
               </div>
-              <div className="mb-4">
+              <div className="mb-1">
                 <label
                   className="block text-gray-700 font-bold mb-2"
                   htmlFor="dateOfBirth"
@@ -234,6 +265,24 @@ function Register() {
                   required
                 />
               </div>
+
+              <div className="mb-1">
+                <label
+                  className="block text-gray-700 font-bold mb-2"
+                  htmlFor="phoneNumber"
+                >
+                  Phone Number
+                </label>
+                <input
+                  className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                  type="tel"
+                  id="phoneNumber"
+                  value={phoneNumber}
+                  onChange={handlePhoneNumberChange}
+                  required
+                />
+              </div>
+
               {passwordError && <p className="text-red-500">{passwordError}</p>}
               <button
                 className="bg-yellow-300 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -242,7 +291,7 @@ function Register() {
                 Register
               </button>
             </form>
-            <p className="mt-4">
+            <p className="mt-1">
               Already have an account?{" "}
               <span className="text-blue-500 cursor-pointer">
                 <a href="/login">Login here</a>

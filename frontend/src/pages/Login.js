@@ -83,10 +83,6 @@ function Login() {
     console.log("Autoplay error occurred");
   };
 
-  const testlol = () => {
-    console.log("lol");
-  };
-
   const login = async (event) => {
     event.preventDefault();
 

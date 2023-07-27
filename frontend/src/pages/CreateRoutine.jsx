@@ -34,7 +34,7 @@ function CreateRoutine() {
 
   // Use Selector to get the routine details from the redux store (Dispatched from Modal)
   const routineDetails = useSelector((state) => state.routine.routineDetails);
-  const userName = localStorage.getItem("username")
+  const userName = {username: localStorage.getItem("username")}
   console.log("these are the routine details", routineDetails)
 
   // Set to local states

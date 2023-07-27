@@ -18,8 +18,13 @@ import axios from "axios";
 function Planner() {
   const navigate = useNavigate();
   const [usernameDetails, setUsernameDetails] = useState(
-    useSelector((state) => state.login.loginUser)
+    {
+      username: localStorage.getItem("username"),
+      token: localStorage.getItem("username"),
+    }
   );
+
+  
   // Template buttons
   const [plannerButtons, setPlannerButtons] = useState([
     "My Routines",
@@ -53,6 +58,7 @@ function Planner() {
   useEffect(() => {
     // Fetch data from database
     if (activeTab == 0) {
+      console.log("active tab is 0")
       // Fetch user tabs
       console.log(usernameDetails.username);
       axios
@@ -60,7 +66,9 @@ function Planner() {
           withCredentials: true,
         })
         .then((response) => {
+          console.log(" i am called")
           // Get routines of user here 
+          console.log(usernameDetails.username)
           console.log(response.data.data);
           setRoutineCards(response.data.data);
         })

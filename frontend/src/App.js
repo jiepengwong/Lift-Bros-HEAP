@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import Navbar from "./component/Navbar";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
+// import LoginTest from "./pages/LoginTest";
 import Register from "./pages/Register";
 
 // import Home from "./pages/Home";
@@ -69,7 +70,8 @@ function App() {
           </Route>
 
           {/* Public routes */}
-          <Route path="/login" element={<Login />} />
+          {/* <Route path="/login" element={<Login />} /> */}
+          <Route path="/login" element={<LoginTest />} />
           <Route path="/register" element={<Register />} />
         </Routes>
       </div>

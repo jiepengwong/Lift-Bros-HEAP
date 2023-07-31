@@ -3,7 +3,8 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      # dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     ports:
       - 8080:8080
     container_name: app

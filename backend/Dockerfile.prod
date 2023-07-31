@@ -34,9 +34,15 @@ WORKDIR /root/
 # Copy the Pre-built binary file from the previous stage. Observe we also copied the .env file
 COPY --from=builder /app/main .
 COPY --from=builder /app/.env .       
+COPY --from=builder /app/entrypoint_prod.sh /entrypoint_prod.sh       
+
+# wait-for-it requires bash, which alpine doesn't ship with by default. Use wait-for instead
+ADD https://raw.githubusercontent.com/eficode/wait-for/v2.1.0/wait-for /usr/local/bin/wait-for
+RUN chmod +rx /usr/local/bin/wait-for /entrypoint_prod.sh
 
 # Expose port 8080 to the outside world
 EXPOSE 8080
 
 #Command to run the executable
-CMD ["./main"]
+# CMD ["./main"]
+ENTRYPOINT [ "sh", "/entrypoint_prod.sh" ]

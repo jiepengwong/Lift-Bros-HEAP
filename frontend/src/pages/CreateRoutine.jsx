@@ -193,11 +193,51 @@ function CreateRoutine() {
 }
 
 
-
+  // Expansion of individual cards
   const [expanded, setExpanded] = useState(false);
 
   const handleToggleExpand = () => {
     setExpanded(!expanded);
+  };
+
+
+  // State for uploaded image file
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploadedImageBase64, setUploadedImageBase64] = useState(null);
+
+  const readFileAsBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+  
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+  
+      reader.onerror = () => {
+        reject(new Error('Error reading the file'));
+      };
+  
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // Handle image upload
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    setUploadedImage(file);
+  
+    try {
+      const base64Image = await readFileAsBase64(file);
+      setUploadedImageBase64(base64Image);
+      console.log("Base64 image:", base64Image);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Handle remove image
+  const handleRemoveImage = () => {
+    setUploadedImage(null);
   };
 
 
@@ -254,10 +294,36 @@ function CreateRoutine() {
       </div>
 
       <div className="py-4">
+
+          {/* Step 1: Image Upload Section */}
+          <h2 className="text-xl font-bold mb-4 text-start px-4">Step 1 -  Upload an Image</h2>
+          <div className="bg-white p-4 rounded shadow my-4 mx-auto w-full md:w-2/3">
+          <input
+            type="file"
+            accept="image/*"
+            className="border p-2"
+            onChange={handleImageUpload}
+          />
+         {uploadedImage && (
+            <div className="mt-4 flex flex-col justify-center items-center">
+              <img
+                src={URL.createObjectURL(uploadedImage)}
+                alt="Uploaded Routine"
+                className="w-40 h-40 p-1 object-cover rounded"
+              />
+              <button
+                className=" bg-red-500 hover:bg-red-600 text-white py-3 px-2 rounded"
+                onClick={handleRemoveImage}
+              >
+                Remove
+              </button>
+            </div>
+          )}
+        </div>
+        <hr className="py-4"></hr>
         {/* Current exercises added into "cart" */}
         <div>
-          <p className="font-bold  text-lg text-start px-4">Current Exercises:</p>
-
+          <p className="font-bold  text-xl text-start px-4">Step 2 - Modify Current Exercises</p>
           <div className="text-center">
 
             <div className="flex flex-col p-4">

@@ -7,6 +7,7 @@ import Navbar from "./component/Navbar";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import LogoutPage from "./pages/LogoutPage";
 
 // import Home from "./pages/Home";
 import Planner from "./pages/Planner.jsx";
@@ -70,6 +71,7 @@ function App() {
 
           {/* Public routes */}
           <Route path="/login" element={<Login />} />
+          <Route exact path="/logout" component={LogoutPage} />
           <Route path="/register" element={<Register />} />
         </Routes>
       </div>

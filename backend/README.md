@@ -27,8 +27,8 @@ docker compose up
 if there are update in go.mod & go.sum
 
 ```
-
-```docker compose up --build
+docker compose up --build
+```
 
 # 3. Using Docker Image if you are using local mysql
 
@@ -42,4 +42,14 @@ docker build -t lift-bro:0.0.1 .
 
 ```
 docker run -p 8080:8080 lift-bro:0.0.1
+```
+
+4. Deployment on AWS ECS
+
+```
+docker context create ecs myecscontext
+```
+
+```
+docker-compose --context myecscontext -f docker-compose-aws.yml up
 ```

@@ -12,11 +12,42 @@ function DuringRoutine() {
   const [exerciseList, setExerciseList] = useState([]);
   const [isRunning, setIsRunning] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [caloriesBurned, setCaloriesBurned] = useState(0);
+
+  const handleCompleteWorkout = () => {
+    setIsRunning(false);
+    const workoutData = {
+      username: "LiftBro",
+      routineName: "Liftbro's Upper Body Routine",
+      dateTimeCompleted: new Date().toJSON(),
+      routineDuration: elapsedTime,
+      // routineIntensity: 4,
+      caloriesBurned: caloriesBurned,
+      // completedExercises: [],
+    };
+    console.log(workoutData);
+    const response = axios
+      .post("http://localhost:8080/completedRoutine/new", workoutData, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        // Handle the response from the backend if needed
+        console.log("Workout data sent successfully!", response);
+        // Redirect to the "end" page or any other desired action
+      })
+      .catch((error) => {
+        // Handle any error that occurs during the API call
+        console.error("Error sending workout data:", error);
+      });
+    console.log(response.data);
+  };
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggleDropdown = () => {
     setDropdownOpen((prevState) => !prevState);
   };
 
+  // Timer
   useEffect(() => {
     let intervalId;
 
@@ -33,6 +64,11 @@ function DuringRoutine() {
 
   var routineName = "Liftbro's Upper Body Routine";
   var createdBy = "LiftBro";
+
+  // Calories calculator
+  useEffect(() => {
+    setCaloriesBurned(Math.floor(elapsedTime * 0.05));
+  }, [elapsedTime]);
 
   // Fetch routine from Database
   useEffect(() => {
@@ -92,24 +128,22 @@ function DuringRoutine() {
         </div>
         <div className="flex flex-col justify-center">
           {/* Calories box */}
-          <GreyBox text="Est. calories burnt:" data="350 kJ" />
+          <GreyBox text="Est. calories burned:" data={caloriesBurned} />
         </div>
-        {/* Go to home button */}
-        {/* <Link to="/end">
-          <Button text="Complete Workout" />
-        </Link> */}
       </div>
+      {/* Exercise list */}
       {exerciseList.map((exercise) => (
         <div className="m-2">
           <ExerciseExpand exercise={exercise} />
         </div>
       ))}
+
       <div className="flex justify-evenly p-20">
-        {/* Timer box */}
+        {/* Complete workout */}
         <div>
-          <Link to="/end">
-            <Button text="Complete Workout" />
-          </Link>
+          {/* <Link to="/end"> */}
+          <Button text="Complete Workout" onClick={handleCompleteWorkout} />
+          {/* </Link> */}
         </div>
       </div>
     </div>

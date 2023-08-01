@@ -43,7 +43,16 @@ function LoginTest() {
       setAuth({ jwtToken, expirationTime });
       // Push to redux
       // dispatch(setLoginStatus(true))
-      dispatch(setLoginUser({ username: username, token: jwtToken }));
+      // dispatch(setLoginUser({ username: username, token: jwtToken }));
+
+      // Set to localstorage instead 
+      localStorage.setItem("username", username);
+      localStorage.setItem("token", jwtToken);
+
+      const localStorageUsername = localStorage.getItem("username");
+      const localStorageToken = localStorage.getItem("token");
+      console.log(username, localStorageUsername);
+
 
       console.log("Token:", jwtToken);
 

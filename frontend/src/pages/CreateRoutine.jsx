@@ -176,7 +176,8 @@ function CreateRoutine() {
       ,
       "exercises": exerciseInCorrectFormat,
       // Right now put nothing for now
-      "tags": []
+      "tags": [],
+      "image": uploadedImageBase64
   }
 
   console.log(postPayLoad)
@@ -227,7 +228,8 @@ function CreateRoutine() {
     setUploadedImage(file);
   
     try {
-      const base64Image = await readFileAsBase64(file);
+      var base64Image = await readFileAsBase64(file);
+      base64Image = base64Image.slice(base64Image.indexOf(',') + 1);
       setUploadedImageBase64(base64Image);
       console.log("Base64 image:", base64Image);
     } catch (error) {

@@ -20,7 +20,7 @@ function Planner() {
   const [usernameDetails, setUsernameDetails] = useState(
     {
       username: localStorage.getItem("username"),
-      token: localStorage.getItem("username"),
+      token: localStorage.getItem("token"),
     }
   );
 

@@ -16,6 +16,11 @@ const CreateRoutineCard = ({ exercise, handleEditExercise, handleRemoveExercise 
     }, [expanded]);
 
     // Use Effect if screen size changes, then expanded is false
+
+    const handleRemoveExercise2 = (exercise) => {
+        handleRemoveExercise(exercise);
+        setExpanded(false);
+    }
     
     useEffect(() => {
         const handleResize = () => {
@@ -29,7 +34,7 @@ const CreateRoutineCard = ({ exercise, handleEditExercise, handleRemoveExercise 
         return () => {
         window.removeEventListener('resize', handleResize);
         };
-    }, [expanded]);
+    }, [expanded, handleRemoveExercise2]);
 
 
 
@@ -79,7 +84,7 @@ const CreateRoutineCard = ({ exercise, handleEditExercise, handleRemoveExercise 
                             <FontAwesomeIcon icon={faEdit} />
                         </button>
                         <button
-                            onClick={() => handleRemoveExercise(exercise)}
+                            onClick={() => handleRemoveExercise2(exercise)}
                             className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full ml-2"
                         >
                             <FontAwesomeIcon icon={faTrash} />

@@ -56,7 +56,7 @@ function CreateRoutine() {
   const handleAddExercise = (exercise) => {
     console.log("triggered add exercise function")
     console.log(exercise)
-
+    
     // Push to redux store then navigate to manage exercise
     // Push the exercise name to the redux store
 
@@ -70,8 +70,10 @@ function CreateRoutine() {
 
     // NEED TO EDIT THIS 
     setSavedExercises((prevExercises) =>
-      prevExercises.filter((prevExercise) => prevExercise.name !== exercise.name)
+      prevExercises.filter((prevExercise) => prevExercise.exerciseName !== exercise.exerciseName)
     );
+    // Expanded is false
+    setExpanded(false)
     console.log('Exercise removed:', exercise);
   };
 

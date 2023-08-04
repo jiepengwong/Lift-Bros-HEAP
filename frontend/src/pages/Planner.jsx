@@ -237,40 +237,25 @@ function Planner() {
         </div>
 
         {/* Grid act as the container here */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 place-items-center">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 place-items-center px-5 md:px-10 lg:px-16">
+  {activeTab === 0 && (
+    <>
+      {/* Show my routines */}
+      {routineCards.map((routineCard, index) => (
+        <CardPlanner key={index} routineInfo={routineCard} />
+      ))}
+    </>
+  )}
+  {activeTab === 1 && (
+    <>
+      {/* Show other routines */}
+      {otherUserRoutineCards.map((routineCard, index) => (
+        <CardPlanner key={index} routineInfo={routineCard} />
+      ))}
+    </>
+  )}
+</div>
 
-
-
-
-
-        {activeTab === 0 && (
-          <>
-            {/* Show my routines */}
-            {routineCards.map((routineCard, index) => {
-              return (
-                <CardPlanner
-                  key={index}
-                  routineInfo={routineCard} />
-              )
-            }
-            )}
-
-          </>
-        )}
-        {activeTab === 1 && (
-          <>
-            {/* Show other routines */}
-            {otherUserRoutineCards.map((routineCard, index) => {
-              return (
-                <CardPlanner
-                  key={index}
-                  routineInfo={routineCard} />
-              )
-            }
-            )}
-          </>
-        )}
-        </div>
       </div>
 
       <Modal templateExercises={templateExercises} isOpen={showModal} onClose={() => setShowModal(false)} />

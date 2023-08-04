@@ -1,35 +1,30 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function Navbar() {
-  const button = (
-    <button
-      type="button"
-      class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-    >
-      Sign in
-    </button>
-  );
-
   const [navbar, setNavbar] = useState(["Home", "Routine", "Logout"]);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [signIn, setSignIn] = useState(false);
 
-  const onMenuClick = () => {
-    setMenuOpen(!menuOpen);
+  const handleLogout = () => {
+    // Remove token and username from localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
   };
 
-  const handleMenuClick = (item) => {
-    // you can close the menu after clicking an item
+  const toggleMenu = () => {
+    setMenuOpen((prevMenuOpen) => !prevMenuOpen);
+  };
+
+  const handleMenuClick = () => {
+    // Close the menu after clicking an item
     setMenuOpen(false);
   };
 
-  // To close the menu when the window size reaches desktop breakpoint (e.g., 640px) and set menu to close even if it is opened on mobile
+  // To close the menu when the window size reaches desktop breakpoint (e.g., 640px)
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 640) {
-        setMenuOpen(false); // Close the menu when window size reaches desktop breakpoint (e.g., 640px)
+        setMenuOpen(false);
       }
     };
 
@@ -43,26 +38,30 @@ function Navbar() {
   return (
     <div className="top-0 w-full block">
       <div className="bg-yellow-300 flex justify-between items-center w-full h-20 px-2 2xl:px-16">
-        {/* Header/logo */}
-        <div className="">
+        <div>
           <p className="font-bold text-2xl">Lift bros 🦾</p>
         </div>
 
         {/* Navbar desktop */}
         <div className={`hidden sm:block ${menuOpen ? "hidden" : ""}`}>
           <ul>
-            {/* Links */}
-
             {navbar.map((item) => (
               <li
                 key={item}
                 className="font-bold cursor-pointer inline-block px-6 py-2 mx-2 rounded-md hover:bg-green-300"
               >
-                {/* Check if item is home */}
                 {item === "Home" ? (
-                  <Link to="/">{item}</Link>
+                  <Link to="/" onClick={handleMenuClick}>
+                    {item}
+                  </Link>
+                ) : item === "Logout" ? (
+                  <Link to="/login" onClick={handleLogout}>
+                    {item}
+                  </Link>
                 ) : (
-                  <Link to={`/${item}`}>{item}</Link>
+                  <Link to={`/${item}`} onClick={handleMenuClick}>
+                    {item}
+                  </Link>
                 )}
               </li>
             ))}
@@ -71,12 +70,10 @@ function Navbar() {
 
         {/* Navbar mobile */}
         <div className="sm:hidden flex flex-1 justify-end items-center">
-          {/* Hamburger Icon */}
           <div
             className={`cursor-pointer flex flex-col justify-center items-center w-6 h-6`}
-            onClick={() => setMenuOpen((menuOpen) => !menuOpen)}
+            onClick={toggleMenu}
           >
-            {/* Hamburger Lines */}
             <div
               className={`w-6 h-0.5 bg-black transition-all duration-300 transform ${
                 menuOpen ? "rotate-45 translate-y-1.5" : ""
@@ -96,36 +93,34 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu, outside of the flex*/}
+      {/* Mobile Menu */}
       <div
         className={`${
-          menuOpen ? "flex flex-col" : "hidden"
+          menuOpen ? "flex flex-col opacity-100 max-h-full" : "opacity-0 max-h-0"
         } z-10 bg-white shadow-lg relative rounded-xl sidebar`}
         style={{
           backgroundColor: menuOpen ? "#f0f0f0" : "white",
           borderRadius: menuOpen ? "4px" : "0",
+          overflow: menuOpen ? "visible" : "hidden",
+          transition:
+            "opacity 0.3s ease-in-out, max-height 0.3s ease-in-out",
         }}
       >
-        {/* Caret */}
-        {/* <div className="absolute top-0 right-0 w-9 h-9 transform rotate-45 bg-gray-200"> */}
-        {/* Empty div to hide the caret on hover */}
-        {/* <div className="w-full h-full bg-white transition-opacity duration-300 hover:opacity-0"></div>
-                </div> */}
-
-        {/* Mobile Menu Content */}
         <ul className={`${menuOpen ? "block sm:hidden" : "hidden"}`}>
-          {/* Links */}
           {navbar.map((item, index) => (
             <li
               key={item}
               className={`z-10 font-bold cursor-pointer block py-2 mx-2 rounded-md ${
                 index === navbar.length - 1 ? "last-item" : ""
               }`}
-              onClick={() => handleMenuClick(item)}
+              onClick={handleMenuClick}
             >
-              {/* Check if item is home */}
               {item === "Home" ? (
                 <Link to="/">{item}</Link>
+              ) : item === "Logout" ? (
+                <Link to="/login" onClick={handleLogout}>
+                  {item}
+                </Link>
               ) : (
                 <Link to={`/${item}`}>{item}</Link>
               )}

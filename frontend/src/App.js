@@ -47,8 +47,8 @@ function App() {
             </Route>
 
           {/* Public routes */}
-          {/* <Route path="/login" element={<Login />} /> */}
-          <Route path="/login" element={<LoginTest />} />
+          <Route path="/login" element={<Login />} />
+          {/* <Route path="/login" element={<LoginTest />} /> */}
           <Route exact path="/logout" component={LogoutPage} />
           <Route path="/register" element={<Register />} />
         </Routes>

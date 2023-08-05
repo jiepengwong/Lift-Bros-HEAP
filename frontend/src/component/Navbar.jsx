@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { clearGlobalTimer } from "../utils/GlobalTimer";
+import Swal from 'sweetalert2'
 
 function Navbar() {
   const [navbar, setNavbar] = useState(["Home", "Routine", "Logout"]);
@@ -14,6 +15,12 @@ function Navbar() {
     // Clear the global timer
     clearGlobalTimer();
     document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    Swal.fire({
+      title: 'Success!',
+      text: 'You have successfully logged out!',
+      icon: 'success',
+      confirmButtonText: 'Cool'
+    })
 
   };
 

@@ -7,6 +7,8 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import CreateRoutineCard from '../component/CreateRoutineCard';
+import defaultImage from '../assets/tyler1.jpg'; // Import the default image
+
 import {
   faPlay,
   faPlusCircle,
@@ -208,6 +210,8 @@ function CreateRoutine() {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadedImageBase64, setUploadedImageBase64] = useState(null);
 
+
+
   const readFileAsBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -239,11 +243,30 @@ function CreateRoutine() {
     }
   };
 
+ 
+
   // Handle remove image
   const handleRemoveImage = () => {
     setUploadedImage(null);
   };
 
+
+  useEffect(() => {
+    const setDefaultImage = async () => {
+      try {
+        const defaultImageData = await fetch(defaultImage);
+        const defaultImageBlob = await defaultImageData.blob();
+        var defaultBase64Image = await readFileAsBase64(defaultImageBlob);
+        defaultBase64Image = defaultBase64Image.slice(defaultBase64Image.indexOf(',') + 1);
+        setUploadedImageBase64(defaultBase64Image);
+        console.log("Default image:", defaultBase64Image);
+      } catch (error) {
+        console.error("Error setting default image:", error);
+      }
+    };
+
+    setDefaultImage();
+  }, []);
 
   // Monitor changes in savedExercises and refresh when it changes
   useEffect(() => {

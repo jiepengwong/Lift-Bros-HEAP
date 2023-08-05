@@ -8,12 +8,13 @@ import {
 import { useNavigate } from "react-router-dom";
 // Import components
 import Modal from "../component/Modal";
+import baseAxios from "../axios/baseAxios";
 
 // Components
 import CardPlanner from "../component/CardPlanner";
 import { useSelector } from "react-redux";
-
 import axios from "axios";
+
 
 function Planner() {
   const navigate = useNavigate();
@@ -53,6 +54,25 @@ function Planner() {
   // === Local states for routine cards ===
   const [routineCards, setRoutineCards] = useState([]);
   const [otherUserRoutineCards, setOtherUserRoutineCards] = useState([]);
+
+  const handleDelete = (username,routineName ) => {
+    // Delete routine from database
+
+    baseAxios.delete(`/routine/?${username}/?${routineName}`)
+      .then((response) => {
+        console.log(response);
+        // Delete routine from state
+        setRoutineCards((prevState) => {
+          return prevState.filter((routine) => {
+            return routine.name !== routineName;
+          });
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+    
 
   // Database data
   useEffect(() => {
@@ -103,7 +123,7 @@ function Planner() {
           console.log(error);
         });
     }
-  }, [activeTab]);
+  }, [activeTab, routineCards]);
 
   // Template data
   const [templateExercises, setTemplateExercises] = useState([]);
@@ -250,7 +270,7 @@ function Planner() {
     <>
       {/* Show other routines */}
       {otherUserRoutineCards.map((routineCard, index) => (
-        <CardPlanner key={index} routineInfo={routineCard} />
+        <CardPlanner key={index} routineInfo={routineCard} deleteCard={handleDelete} />
       ))}
     </>
   )}

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faCaretDown, faTrash, faTimes  } from "@fortawesome/free-solid-svg-icons";
 
-function CardPlanner({ routineInfo }) {
+function CardPlanner({ routineInfo, deleteCard }) {
   console.log(routineInfo);
   const [expanded, setExpanded] = useState(false);
   const [exerciseList, setExerciseList] = useState(routineInfo.exercises);
@@ -19,6 +19,7 @@ function CardPlanner({ routineInfo }) {
 
   const deleteRoutine = () => {
     console.log("delete routine")
+    deleteCard(routineInfo.createdBy, routineInfo.name)
     // Implement your delete routine logic here
     // You can use routineInfo.id or other identifiers
     // to delete the routine associated with this card.

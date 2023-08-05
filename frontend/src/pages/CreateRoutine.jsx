@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import CreateRoutineCard from '../component/CreateRoutineCard';
 import defaultImage from '../assets/tyler1.jpg'; // Import the default image
-
+import Swal from 'sweetalert2';
 import {
   faPlay,
   faPlusCircle,
@@ -188,7 +188,11 @@ function CreateRoutine() {
   axios.post('http://localhost:8080/routine/new', postPayLoad, { withCredentials: true })
   .then((response) => {
     console.log(response.data.data.routineName)
-    alert("Routine created!")
+    Swal.fire(
+      "Good job!",
+      `You have successfully created your new routine: <b>${newRoutineName}</b>`,
+      'success'
+    )    
     navigate('/routine')
   }
   )

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { clearGlobalTimer } from "../utils/GlobalTimer";
 
 function Navbar() {
   const [navbar, setNavbar] = useState(["Home", "Routine", "Logout"]);
@@ -9,6 +10,11 @@ function Navbar() {
     // Remove token and username from localStorage
     localStorage.removeItem("token");
     localStorage.removeItem("username");
+    localStorage.removeItem("expirationTime");
+    // Clear the global timer
+    clearGlobalTimer();
+    document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
   };
 
   const toggleMenu = () => {

@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../utils/useAuth";
-import jwt_decode from "jwt-decode";
+// import jwt_decode from "jwt-decode";
 import { useDispatch } from "react-redux";
-import { setLoginUser } from "../redux/slice/loginSlice";
+import { startGlobalTimer, clearGlobalTimer } from "../utils/GlobalTimer"; // Import the global timer functions
+
 // import { setLoginStatus } from '../redux/slice/loginSlice';
 function LoginTest() {
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
   const dispatch = useDispatch();
+  const [expirationTimer, setExpirationTimer] = useState(null); // State for the global timer
+
+  // If the user is already logged in, redirect to home page
+  useEffect(() => {
+    if (localStorage.getItem("username")) {
+      console.log("User is already logged in. Redirecting to home page...");
+      navigate("/");
+    }
+  }, [navigate]);
 
   const getCookieValue = (name) => {
     const cookies = document.cookie.split("; ");
@@ -18,6 +26,15 @@ function LoginTest() {
       return cookie.split("=")[1];
     }
     return null;
+  };
+
+  // For global timer
+  const handleTokenExpiration = () => {
+    alert("Your user session has expired, please log in again");
+    localStorage.removeItem("username");
+    localStorage.removeItem("token");
+    localStorage.removeItem("expirationTime");
+    navigate("/login");
   };
 
   // Usage of axios
@@ -36,36 +53,32 @@ function LoginTest() {
         },
         { withCredentials: true }
       );
-      const jwtToken = getCookieValue("jwt");
-      let decodedToken = jwt_decode(jwtToken);
-      let expirationTime = decodedToken.exp;
-      console.log(decodedToken);
-      setAuth({ jwtToken, expirationTime });
-      // Push to redux
-      // dispatch(setLoginStatus(true))
-      // dispatch(setLoginUser({ username: username, token: jwtToken }));
 
-      // Set to localstorage instead 
+
+      const jwtToken = response.data.cookie.value;
+      const expirationTimeISO = response.data.cookie.expires;
+  
+      // Convert ISO 8601 timestamp to Unix timestamp in seconds
+      const expirationTimeUnix = Math.floor(new Date(expirationTimeISO).getTime() / 1000);
+  
+      // Calculate the time remaining until token expiration
+      const currentTime = Math.floor(new Date().getTime() / 1000);
+      const timeRemaining = expirationTimeUnix - currentTime;
+
       localStorage.setItem("username", username);
       localStorage.setItem("token", jwtToken);
-
-      const localStorageUsername = localStorage.getItem("username");
-      const localStorageToken = localStorage.getItem("token");
-      console.log(username, localStorageUsername);
+      localStorage.setItem("expirationTime", expirationTimeISO);
+      
 
 
-      console.log("Token:", jwtToken);
+      // Start the global timer for token expiration
+      startGlobalTimer(handleTokenExpiration, timeRemaining * 1000);
 
-      // Usage
-      // const token = getCookieValue('jwt');
 
       if (jwtToken) {
         console.log("Token:", jwtToken);
-        // Dispatch or perform further actions with the token if needed
-        // Navigate to different page
         console.log("Navigating to home page.");
         navigate("/"); // Navigate to the login page if not authenticated
-        console.log("Navigating to home page tset.");
       } else {
         console.log("Token not found.");
       }
@@ -75,32 +88,6 @@ function LoginTest() {
     }
   };
 
-  const logoutSimulation = async (event) => {
-    event.preventDefault();
-
-    const username = "bao";
-    const password = "password";
-
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/user/logout",
-        {
-          username,
-          password,
-        },
-        { withCredentials: true }
-      );
-
-      // Retrieve the token from the response headers
-      console.log(response.headers);
-      const token = response.headers["set-cookie"];
-
-      // Store the token wherever you prefer (e.g., in state, context, or localStorage)
-      // Example using redux
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
 
   return (
     // Simulate login page
@@ -116,12 +103,8 @@ function LoginTest() {
         Login
       </button>
 
-      <button
-        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-        onClick={logoutSimulation}
-      >
-        Logout
-      </button>
+     
+     
     </div>
   );
 }

@@ -290,7 +290,6 @@ function CreateRoutine() {
       .then((response) => {
         console.log(templateName, "template name")
         console.log("In create routine use effect", response.data.exercises)
-        alert("i am triggered")
         setSavedExercises(response.data.exercises)
         setShowModalExerciseSet(false)
       }

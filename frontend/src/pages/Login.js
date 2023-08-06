@@ -8,9 +8,13 @@ import { setLoginUser } from "../redux/slice/loginSlice";
 import { startGlobalTimer } from "../utils/GlobalTimer";
 import baseAxios from "../axios/baseAxios";
 import Swal from 'sweetalert2'
+import { faBold } from "@fortawesome/free-solid-svg-icons";
+import WebFont from 'webfontloader';
+
+
 
 function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,23 +31,17 @@ function Login() {
 
   const videoRef = useRef(null);
   const videos = [
-    "/videos/Video1.mp4",
-    "/videos/Video2.mp4",
-    "/videos/Video3.mp4",
+    "/videos/Untitled.mp4",
   ];
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   useEffect(() => {
     playCurrentVideo();
+  });
 
-    const timer = setInterval(changeVideo, 10000);
-
-    return () => clearInterval(timer);
-  }, [currentVideoIndex]);
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    console.log(email);
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+    console.log(username);
   };
 
   const handlePasswordChange = (e) => {
@@ -52,8 +50,8 @@ function Login() {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    console.log("Logging in with:", email, password);
-    setEmail("");
+    console.log("Logging in with:", username, password);
+    setUsername("");
     setPassword("");
   };
 
@@ -101,7 +99,7 @@ function Login() {
       const response = await baseAxios.post(
         "/login",
         {
-          username: email,
+          username: username,
           password: password,
         });
 
@@ -116,7 +114,7 @@ function Login() {
       const currentTime = Math.floor(new Date().getTime() / 1000);
       const timeRemaining = expirationTimeUnix - currentTime;
 
-      localStorage.setItem("username", email);
+      localStorage.setItem("username", username);
       localStorage.setItem("token", jwtToken);
       localStorage.setItem("expirationTime", expirationTimeISO);
       
@@ -163,31 +161,40 @@ function Login() {
       </div>
 
       {/* Banner */}
-      <div className="band fixed top-0 left-0 w-full bg-yellow-300 text-black py-4 z-10">
-        <div className="container mx-auto">
-          <h1 className="text-5xl font-bold">Lift Bros 🦾</h1>
-        </div>
-      </div>
-
+      {/* <div className="band fixed top-0 left-0 w-full bg-yellow-300 text-black py-4 z-10"> */}
+        {/* <div className="container mx-auto"> */}
+          {/* <h1 className="text-5xl font-bold">Lift Bros 🦾</h1> */}
+        {/* </div> */}
+      {/* </div>/* */}
       {/* Login Form */}
+      
       <div className="flex justify-center items-center h-screen">
-        <div className="relative rounded-lg shadow-md p-6 bg-gray-200 z-0">
+        <div className="relative rounded-lg shadow-md p-6 bg-yellow-300 z-0">
           <div>
-            <h2 className="text-3xl font-bold mb-4">Login</h2>
+            <h1 className="text-5xl font-bold mb-8">Lift Bros 🦾</h1>
+            </div>
+            <hr  style={{
+    color: '#000000',
+    backgroundColor: '#000000',
+    height: 1,
+    borderColor : '#000000'
+}}/>
+          <div>
+            <h2 className="text-3xl font-bold mb-5">Login</h2>
             <form onSubmit={handleFormSubmit}>
               <div className="mb-4">
                 <label
                   className="block text-gray-700 font-bold mb-2"
-                  htmlFor="email"
+                  htmlFor="username"
                 >
                   Username
                 </label>
                 <input
                   className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={handleEmailChange}
+                  type="username"
+                  id="username"
+                  value={username}
+                  onChange={handleUsernameChange}
                   required
                 />
               </div>
@@ -208,16 +215,16 @@ function Login() {
                 />
               </div>
               <button
-                className="bg-yellow-300 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 onClick={login}
               >
                 Login
               </button>
             </form>
             {loginError && ( // Conditionally render the error message
-              <p className="mt-4 text-red-500">{loginError}</p>
+              <p className="mt-1 text-red-500">{loginError}</p>
             )}
-            <p className="mt-4">
+            <p className="mt-1">
               Don't have an account?{" "}
               <span className="text-blue-500 cursor-pointer">
                 <a href="/register">Register here</a>

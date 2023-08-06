@@ -77,3 +77,15 @@ type RoutineTag struct {
 	RoutineID uuid.UUID `json:"routineId" gorm:"primaryKey"`
 	TagID     uuid.UUID `json:"tagId" gorm:"primaryKey"`
 }
+
+func (routine *Routine) BeforeDelete(tx *gorm.DB) (err error) {
+	// remove all exercises associated to the routine
+	if err := tx.Unscoped().Model(&routine).Association("Exercises").Unscoped().Clear(); err != nil {
+		return err
+	}
+	// remove all Ttgs associated to the routine
+	if err := tx.Unscoped().Model(&routine).Association("Tags").Unscoped().Clear(); err != nil {
+		return err
+	}
+	return
+}

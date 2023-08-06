@@ -209,13 +209,6 @@ func DeleteCompletedRoutine(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	// remove all completed exercises associated to the completed routine
-	if err := db.Unscoped().Model(&completedRoutine).Association("CompletedExercises").Unscoped().Clear(); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": err,
-		})
-	}
-
 	db.Delete(&completedRoutine)
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{

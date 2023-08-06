@@ -45,7 +45,7 @@ function App() {
               <Route path="/createRoutine" element={<CreateRoutine />} />
               <Route path="/end" element={<Endpage />} />
               <Route path="/during" element={<DuringRoutine />} />
-              <Route path="/history" elecment={<History />} />
+              <Route path="/history" element={<History />} />
             </Route>
 
           {/* Public routes */}

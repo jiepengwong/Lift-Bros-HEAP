@@ -21,7 +21,6 @@ function DuringRoutine() {
       routineName: "Liftbro's Upper Body Routine",
       dateTimeCompleted: new Date().toJSON(),
       routineDuration: elapsedTime,
-      // routineIntensity: 4,
       caloriesBurned: caloriesBurned,
       // completedExercises: [],
     };

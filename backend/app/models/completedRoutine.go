@@ -79,3 +79,11 @@ func (completedExercise *CompletedExercise) AfterFind(tx *gorm.DB) (err error) {
 	completedExercise.ActualWeights = utils.StringToInts(completedExercise.ActualWeightsString)
 	return
 }
+
+func (completedRoutine *CompletedRoutine) BeforeDelete(tx *gorm.DB) (err error) {
+	// remove all completed exercises associated to the completed routine
+	if err := tx.Unscoped().Model(&completedRoutine).Association("CompletedExercises").Unscoped().Clear(); err != nil {
+		return err
+	}
+	return
+}

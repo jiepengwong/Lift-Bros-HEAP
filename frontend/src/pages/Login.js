@@ -37,7 +37,7 @@ function Login() {
 
   useEffect(() => {
     playCurrentVideo();
-  });
+  }, [currentVideoIndex]);
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);

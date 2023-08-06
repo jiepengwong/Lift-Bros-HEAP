@@ -23,7 +23,7 @@ function Register() {
 
   useEffect(() => {
     playCurrentVideo();
-  });
+  }, [currentVideoIndex]);
 
   const handleUserNameChange = (e) => {
     setUserName(e.target.value);

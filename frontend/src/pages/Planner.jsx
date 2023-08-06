@@ -326,6 +326,7 @@ import CardPlanner from "../component/CardPlanner";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Swaf from "sweetalert2"
+import CardHistory from "../component/CardHistory";
 
 function Planner() {
   const navigate = useNavigate();
@@ -656,8 +657,8 @@ function Planner() {
                   routine.name.toLowerCase().includes(searchQueryPastRoutines.toLowerCase())
                 )
                 .map((routineCard, index) => (
-                  routineCard.id
-          // Render your content for past routines here
+                  <CardHistory histories={routineCard}/>
+                  // Render your content for past routines here
         ))}
 
             </>

@@ -10,7 +10,9 @@ import CreateRoutine from "./pages/CreateRoutine";
 import Endpage from "./pages/Endpage";
 import History from "./pages/History";
 import Login from "./pages/Login";
+// import LoginTest from "./pages/LoginTest";
 import Register from "./pages/Register";
+import LogoutPage from "./pages/LogoutPage";
 
 // import Home from "./pages/Home";
 import DuringRoutine from "./pages/DuringRoutine";
@@ -71,7 +73,9 @@ function App() {
           </Route>
 
           {/* Public routes */}
-          <Route path="/login" element={<Login />} />
+          {/* <Route path="/login" element={<Login />} /> */}
+          <Route path="/login" element={<LoginTest />} />
+          <Route exact path="/logout" component={LogoutPage} />
           <Route path="/register" element={<Register />} />
         </Routes>
       </div>

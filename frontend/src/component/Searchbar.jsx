@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 
 // Exercise data - from db, handlesearch from parent
-function Searchbar({ exerciseData,  handleSearch }) {
+function Searchbar({ exerciseData,  handleSearch, savedExercises}) {
     console.log(exerciseData,"this is the exercise data being passed into the search bar")
     const [searchInput, setSearchInput] = useState('');
     console.log(searchInput)
@@ -21,7 +21,7 @@ function Searchbar({ exerciseData,  handleSearch }) {
               <button
                 className="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded"
                 type="button"
-                onClick={() => handleSearch(exerciseData, searchInput)}
+                onClick={() => handleSearch(exerciseData, searchInput, savedExercises)}
               >
                 Search
               </button>

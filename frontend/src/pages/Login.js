@@ -13,6 +13,7 @@ function Login() {
   const navigate = useNavigate();
   const { setAuth } = useAuth();
   const dispatch = useDispatch();
+  const [loginError, setLoginError] = useState(""); //login error
 
   const getCookieValue = (name) => {
     const cookies = document.cookie.split("; ");
@@ -83,10 +84,6 @@ function Login() {
     console.log("Autoplay error occurred");
   };
 
-  const testlol = () => {
-    console.log("lol");
-  };
-
   const login = async (event) => {
     event.preventDefault();
 
@@ -116,17 +113,19 @@ function Login() {
 
       if (jwtToken) {
         console.log("Token:", jwtToken);
+        setLoginError("") //login error message
         // Dispatch or perform further actions with the token if needed
         // Navigate to different page
         console.log("Navigating to home page.");
         navigate("/"); // Navigate to the login page if not authenticated
-        console.log("Navigating to home page tset.");
+        console.log("Navigating to home page test.");
       } else {
         console.log("Token not found.");
+        setLoginError("Username or Password is incorrect."); //login error message for users
       }
     } catch (error) {
       console.error("Error:", error);
-      alert(error);
+      setLoginError("Username or Password is incorrect.");
     }
   };
 
@@ -154,7 +153,7 @@ function Login() {
 
       {/* Login Form */}
       <div className="flex justify-center items-center h-screen">
-        <div className="relative rounded-lg shadow-md p-6 bg-gray-200 z-20">
+        <div className="relative rounded-lg shadow-md p-6 bg-gray-200 z-0">
           <div>
             <h2 className="text-3xl font-bold mb-4">Login</h2>
             <form onSubmit={handleFormSubmit}>
@@ -197,6 +196,9 @@ function Login() {
                 Login
               </button>
             </form>
+            {loginError && ( // Conditionally render the error message
+              <p className="mt-4 text-red-500">{loginError}</p>
+            )}
             <p className="mt-4">
               Don't have an account?{" "}
               <span className="text-blue-500 cursor-pointer">

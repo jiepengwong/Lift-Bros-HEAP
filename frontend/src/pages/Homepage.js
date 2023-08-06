@@ -1,24 +1,61 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
-import { useSelector } from "react-redux";
+import baseAxios from "../axios/baseAxios";
+import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Button from "../component/Button";
 
 function HomePage() {
-  const loginUser = useSelector((state) => state.login.loginUser);
+  const userName = localStorage.getItem("username");
+  const [chartLabels, setChartLabels] = useState({});
+  const [weekOffset, setWeekOffset] = useState(0);
   const chartRef = useRef(null);
   let chartInstance = null;
+  const viewPrevWeek = (offset) => {
+    setWeekOffset(weekOffset + offset);
+    baseAxios
+      .get(
+        `/completedRoutine/pastWeek?weekOffset=${weekOffset}&username=${userName}`,
+        {
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        console.log("Testing base axios - SUCCESS");
+        setChartLabels(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("Testing base axios - ERROR");
+      });
+  };
+
+  useEffect(() => {
+    viewPrevWeek(0);
+  }, []);
 
   useEffect(() => {
     const ctx = chartRef.current.getContext("2d");
-
     const createChart = () => {
+      console.log(chartLabels);
+      const chartLabelsArray =
+        Object.keys(chartLabels).length !== 0
+          ? Object.values(chartLabels.caloriesBurnedPerDay)
+          : [];
+      console.log(chartLabelsArray);
+      const dateLabels = chartLabelsArray.map((label) => label.date);
+      console.log(dateLabels);
+      const caloriesBurntData = chartLabelsArray.map(
+        (label) => label.caloriesBurned
+      );
       chartInstance = new Chart(ctx, {
         type: "bar",
         data: {
-          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+          labels: dateLabels,
           datasets: [
             {
-              label: "Calories burnt (kcal)",
-              data: [1.2, 1.6, 1.85, 2.04, 2.6, 2.4, 2],
+              label: "Calories burnt (cal)",
+              data: caloriesBurntData,
               backgroundColor: "rgb(255,199,0)",
             },
           ],
@@ -46,14 +83,12 @@ function HomePage() {
     return () => {
       destroyChart(); // Clean up the chart instance when the component unmounts
     };
-  }, []);
+  }, [chartLabels]);
 
   return (
     <div className="bg-white">
       <div className="max-w-3xl mx-auto mt-20">
-        <h1 className="text-3xl font-bold mb-4">
-          Welcome back, {loginUser.username}!
-        </h1>
+        <h1 className="text-3xl font-bold mb-4">Welcome back, {userName}!</h1>
       </div>
       <section className="max-w-3xl mx-auto">
         <p className="text-gray-600 mb-6">
@@ -80,6 +115,21 @@ function HomePage() {
         <p className="text-gray-600 mb-6">
           Look back on your exercise statistics this week
         </p>
+
+        <div className="flex justify-between">
+          <button
+            onClick={() => viewPrevWeek(1)}
+            className="bg-gray-400 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full ml-2"
+          >
+            <FontAwesomeIcon icon={faCaretLeft} />
+          </button>
+          <button
+            onClick={() => viewPrevWeek(-1)}
+            className="bg-gray-400 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full ml-2"
+          >
+            <FontAwesomeIcon icon={faCaretRight} />
+          </button>
+        </div>
         <canvas ref={chartRef}></canvas>
       </section>
     </div>

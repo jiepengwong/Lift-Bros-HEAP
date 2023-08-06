@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux"; // Import useDispatch from 'react-red
 import { setRegisterUser } from "../redux/slice/loginSlice";
 import "tailwindcss/tailwind.css";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../utils/useAuth";
 
 function Register() {
   const [userName, setUserName] = useState("");

@@ -2,16 +2,16 @@ import React, { useState, useEffect, useRef } from "react";
 import "tailwindcss/tailwind.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../utils/useAuth";
 import jwt_decode from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { setLoginUser } from "../redux/slice/loginSlice";
+import { startGlobalTimer } from "../utils/GlobalTimer";
+import Swal from 'sweetalert2'
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
   const dispatch = useDispatch();
   const [loginError, setLoginError] = useState(""); //login error
 
@@ -84,11 +84,19 @@ function Login() {
     console.log("Autoplay error occurred");
   };
 
+  // For global timer
+  const handleTokenExpiration = () => {
+    alert("Your user session has expired, please log in again");
+    localStorage.removeItem("username");
+    localStorage.removeItem("token");
+    localStorage.removeItem("expirationTime");
+    navigate("/login");
+  };
+
   const login = async (event) => {
     event.preventDefault();
 
     try {
-      console.log(email, password);
       const response = await axios.post(
         "http://localhost:8080/login",
         {
@@ -97,31 +105,42 @@ function Login() {
         },
         { withCredentials: true }
       );
-      const jwtToken = response.data.cookie;
-      let expirationTime = jwtToken.expires;
-      let jwtValue = jwtToken.value;
-      document.cookie = `${jwtToken.name}=${jwtToken.value}; expires=${expirationTime}; path=/;`;
-      setAuth({ jwtValue, expirationTime });
-      // Push to redux
-      // dispatch(setLoginStatus(true))
-      dispatch(setLoginUser({ username: email, token: jwtToken }));
 
-      console.log("Token:", jwtToken);
 
-      // Usage
-      // const token = getCookieValue('jwt');
+      const jwtToken = response.data.cookie.value;
+      const expirationTimeISO = response.data.cookie.expires;
+  
+      // Convert ISO 8601 timestamp to Unix timestamp in seconds
+      const expirationTimeUnix = Math.floor(new Date(expirationTimeISO).getTime() / 1000);
+  
+      // Calculate the time remaining until token expiration
+      const currentTime = Math.floor(new Date().getTime() / 1000);
+      const timeRemaining = expirationTimeUnix - currentTime;
+
+      localStorage.setItem("username", email);
+      localStorage.setItem("token", jwtToken);
+      localStorage.setItem("expirationTime", expirationTimeISO);
+      
+
+
+      // Start the global timer for token expiration
+      startGlobalTimer(handleTokenExpiration, timeRemaining * 1000);
+
 
       if (jwtToken) {
         console.log("Token:", jwtToken);
-        setLoginError("") //login error message
-        // Dispatch or perform further actions with the token if needed
-        // Navigate to different page
         console.log("Navigating to home page.");
+        Swal.fire({
+          title: 'Success!',
+          text: 'You have successfully logged in!',
+          icon: 'success',
+          confirmButtonText: 'Cool'
+        })
         navigate("/"); // Navigate to the login page if not authenticated
-        console.log("Navigating to home page test.");
       } else {
-        console.log("Token not found.");
+        console.log("Token not found.");        
         setLoginError("Username or Password is incorrect."); //login error message for users
+
       }
     } catch (error) {
       console.error("Error:", error);

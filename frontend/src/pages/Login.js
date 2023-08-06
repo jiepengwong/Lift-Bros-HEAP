@@ -161,25 +161,18 @@ function Login() {
         />
       </div>
 
-      {/* Banner */}
-      {/* <div className="band fixed top-0 left-0 w-full bg-yellow-300 text-black py-4 z-10"> */}
-        {/* <div className="container mx-auto"> */}
-          {/* <h1 className="text-5xl font-bold">Lift Bros 🦾</h1> */}
-        {/* </div> */}
-      {/* </div>/* */}
       {/* Login Form */}
-      
       <div className="flex justify-center items-center h-screen">
         <div className="relative rounded-lg shadow-md p-6 bg-yellow-300 z-0">
           <div>
             <h1 className="text-5xl font-bold mb-8">Lift Bros 🦾</h1>
             </div>
             <hr  style={{
-    color: '#000000',
-    backgroundColor: '#000000',
-    height: 1,
-    borderColor : '#000000'
-}}/>
+              color: '#000000',
+              backgroundColor: '#000000',
+              height: 1,
+              borderColor : '#000000'
+              }}/>
           <div>
             <h2 className="text-3xl font-bold mb-5">Login</h2>
             <form onSubmit={handleFormSubmit}>

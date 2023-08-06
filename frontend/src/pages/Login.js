@@ -9,7 +9,6 @@ import { startGlobalTimer } from "../utils/GlobalTimer";
 import baseAxios from "../axios/baseAxios";
 import Swal from 'sweetalert2'
 import { faBold } from "@fortawesome/free-solid-svg-icons";
-import WebFont from 'webfontloader';
 
 
 

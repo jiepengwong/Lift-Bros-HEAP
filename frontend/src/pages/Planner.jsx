@@ -27,12 +27,9 @@ function Planner() {
 
   
   // Template buttons
-  const [plannerButtons, setPlannerButtons] = useState([
-    "My Routines",
-    "Other Routines",
-    "Add New Routine",
-  ]);
-
+  const [plannerButtons, setPlannerButtons] = useState(["My Routines", "Other Routines", "Past Routines", "Add New Routine"]);
+ // Local state for past routines
+  const [pastRoutinesCards, setPastRoutinesCards] = useState([]);
   // === Tabs ===
   // Active tab state
   const [activeTab, setActiveTab] = useState(0);
@@ -118,16 +115,33 @@ function Planner() {
         .then((response) => {
           // Get routines of user here 
           // Get routines of user here 
-          console.log(response.data.data);
+          console.log(response.data.data, "i am in tab 1");
           // Filter out the routines that are not usernameDetails.username
           // Filter out the routines that are not created by a specific user
+          console.log(usernameDetails.username, "username details")
           const filteredRoutines = response.data.data.filter((routine) => {
             return routine.createdBy != usernameDetails.username; // Replace 'yourUsername' with the desired username
           });
 
-          console.log(filteredRoutines)
+          console.log(filteredRoutines,"filtered routines")
 
           setOtherUserRoutineCards(filteredRoutines);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    if (activeTab === 2) {
+      // Fetch past routines data (replace with your logic)
+      axios
+        .get(`http://localhost:8080/completedRoutine/user/${localStorage.getItem("username")}`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          // Set past routines data here
+          console.log(response.data.data, "past routines data")
+          setPastRoutinesCards(response.data.data);
         })
         .catch((error) => {
           console.log(error);
@@ -268,23 +282,18 @@ function Planner() {
 
         {/* Grid act as the container here */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 place-items-center px-5 md:px-10 lg:px-16">
-  {activeTab === 0 && (
-    <>
-      {/* Show my routines */}
-      {routineCards.map((routineCard, index) => (
-        <CardPlanner key={index} routineInfo={routineCard} deleteCard={handleDelete} />
-      ))}
-    </>
-  )}
-  {activeTab === 1 && (
-    <>
-      {/* Show other routines */}
-      {otherUserRoutineCards.map((routineCard, index) => (
-        <CardPlanner key={index} routineInfo={routineCard}  />
-      ))}
-    </>
-  )}
-</div>
+          {/* Render content based on active tab */}
+          {activeTab === 0 && routineCards.map((routineCard, index) => (
+            <CardPlanner key={index} routineInfo={routineCard} deleteCard={handleDelete} />
+          ))}
+          {activeTab === 1 && otherUserRoutineCards.map((routineCard, index) => (
+            <CardPlanner key={index} routineInfo={routineCard} />
+          ))}
+          {activeTab === 2 && pastRoutinesCards.map((routineCard, index) => (
+            // <CardPlanner key={index} routineInfo={routineCard} />
+            routineCard.id
+          ))}
+        </div>
 
       </div>
 

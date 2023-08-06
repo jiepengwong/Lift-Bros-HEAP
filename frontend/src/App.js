@@ -5,16 +5,17 @@ import { useSelector } from "react-redux";
 // Import components
 import Navbar from "./component/Navbar";
 import Homepage from "./pages/Homepage";
+import Planner from "./pages/Planner";
+import CreateRoutine from "./pages/CreateRoutine";
+import Endpage from "./pages/Endpage";
+import History from "./pages/History";
 import Login from "./pages/Login";
 // import LoginTest from "./pages/LoginTest";
 import Register from "./pages/Register";
 import LogoutPage from "./pages/LogoutPage";
 
 // import Home from "./pages/Home";
-import Planner from "./pages/Planner.jsx";
-import CreateRoutine from "./pages/CreateRoutine";
 import DuringRoutine from "./pages/DuringRoutine";
-import Endpage from "./pages/Endpage";
 import LoginTest from "./pages/LoginTest";
 import RequireAuth from "./utils/RequireAuth";
 // import useAuth from "./utils/useAuth";

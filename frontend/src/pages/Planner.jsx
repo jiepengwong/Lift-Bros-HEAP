@@ -14,7 +14,7 @@ import baseAxios from "../axios/baseAxios";
 import CardPlanner from "../component/CardPlanner";
 import { useSelector } from "react-redux";
 import axios from "axios";
-
+import Swaf from "sweetalert2"
 
 function Planner() {
   const navigate = useNavigate();
@@ -58,7 +58,8 @@ function Planner() {
   const handleDelete = (username,routineName ) => {
     // Delete routine from database
 
-    baseAxios.delete(`/routine/?${username}/?${routineName}`)
+
+    baseAxios.delete(`/routine/?username=${username}&name=${routineName}`)
       .then((response) => {
         console.log(response);
         // Delete routine from state
@@ -67,6 +68,15 @@ function Planner() {
             return routine.name !== routineName;
           });
         });
+
+        // Show success message
+        Swaf.fire({
+          icon: "success",
+          title: "Deletion successful",
+          html: `Your routine <b>${routineName}</b> has been deleted`,
+          showConfirmButton: true,
+        });
+
       })
       .catch((error) => {
         console.log(error);
@@ -123,7 +133,7 @@ function Planner() {
           console.log(error);
         });
     }
-  }, [activeTab, routineCards]);
+  }, [activeTab]);
 
   // Template data
   const [templateExercises, setTemplateExercises] = useState([]);
@@ -262,7 +272,7 @@ function Planner() {
     <>
       {/* Show my routines */}
       {routineCards.map((routineCard, index) => (
-        <CardPlanner key={index} routineInfo={routineCard} />
+        <CardPlanner key={index} routineInfo={routineCard} deleteCard={handleDelete} />
       ))}
     </>
   )}
@@ -270,7 +280,7 @@ function Planner() {
     <>
       {/* Show other routines */}
       {otherUserRoutineCards.map((routineCard, index) => (
-        <CardPlanner key={index} routineInfo={routineCard} deleteCard={handleDelete} />
+        <CardPlanner key={index} routineInfo={routineCard}  />
       ))}
     </>
   )}

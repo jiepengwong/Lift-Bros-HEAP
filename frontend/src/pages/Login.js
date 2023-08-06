@@ -6,6 +6,7 @@ import jwt_decode from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { setLoginUser } from "../redux/slice/loginSlice";
 import { startGlobalTimer } from "../utils/GlobalTimer";
+import baseAxios from "../axios/baseAxios";
 import Swal from 'sweetalert2'
 import { faBold } from "@fortawesome/free-solid-svg-icons";
 import WebFont from 'webfontloader';
@@ -95,14 +96,12 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/login",
+      const response = await baseAxios.post(
+        "/login",
         {
           username: username,
           password: password,
-        },
-        { withCredentials: true }
-      );
+        });
 
 
       const jwtToken = response.data.cookie.value;

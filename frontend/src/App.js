@@ -38,6 +38,11 @@ function App() {
       {shouldRenderNavbar && <Navbar />}
       <div>
         <Routes>
+          {/* Public routes */}
+          <Route path="/login" element={<Login />} />
+          {/* <Route path="/login" element={<LoginTest />} /> */}
+          <Route exact path="/logout" component={LogoutPage} />
+          <Route path="/register" element={<Register />} />
           {/* Protected Routes */}
             <Route element={<RequireAuth />}>
               <Route path="/" element={<Homepage />} exact />
@@ -48,11 +53,6 @@ function App() {
               <Route path="/history" element={<History />} />
             </Route>
 
-          {/* Public routes */}
-          <Route path="/login" element={<Login />} />
-          {/* <Route path="/login" element={<LoginTest />} /> */}
-          <Route exact path="/logout" component={LogoutPage} />
-          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
     </div>

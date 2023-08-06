@@ -105,7 +105,10 @@ function Login() {
 
       const jwtToken = response.data.cookie.value;
       const expirationTimeISO = response.data.cookie.expires;
-  
+      console.log(expirationTimeISO, " test ")
+      const expirationDateCookie = new Date(expirationTimeISO);
+      const formattedExpirationForCookie = expirationDateCookie.toUTCString();
+
       // Convert ISO 8601 timestamp to Unix timestamp in seconds
       const expirationTimeUnix = Math.floor(new Date(expirationTimeISO).getTime() / 1000);
   
@@ -116,6 +119,9 @@ function Login() {
       localStorage.setItem("username", username);
       localStorage.setItem("token", jwtToken);
       localStorage.setItem("expirationTime", expirationTimeISO);
+
+      // Set the cookie
+      document.cookie = `jwt=${jwtToken}; expires=${formattedExpirationForCookie}; path=/`;
       
 
 

@@ -151,17 +151,17 @@ function Register() {
       </div>
 
       {/* Register Form */}
-      <div className="flex justify-center items-center min-h-screen mt-9">
-        <div className="relative rounded-lg shadow-md p-3.5 bg-gray-200 z-0 max-w-lg w-full">
+      <div className="flex justify-center items-center h-full mt-9">
+        <div className="relative rounded-lg shadow-md p-3.5 bg-gray-200 z-0 max-w-md w-full mx-4">
           {" "}
           {/* z axis to make form behind banner and mt-9 to push register form down */}
           <div>
             <h2 className="text-3xl font-bold mb-4">Register</h2>
 
             <form onSubmit={handleFormSubmit}>
-              <div className="mb-1">
+              <div className="mb-0.5">
                 <label
-                  className="block text-gray-700 font-bold mb-2"
+                  className="block text-gray-700 font-bold mb-0.5"
                   htmlFor="userName"
                 >
                   Username
@@ -177,7 +177,7 @@ function Register() {
               </div>
               <div className="mb-1">
                 <label
-                  className="block text-gray-700 font-bold mb-2"
+                  className="block text-gray-700 font-bold mb-0.5"
                   htmlFor="Name"
                 >
                   Name
@@ -193,7 +193,7 @@ function Register() {
               </div>
               <div className="mb-1">
                 <label
-                  className="block text-gray-700 font-bold mb-2"
+                  className="block text-gray-700 font-bold mb-0.5"
                   htmlFor="email"
                 >
                   Email
@@ -209,7 +209,7 @@ function Register() {
               </div>
               <div className="mb-0">
                 <label
-                  className="block text-gray-700 font-bold mb-2"
+                  className="block text-gray-700 font-bold mb-0.5"
                   htmlFor="password"
                 >
                   Password
@@ -234,7 +234,7 @@ function Register() {
               </div>
               <div className="mb-1">
                 <label
-                  className="block text-gray-700 font-bold mb-2"
+                  className="block text-gray-700 font-bold mb-0.5"
                   htmlFor="passwordConfirmation"
                 >
                   Confirm Password
@@ -250,7 +250,7 @@ function Register() {
               </div>
               <div className="mb-1">
                 <label
-                  className="block text-gray-700 font-bold mb-2"
+                  className="block text-gray-700 font-bold mb-0.5"
                   htmlFor="dateOfBirth"
                 >
                   Date of Birth
@@ -267,7 +267,7 @@ function Register() {
 
               <div className="mb-1">
                 <label
-                  className="block text-gray-700 font-bold mb-2"
+                  className="block text-gray-700 font-bold mb-0.5"
                   htmlFor="phoneNumber"
                 >
                   Phone Number

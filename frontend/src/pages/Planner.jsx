@@ -14,7 +14,7 @@ import baseAxios from "../axios/baseAxios";
 import CardPlanner from "../component/CardPlanner";
 import { useSelector } from "react-redux";
 import axios from "axios";
-
+import Swaf from "sweetalert2"
 
 function Planner() {
   const navigate = useNavigate();
@@ -27,12 +27,9 @@ function Planner() {
 
   
   // Template buttons
-  const [plannerButtons, setPlannerButtons] = useState([
-    "My Routines",
-    "Other Routines",
-    "Add New Routine",
-  ]);
-
+  const [plannerButtons, setPlannerButtons] = useState(["My Routines", "Other Routines", "Past Routines", "Add New Routine"]);
+ // Local state for past routines
+  const [pastRoutinesCards, setPastRoutinesCards] = useState([]);
   // === Tabs ===
   // Active tab state
   const [activeTab, setActiveTab] = useState(0);
@@ -58,7 +55,8 @@ function Planner() {
   const handleDelete = (username,routineName ) => {
     // Delete routine from database
 
-    baseAxios.delete(`/routine/?${username}/?${routineName}`)
+
+    baseAxios.delete(`/routine/?username=${username}&name=${routineName}`)
       .then((response) => {
         console.log(response);
         // Delete routine from state
@@ -67,6 +65,15 @@ function Planner() {
             return routine.name !== routineName;
           });
         });
+
+        // Show success message
+        Swaf.fire({
+          icon: "success",
+          title: "Deletion successful",
+          html: `Your routine <b>${routineName}</b> has been deleted`,
+          showConfirmButton: true,
+        });
+
       })
       .catch((error) => {
         console.log(error);
@@ -108,14 +115,15 @@ function Planner() {
         .then((response) => {
           // Get routines of user here 
           // Get routines of user here 
-          console.log(response.data.data);
+          console.log(response.data.data, "i am in tab 1");
           // Filter out the routines that are not usernameDetails.username
           // Filter out the routines that are not created by a specific user
+          console.log(usernameDetails.username, "username details")
           const filteredRoutines = response.data.data.filter((routine) => {
             return routine.createdBy != usernameDetails.username; // Replace 'yourUsername' with the desired username
           });
 
-          console.log(filteredRoutines)
+          console.log(filteredRoutines,"filtered routines")
 
           setOtherUserRoutineCards(filteredRoutines);
         })
@@ -123,7 +131,23 @@ function Planner() {
           console.log(error);
         });
     }
-  }, [activeTab, routineCards]);
+
+    if (activeTab === 2) {
+      // Fetch past routines data (replace with your logic)
+      axios
+        .get(`http://localhost:8080/completedRoutine/user/${localStorage.getItem("username")}`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          // Set past routines data here
+          console.log(response.data.data, "past routines data")
+          setPastRoutinesCards(response.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [activeTab]);
 
   // Template data
   const [templateExercises, setTemplateExercises] = useState([]);
@@ -258,23 +282,18 @@ function Planner() {
 
         {/* Grid act as the container here */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 place-items-center px-5 md:px-10 lg:px-16">
-  {activeTab === 0 && (
-    <>
-      {/* Show my routines */}
-      {routineCards.map((routineCard, index) => (
-        <CardPlanner key={index} routineInfo={routineCard} />
-      ))}
-    </>
-  )}
-  {activeTab === 1 && (
-    <>
-      {/* Show other routines */}
-      {otherUserRoutineCards.map((routineCard, index) => (
-        <CardPlanner key={index} routineInfo={routineCard} deleteCard={handleDelete} />
-      ))}
-    </>
-  )}
-</div>
+          {/* Render content based on active tab */}
+          {activeTab === 0 && routineCards.map((routineCard, index) => (
+            <CardPlanner key={index} routineInfo={routineCard} deleteCard={handleDelete} />
+          ))}
+          {activeTab === 1 && otherUserRoutineCards.map((routineCard, index) => (
+            <CardPlanner key={index} routineInfo={routineCard} />
+          ))}
+          {activeTab === 2 && pastRoutinesCards.map((routineCard, index) => (
+            // <CardPlanner key={index} routineInfo={routineCard} />
+            routineCard.id
+          ))}
+        </div>
 
       </div>
 

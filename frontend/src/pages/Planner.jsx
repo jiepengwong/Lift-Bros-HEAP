@@ -15,6 +15,7 @@ import CardPlanner from "../component/CardPlanner";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Swaf from "sweetalert2"
+import CardHistory from "../component/CardHistory";
 
 function Planner() {
   const navigate = useNavigate();
@@ -291,7 +292,7 @@ function Planner() {
           ))}
           {activeTab === 2 && pastRoutinesCards.map((routineCard, index) => (
             // <CardPlanner key={index} routineInfo={routineCard} />
-            routineCard.id
+            <CardHistory histories={routineCard}/>
           ))}
         </div>
 

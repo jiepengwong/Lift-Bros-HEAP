@@ -7,6 +7,8 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import CreateRoutineCard from '../component/CreateRoutineCard';
+import defaultImage from '../assets/tyler1.jpg'; // Import the default image
+import Swal from 'sweetalert2';
 import {
   faPlay,
   faPlusCircle,
@@ -56,7 +58,7 @@ function CreateRoutine() {
   const handleAddExercise = (exercise) => {
     console.log("triggered add exercise function")
     console.log(exercise)
-
+    
     // Push to redux store then navigate to manage exercise
     // Push the exercise name to the redux store
 
@@ -70,8 +72,10 @@ function CreateRoutine() {
 
     // NEED TO EDIT THIS 
     setSavedExercises((prevExercises) =>
-      prevExercises.filter((prevExercise) => prevExercise.name !== exercise.name)
+      prevExercises.filter((prevExercise) => prevExercise.exerciseName !== exercise.exerciseName)
     );
+    // Expanded is false
+    setExpanded(false)
     console.log('Exercise removed:', exercise);
   };
 
@@ -184,7 +188,11 @@ function CreateRoutine() {
   axios.post('http://localhost:8080/routine/new', postPayLoad, { withCredentials: true })
   .then((response) => {
     console.log(response.data.data.routineName)
-    alert("Routine created!")
+    Swal.fire(
+      "Good job!",
+      `You have successfully created your new routine: <b>${newRoutineName}</b>`,
+      'success'
+    )    
     navigate('/routine')
   }
   )
@@ -205,6 +213,8 @@ function CreateRoutine() {
   // State for uploaded image file
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadedImageBase64, setUploadedImageBase64] = useState(null);
+
+
 
   const readFileAsBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -237,11 +247,30 @@ function CreateRoutine() {
     }
   };
 
+ 
+
   // Handle remove image
   const handleRemoveImage = () => {
     setUploadedImage(null);
   };
 
+
+  useEffect(() => {
+    const setDefaultImage = async () => {
+      try {
+        const defaultImageData = await fetch(defaultImage);
+        const defaultImageBlob = await defaultImageData.blob();
+        var defaultBase64Image = await readFileAsBase64(defaultImageBlob);
+        defaultBase64Image = defaultBase64Image.slice(defaultBase64Image.indexOf(',') + 1);
+        setUploadedImageBase64(defaultBase64Image);
+        console.log("Default image:", defaultBase64Image);
+      } catch (error) {
+        console.error("Error setting default image:", error);
+      }
+    };
+
+    setDefaultImage();
+  }, []);
 
   // Monitor changes in savedExercises and refresh when it changes
   useEffect(() => {
@@ -265,7 +294,6 @@ function CreateRoutine() {
       .then((response) => {
         console.log(templateName, "template name")
         console.log("In create routine use effect", response.data.exercises)
-        alert("i am triggered")
         setSavedExercises(response.data.exercises)
         setShowModalExerciseSet(false)
       }

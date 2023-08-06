@@ -4,12 +4,24 @@ import GreyBox from "../component/GreyBox";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import Button from "../component/Button";
-import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 import axios from "axios";
 import ExerciseExpand from "../component/ExerciseExpand";
+import { Link } from "react-router-dom";
+import baseAxios from "../axios/baseAxios";
 
 function DuringRoutine() {
+  const userName = localStorage.getItem("username");
+  const processExercise = (updatedCompletedExercises, index) => {
+    setCompletedExercises((prevState) => {
+      const newState = [...prevState];
+      newState[index] = updatedCompletedExercises;
+      return newState;
+    });
+    console.log(completedExercises);
+  };
   const [exerciseList, setExerciseList] = useState([]);
+  const [completedExercises, setCompletedExercises] = useState([]);
   const [isRunning, setIsRunning] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [caloriesBurned, setCaloriesBurned] = useState(0);
@@ -17,7 +29,7 @@ function DuringRoutine() {
   const handleCompleteWorkout = () => {
     setIsRunning(false);
     const workoutData = {
-      username: "LiftBro",
+      username: userName,
       routineName: "Liftbro's Upper Body Routine",
       dateTimeCompleted: new Date().toJSON(),
       routineDuration: elapsedTime,
@@ -39,6 +51,12 @@ function DuringRoutine() {
         console.error("Error sending workout data:", error);
       });
     console.log(response.data);
+    Swal.fire({
+      title: "Success!",
+      text: "You have completed your routine!",
+      icon: "success",
+      confirmButtonText: "Cool",
+    });
   };
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -73,16 +91,33 @@ function DuringRoutine() {
   useEffect(() => {
     // Fetch data from database
     // Fetch routine
-    axios
-      .get(
-        `http://localhost:8080/routine/find?username=${createdBy}&name=${routineName}`,
-        {
-          withCredentials: true,
-        }
-      )
+    baseAxios
+      .get(`routine/find?username=${createdBy}&name=${routineName}`, {
+        withCredentials: true,
+      })
       .then((response) => {
         // Get routines of user here
         setExerciseList(response.data.exercises);
+        setCompletedExercises(
+          response.data.exercises.map((exercise) => {
+            return {
+              exerciseName: exercise.exerciseName,
+              targetReps: exercise.targetReps,
+              targetWeight: Array.from(
+                Array(exercise.targetReps.length),
+                () => 0
+              ),
+              actualReps: Array.from(
+                Array(exercise.targetReps.length),
+                () => 0
+              ),
+              actualWeight: Array.from(
+                Array(exercise.targetReps.length),
+                () => 0
+              ),
+            };
+          })
+        );
       })
       .catch((error) => {
         console.log(error);
@@ -131,9 +166,12 @@ function DuringRoutine() {
         </div>
       </div>
       {/* Exercise list */}
-      {exerciseList.map((exercise) => (
-        <div className="m-2">
-          <ExerciseExpand exercise={exercise} />
+      {exerciseList.map((exercise, index) => (
+        <div className="m-2" key={index}>
+          <ExerciseExpand
+            exercise={exercise}
+            onChange={(updatedInfo) => processExercise(updatedInfo, index)}
+          />
         </div>
       ))}
 

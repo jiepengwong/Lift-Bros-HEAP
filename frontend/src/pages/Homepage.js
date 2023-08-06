@@ -119,13 +119,14 @@ function HomePage() {
         <div className="flex justify-between">
           <button
             onClick={() => viewPrevWeek(1)}
-            className="bg-gray-400 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full ml-2"
+            className="bg-gray-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-full ml-2"
           >
             <FontAwesomeIcon icon={faCaretLeft} />
           </button>
           <button
+            {...(weekOffset === 0 && { hidden: true })}
             onClick={() => viewPrevWeek(-1)}
-            className="bg-gray-400 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full ml-2"
+            className="bg-gray-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-full ml-2"
           >
             <FontAwesomeIcon icon={faCaretRight} />
           </button>

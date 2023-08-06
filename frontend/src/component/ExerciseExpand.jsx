@@ -1,8 +1,14 @@
 import React from "react";
 import { useState } from "react";
-import Button from "./Button";
 
-function ExerciseExpand({ exercise }) {
+function ExerciseExpand({ exercise, onChange }) {
+  const [completedExercises, setCompletedExercises] = useState({
+    exerciseName: exercise.exerciseName,
+    targetReps: exercise.targetReps,
+    targetWeight: Array.from(Array(exercise.targetReps.length), () => 0),
+    actualReps: Array.from(Array(exercise.targetReps.length), () => 0),
+    actualWeight: Array.from(Array(exercise.targetReps.length), () => 0),
+  }); // Array to store completed exercises
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggleDropdown = () => {
     setDropdownOpen((prevState) => !prevState);
@@ -10,25 +16,32 @@ function ExerciseExpand({ exercise }) {
   const [setInfo, setSetInfo] = useState([]); // Array to store weight and actual reps for each set
 
   const handleWeightChange = (index, event) => {
+    const updatedCompletedExercises = { ...completedExercises };
     const updatedSetInfo = [...setInfo];
     updatedSetInfo[index] = {
       ...updatedSetInfo[index],
       weight: event.target.value,
     };
+    updatedCompletedExercises.targetWeight[index] = event.target.value;
+    updatedCompletedExercises.actualWeight[index] = event.target.value;
+
     setSetInfo(updatedSetInfo);
+    setCompletedExercises(updatedCompletedExercises);
+    onChange(updatedCompletedExercises);
   };
 
   const handleActlRepsChange = (index, event) => {
+    const updatedCompletedExercises = { ...completedExercises };
     const updatedSetInfo = [...setInfo];
     updatedSetInfo[index] = {
       ...updatedSetInfo[index],
       actualReps: event.target.value,
     };
+    updatedCompletedExercises.actualReps[index] = event.target.value;
     setSetInfo(updatedSetInfo);
+    setCompletedExercises(updatedCompletedExercises);
+    onChange(updatedCompletedExercises);
   };
-  console.log(setInfo);
-  var routineName = "Liftbro's Upper Body Routine";
-  var createdBy = "LiftBro";
 
   return (
     <div className="w-100">
@@ -64,7 +77,7 @@ function ExerciseExpand({ exercise }) {
           >
             {/* Display the entered weight and actual reps for each set */}
             {exercise.targetReps.map((set, index) => (
-              <li key={set}>
+              <li key={index}>
                 {set} target reps -{" "}
                 <input
                   type="number"

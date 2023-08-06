@@ -12,6 +12,7 @@ import (
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/models"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 var secretKey = os.Getenv("SECRET_KEY")
@@ -149,11 +150,20 @@ func DeleteUser(c *fiber.Ctx) error {
 	username := c.Params("username")
 	config.VerifyUser(c, username)
 	var user models.User
-	db.First(&user, "username = ?", username)
+	db.Preload(clause.Associations).First(&user, "username = ?", username)
+	// db.First(&user, "username = ?", username)
 	if user.Username == "" {
 		err := fmt.Errorf("user (username: %s) not found in database", username)
 		return c.Status(400).SendString(err.Error())
 	}
+	// remove all routines and completed routines associated to the user
+	for _, routine := range user.Routines {
+		db.Delete((&routine))
+	}
+	for _, completedRoutine := range user.CompletedRoutines {
+		db.Delete((&completedRoutine))
+	}
+
 	db.Delete(user)
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "User successfully deleted",
@@ -203,12 +213,12 @@ func Login(c *fiber.Ctx) error {
 	cookie := fiber.Cookie{
 		Name:     "jwt",
 		Value:    token,
-		Expires:  time.Now().Add(time.Hour * 1),
+		Expires:  time.Now().Add(time.Hour * 12),
 		HTTPOnly: false,
 		// Need to change to false, has something to do with HTTPsOnly , XSS protection
 		// SameSite: "none",
 		// Secure:   true,
-		// Secure: The Secure attribute instructs the browser to only send the cookie over secure HTTPS connections. When Secure is set to true, the cookie will not be sent over non-HTTPS connections. 
+		// Secure: The Secure attribute instructs the browser to only send the cookie over secure HTTPS connections. When Secure is set to true, the cookie will not be sent over non-HTTPS connections.
 	}
 
 	// Set CORS headers
@@ -236,5 +246,6 @@ func Logout(c *fiber.Ctx) error {
 
 	return c.JSON(fiber.Map{
 		"message": "Log out successful",
+		"cookie":  cookie,
 	})
 }

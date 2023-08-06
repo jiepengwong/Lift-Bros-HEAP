@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import Navbar from "./component/Navbar";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
+import History from "./pages/History";
 // import LoginTest from "./pages/LoginTest";
 import Register from "./pages/Register";
 import LogoutPage from "./pages/LogoutPage";
@@ -44,6 +45,7 @@ function App() {
               <Route path="/createRoutine" element={<CreateRoutine />} />
               <Route path="/end" element={<Endpage />} />
               <Route path="/during" element={<DuringRoutine />} />
+              <Route path="/history" element={<History />} />
             </Route>
 
           {/* Public routes */}

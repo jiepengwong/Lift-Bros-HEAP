@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   app:
-    image: 216448517639.dkr.ecr.ap-southeast-1.amazonaws.com/liftbro:0.0.1
+    image: 216448517639.dkr.ecr.ap-southeast-1.amazonaws.com/liftbro:latest
     ports:
       - 8080:8080
     container_name: app

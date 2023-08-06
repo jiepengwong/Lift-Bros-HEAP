@@ -7,19 +7,36 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import CreateRoutineCard from '../component/CreateRoutineCard';
+import defaultImage from '../assets/tyler1.jpg'; // Import the default image
+import Swal from 'sweetalert2';
 import {
   faPlay,
   faPlusCircle,
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import ModalSearchResults from '../component/ModalSearchResults';
+
+import baseAxios from "../axios/baseAxios"
 function CreateRoutine() {
   const navigate = useNavigate();
   const [routineDescription, setRoutineDescription] = useState('');
 
+  useEffect(() => {
+    baseAxios.get("/exercise")
+      .then((response) => {
+        console.log("Testing base axios - SUCCESS"	)
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.log(error)
+        console.log("Testing base axios - ERROR")
+      })
+    console.log("Testing base axios")
+  }, [])
+
   // Use Selector to get the routine details from the redux store (Dispatched from Modal)
   const routineDetails = useSelector((state) => state.routine.routineDetails);
-  const userName = useSelector((state) => state.login.loginUser);
+  const userName = {username: localStorage.getItem("username")}
   console.log("these are the routine details", routineDetails)
 
   // Set to local states
@@ -41,13 +58,13 @@ function CreateRoutine() {
   const handleAddExercise = (exercise) => {
     console.log("triggered add exercise function")
     console.log(exercise)
-
+    
     // Push to redux store then navigate to manage exercise
     // Push the exercise name to the redux store
 
     setSavedExercises((prevExercises) => [...prevExercises, exercise]);
     console.log("line 65" + savedExercises)
-    console.log('Added exercise:', exercise.name);
+    console.log('Added exercise:', exercise);
   };
 
   const handleRemoveExercise = (exercise) => {
@@ -55,8 +72,10 @@ function CreateRoutine() {
 
     // NEED TO EDIT THIS 
     setSavedExercises((prevExercises) =>
-      prevExercises.filter((prevExercise) => prevExercise.name !== exercise.name)
+      prevExercises.filter((prevExercise) => prevExercise.exerciseName !== exercise.exerciseName)
     );
+    // Expanded is false
+    setExpanded(false)
     console.log('Exercise removed:', exercise);
   };
 
@@ -109,6 +128,12 @@ function CreateRoutine() {
     }
   };
 
+  // Close exerciseset modal
+  const handleCloseModalExerciseSet = () => {
+    setShowModalExerciseSet(false);
+    
+  }
+
   const saveRoutineToDB = () => {
     console.log("line 130" + savedExercises)
     console.log("this is username", userName)
@@ -127,11 +152,20 @@ function CreateRoutine() {
     for (var i = 0; i < savedExercises.length; i++) {
       var name = savedExercises[i].exerciseName
       var targetReps = savedExercises[i].targetReps
-      var repBuffer = savedExercises[i].repBuffer
-      var exercise = {
-        "name": name,
-        "targetReps": targetReps,
-        "repBuffer": repBuffer
+
+      // Need to account if there is a rep buffer, default on the backend this is being set to 2
+      if (savedExercises[i].repBuffer) {
+        var repBuffer = savedExercises[i].repBuffer
+        var exercise = {
+          "name": name,
+          "targetReps": targetReps,
+          "repBuffer": repBuffer
+        }
+      } else {
+        var exercise = {
+          "name": name,
+          "targetReps": targetReps,
+        }
       }
       exerciseInCorrectFormat.push(exercise)
     }
@@ -146,14 +180,19 @@ function CreateRoutine() {
       ,
       "exercises": exerciseInCorrectFormat,
       // Right now put nothing for now
-      "tags": []
+      "tags": [],
+      "image": uploadedImageBase64
   }
 
   console.log(postPayLoad)
   axios.post('http://localhost:8080/routine/new', postPayLoad, { withCredentials: true })
   .then((response) => {
     console.log(response.data.data.routineName)
-    alert("Routine created!")
+    Swal.fire(
+      "Good job!",
+      `You have successfully created your new routine: <b>${newRoutineName}</b>`,
+      'success'
+    )    
     navigate('/routine')
   }
   )
@@ -163,13 +202,75 @@ function CreateRoutine() {
 }
 
 
-
+  // Expansion of individual cards
   const [expanded, setExpanded] = useState(false);
 
   const handleToggleExpand = () => {
     setExpanded(!expanded);
   };
 
+
+  // State for uploaded image file
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [uploadedImageBase64, setUploadedImageBase64] = useState(null);
+
+
+
+  const readFileAsBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+  
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+  
+      reader.onerror = () => {
+        reject(new Error('Error reading the file'));
+      };
+  
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // Handle image upload
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    setUploadedImage(file);
+  
+    try {
+      var base64Image = await readFileAsBase64(file);
+      base64Image = base64Image.slice(base64Image.indexOf(',') + 1);
+      setUploadedImageBase64(base64Image);
+      console.log("Base64 image:", base64Image);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+ 
+
+  // Handle remove image
+  const handleRemoveImage = () => {
+    setUploadedImage(null);
+  };
+
+
+  useEffect(() => {
+    const setDefaultImage = async () => {
+      try {
+        const defaultImageData = await fetch(defaultImage);
+        const defaultImageBlob = await defaultImageData.blob();
+        var defaultBase64Image = await readFileAsBase64(defaultImageBlob);
+        defaultBase64Image = defaultBase64Image.slice(defaultBase64Image.indexOf(',') + 1);
+        setUploadedImageBase64(defaultBase64Image);
+        console.log("Default image:", defaultBase64Image);
+      } catch (error) {
+        console.error("Error setting default image:", error);
+      }
+    };
+
+    setDefaultImage();
+  }, []);
 
   // Monitor changes in savedExercises and refresh when it changes
   useEffect(() => {
@@ -193,7 +294,6 @@ function CreateRoutine() {
       .then((response) => {
         console.log(templateName, "template name")
         console.log("In create routine use effect", response.data.exercises)
-        alert("i am triggered")
         setSavedExercises(response.data.exercises)
         setShowModalExerciseSet(false)
       }
@@ -224,10 +324,36 @@ function CreateRoutine() {
       </div>
 
       <div className="py-4">
+
+          {/* Step 1: Image Upload Section */}
+          <h2 className="text-xl font-bold mb-4 text-start px-4">Step 1 -  Upload an Image</h2>
+          <div className="bg-white p-4 rounded shadow my-4 mx-auto w-full md:w-2/3">
+          <input
+            type="file"
+            accept="image/*"
+            className="border p-2"
+            onChange={handleImageUpload}
+          />
+         {uploadedImage && (
+            <div className="mt-4 flex flex-col justify-center items-center">
+              <img
+                src={URL.createObjectURL(uploadedImage)}
+                alt="Uploaded Routine"
+                className="w-40 h-40 p-1 object-cover rounded"
+              />
+              <button
+                className=" bg-red-500 hover:bg-red-600 text-white py-3 px-2 rounded"
+                onClick={handleRemoveImage}
+              >
+                Remove
+              </button>
+            </div>
+          )}
+        </div>
+        <hr className="py-4"></hr>
         {/* Current exercises added into "cart" */}
         <div>
-          <p className="font-bold  text-lg text-start px-4">Current Exercises:</p>
-
+          <p className="font-bold  text-xl text-start px-4">Step 2 - Modify Current Exercises</p>
           <div className="text-center">
 
             <div className="flex flex-col p-4">

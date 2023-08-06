@@ -8,18 +8,24 @@ import {
 import { useNavigate } from "react-router-dom";
 // Import components
 import Modal from "../component/Modal";
+import baseAxios from "../axios/baseAxios";
 
 // Components
 import CardPlanner from "../component/CardPlanner";
 import { useSelector } from "react-redux";
-
 import axios from "axios";
+
 
 function Planner() {
   const navigate = useNavigate();
   const [usernameDetails, setUsernameDetails] = useState(
-    useSelector((state) => state.login.loginUser)
+    {
+      username: localStorage.getItem("username"),
+      token: localStorage.getItem("token"),
+    }
   );
+
+  
   // Template buttons
   const [plannerButtons, setPlannerButtons] = useState([
     "My Routines",
@@ -49,10 +55,30 @@ function Planner() {
   const [routineCards, setRoutineCards] = useState([]);
   const [otherUserRoutineCards, setOtherUserRoutineCards] = useState([]);
 
+  const handleDelete = (username,routineName ) => {
+    // Delete routine from database
+
+    baseAxios.delete(`/routine/?${username}/?${routineName}`)
+      .then((response) => {
+        console.log(response);
+        // Delete routine from state
+        setRoutineCards((prevState) => {
+          return prevState.filter((routine) => {
+            return routine.name !== routineName;
+          });
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    }
+    
+
   // Database data
   useEffect(() => {
     // Fetch data from database
     if (activeTab == 0) {
+      console.log("active tab is 0")
       // Fetch user tabs
       console.log(usernameDetails.username);
       axios
@@ -60,7 +86,9 @@ function Planner() {
           withCredentials: true,
         })
         .then((response) => {
+          console.log(" i am called")
           // Get routines of user here 
+          console.log(usernameDetails.username)
           console.log(response.data.data);
           setRoutineCards(response.data.data);
         })
@@ -95,7 +123,7 @@ function Planner() {
           console.log(error);
         });
     }
-  }, [activeTab]);
+  }, [activeTab, routineCards]);
 
   // Template data
   const [templateExercises, setTemplateExercises] = useState([]);
@@ -229,40 +257,25 @@ function Planner() {
         </div>
 
         {/* Grid act as the container here */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 place-items-center">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 place-items-center px-5 md:px-10 lg:px-16">
+  {activeTab === 0 && (
+    <>
+      {/* Show my routines */}
+      {routineCards.map((routineCard, index) => (
+        <CardPlanner key={index} routineInfo={routineCard} />
+      ))}
+    </>
+  )}
+  {activeTab === 1 && (
+    <>
+      {/* Show other routines */}
+      {otherUserRoutineCards.map((routineCard, index) => (
+        <CardPlanner key={index} routineInfo={routineCard} deleteCard={handleDelete} />
+      ))}
+    </>
+  )}
+</div>
 
-
-
-
-
-        {activeTab === 0 && (
-          <>
-            {/* Show my routines */}
-            {routineCards.map((routineCard, index) => {
-              return (
-                <CardPlanner
-                  key={index}
-                  routineInfo={routineCard} />
-              )
-            }
-            )}
-
-          </>
-        )}
-        {activeTab === 1 && (
-          <>
-            {/* Show other routines */}
-            {otherUserRoutineCards.map((routineCard, index) => {
-              return (
-                <CardPlanner
-                  key={index}
-                  routineInfo={routineCard} />
-              )
-            }
-            )}
-          </>
-        )}
-        </div>
       </div>
 
       <Modal templateExercises={templateExercises} isOpen={showModal} onClose={() => setShowModal(false)} />

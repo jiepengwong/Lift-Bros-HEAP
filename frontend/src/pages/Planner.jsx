@@ -29,7 +29,7 @@
 //   const [searchQueryOtherRoutines, setSearchQueryOtherRoutines] = useState("");
 //   const [searchQueryPastRoutines, setSearchQueryPastRoutines] = useState("");
 
-  
+
 //   // Template buttons
 //   const [plannerButtons, setPlannerButtons] = useState(["My Routines", "Other Routines", "Past Routines", "Add New Routine"]);
 //  // Local state for past routines
@@ -83,7 +83,7 @@
 //         console.log(error);
 //       });
 //     }
-    
+
 
 //   // Database data
 //   useEffect(() => {
@@ -593,68 +593,96 @@ function Planner() {
         </div>
 
         {/* Searchbar */}
-        
 
-  <div className="px-5 md:px-10 lg:px-16">
-  {/* Search bar */}
-  <div className="mb-4 w-full">
-    <input
-      className="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
-      type="text"
-      placeholder="Search Routines"
-      value={activeTab === 0 ? searchQueryMyRoutines : activeTab === 1 ? searchQueryOtherRoutines : searchQueryPastRoutines}
-      onChange={(e) => {
-        if (activeTab === 0) {
-          setSearchQueryMyRoutines(e.target.value);
-        } else if (activeTab === 1) {
-          setSearchQueryOtherRoutines(e.target.value);
-        } else {
-          setSearchQueryPastRoutines(e.target.value);
-        }
-      }}
-    />
-  </div>
 
-  <div>
-    <p className="text-xl text-start font-bold mb-2">Search results: {activeTab === 0 ? routineCards.filter((routine) => routine.name.toLowerCase().includes(searchQueryMyRoutines.toLowerCase())).length : activeTab === 1 ? otherUserRoutineCards.filter((routine) => routine.name.toLowerCase().includes(searchQueryOtherRoutines.toLowerCase())).length : pastRoutinesCards.filter((routine) => routine.routineName.toLowerCase().includes(searchQueryPastRoutines.toLowerCase())).length}</p>
-  </div>
+        <div className="px-5 md:px-10 lg:px-16">
+          {/* Search bar */}
+          <div className="mb-4 w-full">
+            <input
+              className="w-full px-4 py-2 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
+              type="text"
+              placeholder="Search Routines"
+              value={activeTab === 0 ? searchQueryMyRoutines : activeTab === 1 ? searchQueryOtherRoutines : searchQueryPastRoutines}
+              onChange={(e) => {
+                if (activeTab === 0) {
+                  setSearchQueryMyRoutines(e.target.value);
+                } else if (activeTab === 1) {
+                  setSearchQueryOtherRoutines(e.target.value);
+                } else {
+                  setSearchQueryPastRoutines(e.target.value);
+                }
+              }}
+            />
+          </div>
 
-  {/* Grid for routine cards */}
-  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 place-items-center">
-    {/* My Routines Tab */}
-    {activeTab === 0 && (
-      <>
-        {routineCards
-          .filter((routine) => routine.name.toLowerCase().includes(searchQueryMyRoutines.toLowerCase()))
-          .map((routineCard, index) => (
-            <CardPlanner key={index} routineInfo={routineCard} deleteCard={handleDelete} />
-          ))}
-      </>
-    )}
+          <div>
+            <p className="text-xl text-start font-bold mb-2">Search results: {activeTab === 0 ? routineCards.filter((routine) => routine.name.toLowerCase().includes(searchQueryMyRoutines.toLowerCase())).length : activeTab === 1 ? otherUserRoutineCards.filter((routine) => routine.name.toLowerCase().includes(searchQueryOtherRoutines.toLowerCase())).length : pastRoutinesCards.filter((routine) => routine.routineName.toLowerCase().includes(searchQueryPastRoutines.toLowerCase())).length}</p>
+          </div>
 
-    {/* Other Routines Tab */}
-    {activeTab === 1 && (
-      <>
-        {otherUserRoutineCards
-          .filter((routine) => routine.name.toLowerCase().includes(searchQueryOtherRoutines.toLowerCase()))
-          .map((routineCard, index) => (
-            <CardPlanner key={index} routineInfo={routineCard} />
-          ))}
-      </>
-    )}
+          {/* Grid for routine cards */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 place-items-center">
+            {/* My Routines Tab */}
+            {activeTab === 0 && (
+              <>
+                {routineCards
+                  .filter((routine) => routine.name.toLowerCase().includes(searchQueryMyRoutines.toLowerCase()))
+                  .map((routineCard, index) => (
+                    <CardPlanner key={index} routineInfo={routineCard} deleteCard={handleDelete} />
+                  ))}
+                {routineCards.length === 0 && (
+                  <div className="col-span-5">
+                    <p className=" text-center mt-4">
+                    <span className="flex justify-center items-center h-full text-lg font-bold">
+                        No routines found! 🥺
+                      </span>
+                    </p>
 
-    {/* Past Routines Tab */}
-    {activeTab === 2 && (
-      <>
-        {pastRoutinesCards
-          .filter((routine) => routine.routineName.toLowerCase().includes(searchQueryPastRoutines.toLowerCase()))
-          .map((routineCard, index) => (
-            <CardHistory key={index} histories={routineCard} />
-          ))}
-      </>
-    )}
-  </div>
-</div>
+                  </div>)}
+              </>
+            )}
+
+            {/* Other Routines Tab */}
+            {activeTab === 1 && (
+              <>
+                {otherUserRoutineCards
+                  .filter((routine) => routine.name.toLowerCase().includes(searchQueryOtherRoutines.toLowerCase()))
+                  .map((routineCard, index) => (
+                    <CardPlanner key={index} routineInfo={routineCard} />
+                  ))}
+                {otherUserRoutineCards.length === 0 && (
+                  <div className="col-span-5">
+                    <p className=" text-center mt-4">
+                      <span className="flex justify-center items-center h-full text-lg font-bold">
+                      No routines found! 🥺
+                      </span>
+                    </p>
+
+                  </div>)}
+              </>
+            )}
+
+            {/* Past Routines Tab */}
+            {activeTab === 2 && (
+              <>
+                {pastRoutinesCards
+                  .filter((routine) => routine.routineName.toLowerCase().includes(searchQueryPastRoutines.toLowerCase()))
+                  .map((routineCard, index) => (
+                    <CardHistory key={index} histories={routineCard} />
+                  ))}
+                {pastRoutinesCards.length === 0 && (
+                  <div className="col-span-5">
+                    <p className=" text-center mt-4">
+                    <span className="flex justify-center items-center h-full text-lg font-bold">
+                    No routines found! 🥺
+                      </span>
+                    </p>
+
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
 
 
 

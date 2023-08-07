@@ -7,6 +7,29 @@ import Button from "../component/Button";
 
 function HomePage() {
   const userName = localStorage.getItem("username");
+
+  const [allRecommendedRoutines, setAllRecommendedRoutines] = useState({});
+  const getAllRecommendedRoutines = () => {
+    baseAxios
+      .get("/routine/templates", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log("Testing base axios - SUCCESS");
+        console.log(response.data);
+        setAllRecommendedRoutines(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("Testing base axios - ERROR");
+      });
+  };
+
+  // const getOneRecommendedRoutine = (allRecommendedRoutines) => {
+  //   const keys = Object.keys(recommendedRoutines);
+  //   if (keys.length > 0) {
+  //     const randomKey = Math.floor(keys[(keys.length * Math.random())]);}
+
   const [chartLabels, setChartLabels] = useState({});
   const [weekOffset, setWeekOffset] = useState(0);
   const chartRef = useRef(null);
@@ -15,23 +38,24 @@ function HomePage() {
     setWeekOffset(weekOffset + offset);
     baseAxios
       .get(
-        `/completedRoutine/pastWeek?weekOffset=${weekOffset}&username=${userName}`,
+        `completedRoutine/pastWeek?weekOffset=${weekOffset}&username=${userName}`,
         {
           withCredentials: true,
         }
       )
       .then((response) => {
-        console.log("Testing base axios - SUCCESS");
+        // console.log("Testing base axios - SUCCESS");
         setChartLabels(response.data);
       })
       .catch((error) => {
         console.log(error);
-        console.log("Testing base axios - ERROR");
+        // console.log("Testing base axios - ERROR");
       });
   };
 
   useEffect(() => {
     viewPrevWeek(0);
+    getAllRecommendedRoutines();
   }, []);
 
   useEffect(() => {
@@ -87,28 +111,24 @@ function HomePage() {
 
   return (
     <div className="bg-white">
-      <div className="max-w-3xl mx-auto mt-20">
-        <h1 className="text-3xl font-bold mb-4">Welcome back, {userName}!</h1>
-      </div>
+      <h1 className="text-3xl font-bold mb-4 mt-20 mx-auto">
+        Welcome back, {userName}!
+      </h1>
       <section className="max-w-3xl mx-auto">
         <p className="text-gray-600 mb-6">
-          You have scheduled "Back and Legs Workout" today, let's get started!
+          We recommend you the "Back and Legs Workout" today, let's get started!
         </p>
         <h2 className="text-xl font-bold mb-4">Exercises</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <div className="bg-white rounded shadow p-4">
             <h3 className="text-lg font-semibold">Squat</h3>
-            <p className="text-gray-600">4 sets of 60kg</p>
           </div>
           <div className="bg-white rounded shadow p-4">
-            <h3 className="text-lg font-semibold">Deadlift</h3>
-            <p className="text-gray-600">4 sets of 60kg</p>
+            <h3 className="text-lg font-semibold">Squat</h3>
           </div>
           <div className="bg-white rounded shadow p-4">
-            <h3 className="text-lg font-semibold">Glute kickback</h3>
-            <p className="text-gray-600">4 sets of 50kg</p>
+            <h3 className="text-lg font-semibold">Squat</h3>
           </div>
-          {/* Add more exercise cards here */}
         </div>
       </section>
       <section className="max-w-3xl mx-auto mt-20">

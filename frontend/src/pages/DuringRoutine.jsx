@@ -13,6 +13,7 @@ import baseAxios from "../axios/baseAxios";
 function DuringRoutine() {
   const routineNameDisplay = localStorage.getItem("routine");
   console.log(routineNameDisplay);
+
   const userName = localStorage.getItem("username");
   const processExercise = (updatedCompletedExercises, index) => {
     setCompletedExercises((prevState) => {
@@ -20,7 +21,7 @@ function DuringRoutine() {
       newState[index] = updatedCompletedExercises;
       return newState;
     });
-    console.log(completedExercises);
+    // console.log(completedExercises);
   };
   const [exerciseList, setExerciseList] = useState([]);
   const [completedExercises, setCompletedExercises] = useState([]);
@@ -38,7 +39,7 @@ function DuringRoutine() {
       caloriesBurned: caloriesBurned,
       // completedExercises: [],
     };
-    console.log(workoutData);
+    // console.log(workoutData);
     const response = axios
       .post("http://localhost:8080/completedRoutine/new", workoutData, {
         withCredentials: true,
@@ -52,7 +53,7 @@ function DuringRoutine() {
         // Handle any error that occurs during the API call
         console.error("Error sending workout data:", error);
       });
-    console.log(response.data);
+    // console.log(response.data);
     Swal.fire({
       title: "Success!",
       text: "You have completed your routine!",

@@ -17,18 +17,12 @@ function Register() {
   const navigate = useNavigate();
   const videoRef = useRef(null);
   const videos = [
-    "/videos/Video1.mp4",
-    "/videos/Video2.mp4",
-    "/videos/Video3.mp4",
+    "/videos/Untitled.mp4"
   ];
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   useEffect(() => {
     playCurrentVideo();
-
-    const timer = setInterval(changeVideo, 10000);
-
-    return () => clearInterval(timer);
   }, [currentVideoIndex]);
 
   const handleUserNameChange = (e) => {
@@ -134,7 +128,7 @@ function Register() {
       <div className="absolute inset-0 overflow-hidden">
         <video
           ref={videoRef}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover fixed top-0 left-0"
           autoPlay
           loop
           muted
@@ -143,18 +137,20 @@ function Register() {
         />
       </div>
 
-      {/* Banner */}
-      <div className="band fixed inset-x-0 top-0 bg-yellow-300 text-black py-4 z-10">
-        <div className="container mx-auto">
-          <h1 className="text-5xl font-bold text-center">Lift Bros 🦾</h1>
-        </div>
-      </div>
-
       {/* Register Form */}
       <div className="flex justify-center items-center h-full mt-9">
-        <div className="relative rounded-lg shadow-md p-3.5 bg-gray-200 z-0 max-w-md w-full mx-4">
+        <div className="relative rounded-lg shadow-md p-3.5 bg-yellow-300 z-0 max-w-md w-full mx-4">
           {" "}
           {/* z axis to make form behind banner and mt-9 to push register form down */}
+          <div>
+            <h1 className="text-5xl font-bold mb-8">Lift Bros 🦾</h1>
+            </div>
+            <hr  style={{
+              color: '#000000',
+              backgroundColor: '#000000',
+              height: 1,
+              borderColor : '#000000'
+              }}/>
           <div>
             <h2 className="text-3xl font-bold mb-4">Register</h2>
 
@@ -284,7 +280,7 @@ function Register() {
 
               {passwordError && <p className="text-red-500">{passwordError}</p>}
               <button
-                className="bg-yellow-300 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="submit"
               >
                 Register

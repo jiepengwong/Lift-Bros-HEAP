@@ -80,6 +80,7 @@ function Navbar() {
             ))}
           </ul>
         </div>
+        
 
         {/* Navbar mobile */}
         <div className="sm:hidden flex flex-1 justify-end items-center">

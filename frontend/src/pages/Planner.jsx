@@ -400,8 +400,8 @@ function Planner() {
       console.log("active tab is 0")
       // Fetch user tabs
       console.log(usernameDetails.username);
-      axios
-        .get(`http://localhost:8080/routine/user/${usernameDetails.username}`, {
+      baseAxios
+        .get(`/routine/user/${usernameDetails.username}`, {
           withCredentials: true,
         })
         .then((response) => {
@@ -420,8 +420,8 @@ function Planner() {
       // Fetch other user data
 
       // Fetch OTHER user data
-      axios
-        .get(`http://localhost:8080/routine`, {
+      baseAxios
+        .get(`/routine`, {
           withCredentials: true,
         })
         .then((response) => {
@@ -446,8 +446,8 @@ function Planner() {
 
     if (activeTab === 2) {
       // Fetch past routines data (replace with your logic)
-      axios
-        .get(`http://localhost:8080/completedRoutine/user/${localStorage.getItem("username")}`, {
+      baseAxios
+        .get(`/completedRoutine/user/${localStorage.getItem("username")}`, {
           withCredentials: true,
         })
         .then((response) => {

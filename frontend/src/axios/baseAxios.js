@@ -3,7 +3,7 @@ import axios from "axios";
 // Create a base Axios instance
 const baseAxios = axios.create({
   baseURL:
-    "http://192.168.0.108:8080",
+    "http://backe-LoadB-1VJUZ6XBSUM84-5dde1c6cf114cdf4.elb.ap-southeast-1.amazonaws.com:8080",
   timeout: 10000, // Set a default timeout for all requests (optional)
   withCredentials: true,
   headers: {

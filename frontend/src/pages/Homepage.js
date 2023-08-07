@@ -12,16 +12,18 @@ function HomePage() {
   const chartRef = useRef(null);
   let chartInstance = null;
   const viewPrevWeek = (offset) => {
-    setWeekOffset(weekOffset + offset);
     baseAxios
       .get(
-        `/completedRoutine/pastWeek?weekOffset=${weekOffset}&username=${userName}`,
+        `/completedRoutine/pastWeek?weekOffset=${
+          weekOffset + offset
+        }&username=${userName}`,
         {
           withCredentials: true,
         }
       )
       .then((response) => {
         console.log("Testing base axios - SUCCESS");
+        setWeekOffset(weekOffset + offset);
         setChartLabels(response.data);
       })
       .catch((error) => {

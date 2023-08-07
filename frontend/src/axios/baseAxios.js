@@ -3,7 +3,7 @@ import axios from "axios";
 // Create a base Axios instance
 const baseAxios = axios.create({
   baseURL:
-    "http://backe-LoadB-10MATTFY7PXAU-451efe42897ddd4d.elb.ap-southeast-1.amazonaws.com:8080",
+    "http://192.168.0.108:8080",
   timeout: 10000, // Set a default timeout for all requests (optional)
   withCredentials: true,
   headers: {
@@ -12,4 +12,15 @@ const baseAxios = axios.create({
   },
 });
 
+
+// Add an interceptor to inject the authorization token
+baseAxios.interceptors.request.use((config) => {
+  const authToken = localStorage.getItem("token"); // Assuming you store the token in localStorage after login
+  if (authToken) {
+    config.headers["Authorization"] = `Bearer ${authToken}`;
+  }
+  return config;
+});
+
 export default baseAxios;
+

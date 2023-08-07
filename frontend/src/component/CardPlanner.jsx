@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faCaretDown, faTrash, faTimes, faCaretUp} from "@fortawesome/free-solid-svg-icons";
+import { faPlay, faCaretDown, faTrash, faTimes, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 function CardPlanner({ routineInfo, deleteCard }) {
+  const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
   const [exerciseList, setExerciseList] = useState(routineInfo.exercises);
   const exerciseRef = useRef(null);
@@ -22,6 +24,18 @@ function CardPlanner({ routineInfo, deleteCard }) {
     // You can use routineInfo.id or other identifiers
     // to delete the routine associated with this card.
   };
+
+  const playRoutine = () => {
+    // Implement your play routine logic here
+    // navigate('/during')
+
+    // Use local storage to store the routine information <Lazy but easy way cause no time>
+    if (localStorage.getItem("routine") !== null) {
+      localStorage.removeItem("routine");
+    }
+    localStorage.setItem("routine", JSON.stringify(routineInfo));
+    navigate("/during");
+  }
 
   return (
     <div className="max-w-md w-full bg-white border border-gray-200 rounded-lg shadow-md relative">
@@ -57,33 +71,42 @@ function CardPlanner({ routineInfo, deleteCard }) {
         )}
 
         <div className="relative w-full mt-2 px-1">
-        <button
-  className={`flex items-center font-semibold text-blue-700 hover:text-blue-800 transition-colors focus:outline-none ${
-    expanded ? "underline" : ""
-  }`}
-  onClick={toggleExpand}
->
-  {expanded ? (
-    <span className="flex items-center">
-      Hide Exercises 
-      <FontAwesomeIcon icon={faCaretUp} className="ml-1" />
+          <button
+            className={`flex items-center font-semibold text-blue-700 hover:text-blue-800 transition-colors focus:outline-none ${expanded ? "underline" : ""
+              }`}
+            onClick={toggleExpand}
+          >
+            {expanded ? (
+              <span className="flex items-center">
+                Hide Exercises
+                <FontAwesomeIcon icon={faCaretUp} className="ml-1" />
+              </span>
+            ) : (
+              <span className="flex items-center">
+                Show Exercises
+                <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
+              </span>
+            )}
+          </button>
+          <div className="flex justify-end mt-2">
+  <button
+    className="flex items-center bg-green-700 rounded-full text-white hover:bg-green-800 transition-colors focus:outline-none px-3 py-1"
+    onClick={playRoutine}
+  >
+    <span className="hidden md:inline font-semibold">START</span>
+    <span className="md:hidden">
+      <FontAwesomeIcon icon={faPlay} />
     </span>
-  ) : (
-    <span className="flex items-center">
-      Show Exercises
-      <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
-    </span>
-  )}
-</button>
-
-
-          {expanded && (
-            <div
-              className="absolute top-0 left-0 w-full h-full z-10"
-              onClick={toggleExpand}
-            ></div>
-          )}
+  </button>
+</div>
         </div>
+
+        {expanded && (
+          <div
+            className="absolute top-0 left-0 w-full h-full z-10"
+            onClick={toggleExpand}
+          ></div>
+        )}
 
         <div
           ref={exerciseRef}

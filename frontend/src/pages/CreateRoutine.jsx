@@ -185,7 +185,7 @@ function CreateRoutine() {
   }
 
   console.log(postPayLoad)
-  axios.post('http://localhost:8080/routine/new', postPayLoad, { withCredentials: true })
+  baseAxios.post('/routine/new', postPayLoad)
   .then((response) => {
     console.log(response.data.data.routineName)
     Swal.fire(
@@ -290,7 +290,7 @@ function CreateRoutine() {
   // Exercises, sets and reps from Routine 
   useEffect(() => {
     
-    axios.get(`http://localhost:8080/routine/find?username=LiftBro&name=${templateName}`, { withCredentials: true })
+    baseAxios.get(`/routine/find?username=LiftBro&name=${templateName}`)
       .then((response) => {
         console.log(templateName, "template name")
         console.log("In create routine use effect", response.data.exercises)

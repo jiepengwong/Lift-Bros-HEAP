@@ -466,7 +466,7 @@ function Planner() {
   // Database template data
   useEffect(() => {
     // Fetch data from the database
-    axios.get(`http://localhost:8080/routine/templates`, {
+    baseAxios.get(`/routine/templates`, {
       withCredentials: true,
     })
       .then((response) => {

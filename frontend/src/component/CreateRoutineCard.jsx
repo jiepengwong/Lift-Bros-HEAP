@@ -47,6 +47,8 @@ const CreateRoutineCard = ({ exercise, handleEditExercise, handleRemoveExercise 
                 <div>
                     <h3 className={`text-lg font-bold ${expanded ? 'mb-2' : ''}`}>{exercise.exerciseName}</h3>
                 </div>
+
+
                 <div>
                     <button onClick={handleToggleExpand}>
                         <FontAwesomeIcon icon={expanded ? faCaretUp : faCaretDown} />
@@ -61,10 +63,7 @@ const CreateRoutineCard = ({ exercise, handleEditExercise, handleRemoveExercise 
                     src={require('../assets/testingGym.webp')}
                     alt="Example Image"
                 />
-                <div className="ml-2">
-                    <h3 className="text-lg text-left text-gray-700 font-bold">Description</h3>
-                    <p className="text-sm text-left">Some placeholder text first becacuse it is not included inside the "find" endpoint</p>
-                </div>
+               
 
                 <div className="mt-4">
                     <div className="flex items-center mb-2 font-bold">

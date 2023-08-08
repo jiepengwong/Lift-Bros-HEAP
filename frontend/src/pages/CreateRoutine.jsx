@@ -54,6 +54,12 @@ function CreateRoutine() {
   const [selectedExercise, setSelectedExercise] = useState({});
   const [modifiedExercise, setModifiedExercise] = useState({});
 
+
+  // HandleClose
+  const handleCloseSearch = () => {
+    setShowModalSearch(false)
+  }
+
   // Logic for buttons (Have to filter between ARRAY (saved exercises) and OBJECT (search results))
   const handleAddExercise = (exercise) => {
     console.log("triggered add exercise function");
@@ -305,24 +311,32 @@ function CreateRoutine() {
   return (
     <div>
       <div className="flex flex-col">
-        <div className=" bg-gray-200 rounded">
-          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center m-10 p-10">
-            Creating Your Routine
-          </h1>
-        </div>
-
-        <div className="flex flex-row justify-evenly bg-gray-200 p-10">
-          <div>
-            <p className="font-bold text-center  text-lg mb-2">Routine Name:</p>
-            <p className="text-center">{newRoutineName}</p>
-          </div>
-        </div>
+      <div className="bg-custom-image rounded">
+  <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-white py-10">
+    Creating Your Routine
+  </h1>
+  <p className="text-lg md:text-xl text-white text-center uppercase font-bold">
+    <span className="block mb-2">
+      Embrace your inner <span className="font-bold text-yellow-400  md:text-yellow-300 up">GigaChad</span> and create your own personalized routine today.
+    </span>
+  </p>
+  <div className="flex items-center rounded justify-center">
+    <div className="bg-black bg-opacity-40 p-6 md:px-20 rounded flex flex-col">
+      <button className="font-bold text-center text-xl md:text-2xl text-white mb-2">Your Routine Name</button>
+      <button className="rounded-full bg-yellow-300 text-black font-bold text-xl md:text-2xl mb-2">{newRoutineName}</button>
+    </div>
+  </div>
+  <div className="flex flex-row justify-evenly p-6 md:p-10">
+    {/* Add your content here */}
+  </div>
+</div>
       </div>
+
 
       <div className="py-4">
         {/* Step 1: Image Upload Section */}
-        <h2 className="text-xl font-bold mb-4 text-start px-4">
-          Step 1 - Upload an Image
+        <h2 className="text-lg sm:text-xl font-bold mb-4 text-start px-4">
+        <span className="bg-yellow-300 p-2 rounded uppercase font-bold">Step 1</span> Upload your desired image
         </h2>
         <div className="bg-white p-4 rounded shadow my-4 mx-auto w-full md:w-2/3">
           <input
@@ -350,8 +364,8 @@ function CreateRoutine() {
         <hr className="py-4"></hr>
         {/* Current exercises added into "cart" */}
         <div>
-          <p className="font-bold  text-xl text-start px-4">
-            Step 2 - Modify Current Exercises
+          <p className="font-bold  text-lg sm:text-xl text-start px-4">
+          <span className="bg-yellow-300 p-2  rounded uppercase font-bold">Step 2</span> Modify current template exercises
           </p>
           <div className="text-center">
             <div className="flex flex-col p-4">
@@ -406,7 +420,7 @@ function CreateRoutine() {
 
       <ModalSearchResults
         isOpen={showModalSearch}
-        onClose={() => setShowModalSearch(false)}
+        onClose={handleCloseSearch}
         savedExercises={savedExercises}
         exercisesData={allExercises}
         addExercises={handleAddExercise}

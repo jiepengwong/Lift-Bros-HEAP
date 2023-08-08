@@ -4,6 +4,7 @@ services:
     image: 216448517639.dkr.ecr.ap-southeast-1.amazonaws.com/liftbro:latest
     ports:
       - 8080:8080
+    restart: always
     container_name: app
     depends_on:
       - mysql

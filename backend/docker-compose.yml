@@ -5,6 +5,7 @@ services:
       context: .
       # dockerfile: Dockerfile
       dockerfile: Dockerfile.prod
+    restart: always
     ports:
       - 8080:8080
     container_name: app

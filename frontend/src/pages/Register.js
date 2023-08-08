@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import baseAxios from "../axios/baseAxios";
 import { useDispatch } from "react-redux"; // Import useDispatch from 'react-redux' to access the store's dispatch function
 import { setRegisterUser } from "../redux/slice/loginSlice";
 import "tailwindcss/tailwind.css";
@@ -16,9 +17,7 @@ function Register() {
   const [Name, setName] = useState("");
   const navigate = useNavigate();
   const videoRef = useRef(null);
-  const videos = [
-    "/videos/Untitled.mp4"
-  ];
+  const videos = ["/videos/Untitled.mp4"];
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   useEffect(() => {
@@ -63,8 +62,8 @@ function Register() {
           console.log(dateOfBirth + "T08:00:00.000Z");
           console.log(Date.parse(dateOfBirth));
           console.log(new Date().toJSON());
-          const response = await axios.post(
-            "http://localhost:8080/newUser",
+          const response = await baseAxios.post(
+            "/newUser",
             {
               username: userName, // Use the 'firstName' as the username
               name: Name,
@@ -144,13 +143,15 @@ function Register() {
           {/* z axis to make form behind banner and mt-9 to push register form down */}
           <div>
             <h1 className="text-5xl font-bold mb-8">Lift Bros 🦾</h1>
-            </div>
-            <hr  style={{
-              color: '#000000',
-              backgroundColor: '#000000',
+          </div>
+          <hr
+            style={{
+              color: "#000000",
+              backgroundColor: "#000000",
               height: 1,
-              borderColor : '#000000'
-              }}/>
+              borderColor: "#000000",
+            }}
+          />
           <div>
             <h2 className="text-3xl font-bold mb-4">Register</h2>
 

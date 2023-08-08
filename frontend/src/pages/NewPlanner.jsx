@@ -14,20 +14,23 @@ import baseAxios from "../axios/baseAxios";
 import CardPlanner from "../component/CardPlanner";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import Swaf from "sweetalert2"
+import baseAxios from "../axios/baseAxios";
+import Swaf from "sweetalert2";
 
 function Planner() {
   const navigate = useNavigate();
-  const [usernameDetails, setUsernameDetails] = useState(
-    {
-      username: localStorage.getItem("username"),
-      token: localStorage.getItem("token"),
-    }
-  );
-
+  const [usernameDetails, setUsernameDetails] = useState({
+    username: localStorage.getItem("username"),
+    token: localStorage.getItem("token"),
+  });
 
   // Template buttons
-  const [plannerButtons, setPlannerButtons] = useState(["My Routines", "Other Routines", "Past Routines", "Add New Routine"]);
+  const [plannerButtons, setPlannerButtons] = useState([
+    "My Routines",
+    "Other Routines",
+    "Past Routines",
+    "Add New Routine",
+  ]);
   // Local state for past routines
   const [pastRoutinesCards, setPastRoutinesCards] = useState([]);
 
@@ -57,7 +60,8 @@ function Planner() {
 
   const handleDelete = (username, routineName) => {
     // Delete routine from database
-    baseAxios.delete(`/routine/?username=${username}&name=${routineName}`)
+    baseAxios
+      .delete(`/routine/?username=${username}&name=${routineName}`)
       .then((response) => {
         console.log(response);
         // Delete routine from state
@@ -74,18 +78,17 @@ function Planner() {
           html: `Your routine <b>${routineName}</b> has been deleted`,
           showConfirmButton: true,
         });
-
       })
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
   // Database data
   useEffect(() => {
     // Fetch data from database
     if (activeTab == 0) {
-      console.log("active tab is 0")
+      console.log("active tab is 0");
       // Fetch user tabs
       console.log(usernameDetails.username);
       axios
@@ -93,9 +96,9 @@ function Planner() {
           withCredentials: true,
         })
         .then((response) => {
-          console.log(" i am called")
-          // Get routines of user here 
-          console.log(usernameDetails.username)
+          console.log(" i am called");
+          // Get routines of user here
+          console.log(usernameDetails.username);
           console.log(response.data.data);
           setRoutineCards(response.data.data);
         })
@@ -113,17 +116,17 @@ function Planner() {
           withCredentials: true,
         })
         .then((response) => {
-          // Get routines of user here 
-          // Get routines of user here 
+          // Get routines of user here
+          // Get routines of user here
           console.log(response.data.data, "i am in tab 1");
           // Filter out the routines that are not usernameDetails.username
           // Filter out the routines that are not created by a specific user
-          console.log(usernameDetails.username, "username details")
+          console.log(usernameDetails.username, "username details");
           const filteredRoutines = response.data.data.filter((routine) => {
             return routine.createdBy != usernameDetails.username; // Replace 'yourUsername' with the desired username
           });
 
-          console.log(filteredRoutines, "filtered routines")
+          console.log(filteredRoutines, "filtered routines");
 
           setOtherUserRoutineCards(filteredRoutines);
         })
@@ -135,12 +138,17 @@ function Planner() {
     if (activeTab === 2) {
       // Fetch past routines data (replace with your logic)
       axios
-        .get(`http://localhost:8080/completedRoutine/user/${localStorage.getItem("username")}`, {
-          withCredentials: true,
-        })
+        .get(
+          `http://localhost:8080/completedRoutine/user/${localStorage.getItem(
+            "username"
+          )}`,
+          {
+            withCredentials: true,
+          }
+        )
         .then((response) => {
           // Set past routines data here
-          console.log(response.data.data, "past routines data")
+          console.log(response.data.data, "past routines data");
           setPastRoutinesCards(response.data.data);
         })
         .catch((error) => {
@@ -154,9 +162,10 @@ function Planner() {
   // Database template data
   useEffect(() => {
     // Fetch data from the database
-    axios.get(`http://localhost:8080/routine/templates`, {
-      withCredentials: true,
-    })
+    axios
+      .get(`http://localhost:8080/routine/templates`, {
+        withCredentials: true,
+      })
       .then((response) => {
         console.log("tempalte data", response.data.data);
         setTemplateExercises(response.data.data);
@@ -185,8 +194,9 @@ function Planner() {
                 return (
                   <button
                     key={index}
-                    className={`text-xl text-gray-500 hover:text-gray-800 focus:outline-none ${activeTab === index ? "border-b-2 border-blue-500" : ""
-                      }`}
+                    className={`text-xl text-gray-500 hover:text-gray-800 focus:outline-none ${
+                      activeTab === index ? "border-b-2 border-blue-500" : ""
+                    }`}
                     onClick={() => handleTabChange(index)}
                   >
                     {button}
@@ -250,8 +260,9 @@ function Planner() {
                         <li key={index}>
                           <a
                             href="#"
-                            className={`block font-bold px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white ${activeTab === index ? "text-blue-500" : ""
-                              }`}
+                            className={`block font-bold px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white ${
+                              activeTab === index ? "text-blue-500" : ""
+                            }`}
                             onClick={() => handleTabChange(index)}
                           >
                             {button}
@@ -281,7 +292,6 @@ function Planner() {
         </div>
 
         {/* Searchbar */}
-        
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 place-items-center px-5 md:px-10 lg:px-16">
           {/* My Routines Tab */}
@@ -298,10 +308,16 @@ function Planner() {
               </div>
               {routineCards
                 .filter((routine) =>
-                  routine.name.toLowerCase().includes(searchQueryMyRoutines.toLowerCase())
+                  routine.name
+                    .toLowerCase()
+                    .includes(searchQueryMyRoutines.toLowerCase())
                 )
                 .map((routineCard, index) => (
-                  <CardPlanner key={index} routineInfo={routineCard} deleteCard={handleDelete} />
+                  <CardPlanner
+                    key={index}
+                    routineInfo={routineCard}
+                    deleteCard={handleDelete}
+                  />
                 ))}
             </>
           )}
@@ -320,7 +336,9 @@ function Planner() {
               </div>
               {otherUserRoutineCards
                 .filter((routine) =>
-                  routine.name.toLowerCase().includes(searchQueryOtherRoutines.toLowerCase())
+                  routine.name
+                    .toLowerCase()
+                    .includes(searchQueryOtherRoutines.toLowerCase())
                 )
                 .map((routineCard, index) => (
                   <CardPlanner key={index} routineInfo={routineCard} />
@@ -342,21 +360,25 @@ function Planner() {
               </div>
               {pastRoutinesCards
                 .filter((routine) =>
-                  routine.name.toLowerCase().includes(searchQueryPastRoutines.toLowerCase())
+                  routine.name
+                    .toLowerCase()
+                    .includes(searchQueryPastRoutines.toLowerCase())
                 )
-                .map((routineCard, index) => (
-                  routineCard.id
-          // Render your content for past routines here
-        ))}
-
+                .map(
+                  (routineCard, index) =>
+                    routineCard.id
+                    // Render your content for past routines here
+                )}
             </>
           )}
         </div>
-
-
       </div>
 
-      <Modal templateExercises={templateExercises} isOpen={showModal} onClose={() => setShowModal(false)} />
+      <Modal
+        templateExercises={templateExercises}
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+      />
     </div>
   );
 }

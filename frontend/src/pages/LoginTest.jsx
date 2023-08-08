@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import baseAxios from "../axios/baseAxios";
 import { useNavigate } from "react-router-dom";
 // import jwt_decode from "jwt-decode";
 import { useDispatch } from "react-redux";
@@ -19,7 +20,6 @@ function LoginTest() {
     }
   }, [navigate]);
 
-
   // For global timer
   const handleTokenExpiration = () => {
     alert("Your user session has expired, please log in again");
@@ -37,8 +37,8 @@ function LoginTest() {
     const password = "password";
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/login",
+      const response = await baseAxios.post(
+        "/login",
         {
           username,
           password,
@@ -46,13 +46,14 @@ function LoginTest() {
         { withCredentials: true }
       );
 
-
       const jwtToken = response.data.cookie.value;
       const expirationTimeISO = response.data.cookie.expires;
-  
+
       // Convert ISO 8601 timestamp to Unix timestamp in seconds
-      const expirationTimeUnix = Math.floor(new Date(expirationTimeISO).getTime() / 1000);
-  
+      const expirationTimeUnix = Math.floor(
+        new Date(expirationTimeISO).getTime() / 1000
+      );
+
       // Calculate the time remaining until token expiration
       const currentTime = Math.floor(new Date().getTime() / 1000);
       const timeRemaining = expirationTimeUnix - currentTime;
@@ -60,12 +61,9 @@ function LoginTest() {
       localStorage.setItem("username", username);
       localStorage.setItem("token", jwtToken);
       localStorage.setItem("expirationTime", expirationTimeISO);
-      
-
 
       // Start the global timer for token expiration
       startGlobalTimer(handleTokenExpiration, timeRemaining * 1000);
-
 
       if (jwtToken) {
         console.log("Token:", jwtToken);
@@ -80,7 +78,6 @@ function LoginTest() {
     }
   };
 
-
   return (
     // Simulate login page
 
@@ -94,9 +91,6 @@ function LoginTest() {
       >
         Login
       </button>
-
-     
-     
     </div>
   );
 }

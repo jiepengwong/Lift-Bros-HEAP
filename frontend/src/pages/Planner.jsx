@@ -323,13 +323,20 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import Swaf from "sweetalert2";
 import CardHistory from "../component/CardHistory";
-
+import Loading from "../component/Loading";
 function Planner() {
   const navigate = useNavigate();
-  const [usernameDetails, setUsernameDetails] = useState({
-    username: localStorage.getItem("username"),
-    token: localStorage.getItem("token"),
-  });
+  const [usernameDetails, setUsernameDetails] = useState(
+    {
+      username: localStorage.getItem("username"),
+      token: localStorage.getItem("token"),
+    }
+  );
+
+  // Loading
+  const [isLoading, setIsLoading] = useState(true);
+
+
 
   // Template buttons
   const [plannerButtons, setPlannerButtons] = useState([
@@ -393,6 +400,8 @@ function Planner() {
 
   // Database data
   useEffect(() => {
+    setIsLoading(true); // Start loading
+
     // Fetch data from database
     if (activeTab == 0) {
       console.log("active tab is 0");
@@ -408,10 +417,16 @@ function Planner() {
           console.log(usernameDetails.username);
           console.log(response.data.data);
           setRoutineCards(response.data.data);
+          setTimeout(() => {
+            setIsLoading(false);
+            
+          }, 2000);
+
         })
         .catch((error) => {
           console.log(error);
         });
+  
     }
 
     if (activeTab == 1) {
@@ -436,6 +451,8 @@ function Planner() {
           console.log(filteredRoutines, "filtered routines");
 
           setOtherUserRoutineCards(filteredRoutines);
+          setIsLoading(false);
+
         })
         .catch((error) => {
           console.log(error);
@@ -452,6 +469,8 @@ function Planner() {
           // Set past routines data here
           console.log(response.data.data, "past routines data");
           setPastRoutinesCards(response.data.data);
+          setIsLoading(false);
+
         })
         .catch((error) => {
           console.log(error);
@@ -480,6 +499,12 @@ function Planner() {
 
   return (
     <div>
+
+      {/* Loading screen */}
+      {isLoading? (
+        <Loading />
+      ): (
+
       <div>
         {/* Planner page */}
         <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center m-10 p-2">
@@ -724,6 +749,11 @@ function Planner() {
           </div>
         </div>
       </div>
+
+      )}
+      
+
+
 
       <Modal
         templateExercises={templateExercises}

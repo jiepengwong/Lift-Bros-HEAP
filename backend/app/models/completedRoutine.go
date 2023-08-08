@@ -58,7 +58,11 @@ func (completedRoutine *CompletedRoutine) BeforeCreate(tx *gorm.DB) (err error) 
 	if err != nil {
 		return err
 	}
-	completedRoutine.CaloriesBurned = (hours*60 + minutes) * 4
+	seconds, err := strconv.Atoi(timeList[2])
+	if err != nil {
+		return err
+	}
+	completedRoutine.CaloriesBurned = (hours*60+minutes)*3 + seconds/20
 	return
 }
 

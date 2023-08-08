@@ -20,10 +20,14 @@ function ExerciseExpand({ exercise, onChange }) {
     const updatedSetInfo = [...setInfo];
     updatedSetInfo[index] = {
       ...updatedSetInfo[index],
-      weight: event.target.value,
+      weight: parseInt(event.target.value),
     };
-    updatedCompletedExercises.targetWeights[index] = event.target.value;
-    updatedCompletedExercises.actualWeights[index] = event.target.value;
+    updatedCompletedExercises.targetWeights[index] = parseInt(
+      event.target.value
+    );
+    updatedCompletedExercises.actualWeights[index] = parseInt(
+      event.target.value
+    );
 
     setSetInfo(updatedSetInfo);
     setCompletedExercises(updatedCompletedExercises);
@@ -35,9 +39,9 @@ function ExerciseExpand({ exercise, onChange }) {
     const updatedSetInfo = [...setInfo];
     updatedSetInfo[index] = {
       ...updatedSetInfo[index],
-      actualReps: event.target.value,
+      actualReps: parseInt(event.target.value),
     };
-    updatedCompletedExercises.actualReps[index] = event.target.value;
+    updatedCompletedExercises.actualReps[index] = parseInt(event.target.value);
     setSetInfo(updatedSetInfo);
     setCompletedExercises(updatedCompletedExercises);
     onChange(updatedCompletedExercises);

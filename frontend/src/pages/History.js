@@ -11,10 +11,9 @@ const History = () => {
 
   useEffect(async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/completedRoutine/user/LiftBro",
-        { withCredentials: true }
-      );
+      const response = await baseAxios.get("completedRoutine/user/LiftBro", {
+        withCredentials: true,
+      });
       console.log(response.data.data);
       setHistories(response.data.data);
     } catch (error) {

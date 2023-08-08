@@ -6,10 +6,11 @@ import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import Button from "../component/Button";
 import Swal from "sweetalert2";
 import ExerciseExpand from "../component/ExerciseExpand";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import baseAxios from "../axios/baseAxios";
 
 function DuringRoutine() {
+  const navigate = useNavigate();
   const routineNameDisplay = localStorage.getItem("routine");
   const routineJSON = JSON.parse(routineNameDisplay);
   console.log("routineJSON", routineJSON.name);
@@ -48,7 +49,7 @@ function DuringRoutine() {
       routineName: "Liftbro's Upper Body Routine",
       dateTimeCompleted: new Date().toJSON(),
       routineDuration: formatTime(elapsedTime),
-      caloriesBurned: caloriesBurned,
+      // caloriesBurned: caloriesBurned,
       completedExercises: completedExercises,
       createdBy: routineJSON.createdBy,
       // routineIntensity: 4,
@@ -67,6 +68,7 @@ function DuringRoutine() {
 
         console.log("Workout data sent successfully!", response);
         // Redirect to the "end" page or any other desired action
+        navigate("/end");
       })
       .catch((error) => {
         // Handle any error that occurs during the API call
@@ -201,9 +203,7 @@ function DuringRoutine() {
       <div className="flex justify-evenly p-20">
         {/* Complete workout */}
         <div>
-          <Link to="/end">
-            <Button text="Complete Workout" onClick={handleCompleteWorkout} />
-          </Link>
+          <Button text="Complete Workout" onClick={handleCompleteWorkout} />
         </div>
       </div>
     </div>

@@ -7,7 +7,6 @@ const RequireAuth = () => {
   
 
   if (!localStorage.getItem("token")) {
-    alert("User login expired or logged out, please log in again");
     return <Navigate to="/login" state={{ from: location }} />;
   }
 

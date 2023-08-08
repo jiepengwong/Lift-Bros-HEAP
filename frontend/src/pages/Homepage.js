@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 function HomePage() {
   const navigate = useNavigate();
   const userName = localStorage.getItem("username");
+
   const [chartLabels, setChartLabels] = useState({});
   const [weekOffset, setWeekOffset] = useState(0);
   const [recommendedRoutines, setRecommendedRoutines] = useState([]);
@@ -198,11 +199,9 @@ function HomePage() {
               </div>
               {/* <div className="bg-white rounded shadow p-4">
             <h3 className="text-lg font-semibold">Squat</h3>
-            <p className="text-gray-600">4 sets of 60kg</p>
           </div>
           <div className="bg-white rounded shadow p-4">
-            <h3 className="text-lg font-semibold">Deadlift</h3>
-            <p className="text-gray-600">4 sets of 60kg</p>
+            <h3 className="text-lg font-semibold">Squat</h3>
           </div>
           <div className="bg-white rounded shadow p-4">
             <h3 className="text-lg font-semibold">Glute kickback</h3>

@@ -60,7 +60,9 @@ function HomePage() {
             tempReco.push(routines[index]);
           }
         });
-        setRecommendedRoutines(tempReco);
+        if (tempReco.length !== 0) {
+          setRecommendedRoutines(tempReco);
+        }
         console.log(recommendedRoutines);
       })
       .catch((error) => {
@@ -134,7 +136,7 @@ function HomePage() {
           Let's start Lifting Bro! Choose from some of our recommended routines
         </p>
         <h2 className="text-xl font-bold mb-4">Recommended Routines</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {recommendedRoutines.map((routine) => {
             return (
               <div
@@ -142,7 +144,6 @@ function HomePage() {
                 key={routine.name}
               >
                 <h3 className="text-lg font-semibold">{routine.name}</h3>
-                <p className="text-gray-600">{routine.tags}</p>
                 <div className="aspect-w-3 aspect-h-4">
                   <img
                     className="object-cover w-full h-full"
@@ -160,6 +161,25 @@ function HomePage() {
               </div>
             );
           })}
+          <div
+            className="bg-white rounded shadow p-4 flex flex-col justify-between items-center"
+            key="Others"
+          >
+            <h3 className="text-lg font-semibold">Other Gains</h3>
+            <div className="aspect-w-3 aspect-h-4">
+              <img
+                className="object-cover w-full h-full"
+                src={require("../assets/tyler1.jpg")}
+                alt="Routine Preview"
+              />
+            </div>
+            <Button
+              text="Other Routines"
+              onClick={() => {
+                navigate("/routine");
+              }}
+            />
+          </div>
           {/* <div className="bg-white rounded shadow p-4">
             <h3 className="text-lg font-semibold">Squat</h3>
             <p className="text-gray-600">4 sets of 60kg</p>

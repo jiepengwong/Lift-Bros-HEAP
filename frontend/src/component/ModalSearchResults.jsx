@@ -54,6 +54,7 @@ function ModalSearchResults({ isOpen, onClose, savedExercises, exercisesData, ad
 
   useEffect(() => {
     if (isOpen) {
+      handleSearch(exercisesData, '', savedExercises);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';

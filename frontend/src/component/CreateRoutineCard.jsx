@@ -47,6 +47,8 @@ const CreateRoutineCard = ({ exercise, handleEditExercise, handleRemoveExercise 
                 <div>
                     <h3 className={`text-lg font-bold ${expanded ? 'mb-2' : ''}`}>{exercise.exerciseName}</h3>
                 </div>
+
+
                 <div>
                     <button onClick={handleToggleExpand}>
                         <FontAwesomeIcon icon={expanded ? faCaretUp : faCaretDown} />

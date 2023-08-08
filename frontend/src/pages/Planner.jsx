@@ -417,10 +417,8 @@ function Planner() {
           console.log(usernameDetails.username);
           console.log(response.data.data);
           setRoutineCards(response.data.data);
-          setTimeout(() => {
-            setIsLoading(false);
+          setIsLoading(false);
             
-          }, 2000);
 
         })
         .catch((error) => {

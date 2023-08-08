@@ -58,11 +58,11 @@ const CreateRoutineCard = ({ exercise, handleEditExercise, handleRemoveExercise 
 
             <div className={`overflow-hidden transition-height duration-300`} style={{ height: contentHeight }}
                 ref={contentRef}>
-                <img
-                    className="object-cover w-full h-48 mt-2 rounded-md"
-                    src={require('../assets/testingGym.webp')}
-                    alt="Example Image"
-                />
+              <img
+  className="object-cover w-full h-48 mt-2 rounded-md bg-top md:hidden"
+  src={require('../assets/gigachad.png')}
+  alt="Example Image"
+/>
                
 
                 <div className="mt-4">

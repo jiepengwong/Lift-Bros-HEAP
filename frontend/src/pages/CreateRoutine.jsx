@@ -9,6 +9,7 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import CreateRoutineCard from "../component/CreateRoutineCard";
 import defaultImage from "../assets/tyler1.jpg"; // Import the default image
 import Swal from "sweetalert2";
+import Loading from "../component/Loading";
 import {
   faPlay,
   faPlusCircle,
@@ -20,17 +21,26 @@ import baseAxios from "../axios/baseAxios";
 function CreateRoutine() {
   const navigate = useNavigate();
   const [routineDescription, setRoutineDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     baseAxios
       .get("/exercise")
       .then((response) => {
         console.log("Testing base axios - SUCCESS");
         console.log(response.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
         console.log("Testing base axios - ERROR");
+        setIsLoading(false);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          html: "Something went wrong! Error message: " + error.message,
+        })
       });
     console.log("Testing base axios");
   }, []);
@@ -309,122 +319,131 @@ function CreateRoutine() {
   }, []);
 
   return (
+
     <div>
-      <div className="flex flex-col">
-      <div className="bg-custom-image rounded">
-  <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-white py-10">
-    Creating Your Routine
-  </h1>
-  <p className="text-lg md:text-xl text-white text-center uppercase font-bold">
-    <span className="block mb-2">
-      Embrace your inner <span className="font-bold text-yellow-400  md:text-yellow-300 up">GigaChad</span> and create your own personalized routine today.
-    </span>
-  </p>
-  <div className="flex items-center rounded justify-center">
-    <div className="bg-black bg-opacity-40 p-6 md:px-20 rounded flex flex-col">
-      <button className="font-bold text-center text-xl md:text-2xl text-white mb-2">Your Routine Name</button>
-      <button className="rounded-full bg-yellow-300 text-black font-bold text-xl md:text-2xl mb-2">{newRoutineName}</button>
-    </div>
-  </div>
-  <div className="flex flex-row justify-evenly p-6 md:p-10">
-    {/* Add your content here */}
-  </div>
-</div>
-      </div>
-
-
-      <div className="py-4">
-        {/* Step 1: Image Upload Section */}
-        <h2 className="text-lg sm:text-xl font-bold mb-4 text-start px-4">
-        <span className="bg-yellow-300 p-2 rounded uppercase font-bold">Step 1</span> Upload your desired image
-        </h2>
-        <div className="bg-white p-4 rounded shadow my-4 mx-auto w-full md:w-2/3">
-          <input
-            type="file"
-            accept="image/*"
-            className="border p-2"
-            onChange={handleImageUpload}
-          />
-          {uploadedImage && (
-            <div className="mt-4 flex flex-col justify-center items-center">
-              <img
-                src={URL.createObjectURL(uploadedImage)}
-                alt="Uploaded Routine"
-                className="w-40 h-40 p-1 object-cover rounded"
-              />
-              <button
-                className=" bg-red-500 hover:bg-red-600 text-white py-3 px-2 rounded"
-                onClick={handleRemoveImage}
-              >
-                Remove
-              </button>
-            </div>
-          )}
-        </div>
-        <hr className="py-4"></hr>
-        {/* Current exercises added into "cart" */}
-        <div>
-          <p className="font-bold  text-lg sm:text-xl text-start px-4">
-          <span className="bg-yellow-300 p-2  rounded uppercase font-bold">Step 2</span> Modify current template exercises
-          </p>
-          <div className="text-center">
-            <div className="flex flex-col p-4">
-              {/* If there are no exercises, display a message */}
-              {savedExercises.length === 0 && (
-                <p className="text-center font-bold">
-                  No exercises added yet. Click on the plus button to get
-                  started!
-                </p>
-              )}
-              {savedExercises.map((exercise, index) => (
-                <CreateRoutineCard
-                  exercise={exercise}
-                  handleEditExercise={handleEditExercise}
-                  handleRemoveExercise={handleRemoveExercise}
-                />
-              ))}
-            </div>
-            <div className="p-1">
-              <div className=" font-bold py-2 px-4 rounded-full">
-                <FontAwesomeIcon
-                  icon={faPlusCircle}
-                  className="w-7 h-7 cursor-pointer text-green-500 hover:text-green-600 "
-                  onClick={() => setShowModalSearch(true)}
-                />
-              </div>
-            </div>
-
-            {savedExercises.length > 0 && (
-              <div className="p-4">
-                <button
-                  className="bg-green-500 hover:bg-green-600 text-white rounded py-3 font-bold w-full"
-                  onClick={() => saveRoutineToDB()}
-                >
-                  Save Routine
-                </button>
-              </div>
-            )}
+        {isLoading? (
+          <Loading />
+        ) : (  
+          <div>
+            <div className="flex flex-col">
+            <div className="bg-custom-image rounded">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center uppercase text-white py-10 uppercase">
+          Routine <span className="text-yellow-400">Creation</span>
+        </h1>
+        <p className="text-lg md:text-2xl text-white text-center font-bold">
+        <span className=" block mb-2">
+          <span className="text-yellow-400 md:text-yellow-300">Embrace your inner</span> <span className="font-bold uppercase">GigaChad</span> <span className="font-bold text-yellow-400 md:text-yellow-300 ">and meticulously design your personalized routine</span> <span className="underline uppercase">today</span>.
+        </span>
+      </p>
+      
+        <div className="flex items-center rounded justify-center">
+          <div className="bg-black bg-opacity-40 p-6 md:px-20 rounded flex flex-col">
+            <button className="font-bold text-center text-xl md:text-2xl text-white mb-2">Your Routine Name</button>
+            <button className="rounded-full bg-yellow-300 text-black font-bold text-xl md:text-2xl mb-2">{newRoutineName}</button>
           </div>
         </div>
-        {/* =============================================== */}
+        <div className="flex flex-row justify-evenly p-6 md:p-10">
+          {/* Add your content here */}
+        </div>
       </div>
-      {/* Set conditiononly if exercises not empty*/}
+            </div>
+      
+      
+            <div className="py-4">
+              {/* Step 1: Image Upload Section */}
+              <h2 className="text-lg sm:text-xl font-bold mb-4 text-start px-4">
+              <span className="bg-yellow-300 p-2 rounded uppercase font-bold">Step 1</span> Upload your desired image
+              </h2>
+              <div className="bg-white p-4 rounded shadow my-4 mx-auto w-full md:w-2/3">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="border p-2"
+                  onChange={handleImageUpload}
+                />
+                {uploadedImage && (
+                  <div className="mt-4 flex flex-col justify-center items-center">
+                    <img
+                      src={URL.createObjectURL(uploadedImage)}
+                      alt="Uploaded Routine"
+                      className="w-40 h-40 p-1 object-cover rounded"
+                    />
+                    <button
+                      className=" bg-red-500 hover:bg-red-600 text-white py-3 px-2 rounded"
+                      onClick={handleRemoveImage}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
+              </div>
+              <hr className="py-4"></hr>
+              {/* Current exercises added into "cart" */}
+              <div>
+                <p className="font-bold  text-lg sm:text-xl text-start px-4">
+                <span className="bg-yellow-300 p-2  rounded uppercase font-bold">Step 2</span> Modify current template exercises
+                </p>
+                <div className="text-center">
+                  <div className="flex flex-col p-4">
+                    {/* If there are no exercises, display a message */}
+                    {savedExercises.length === 0 && (
+                      <p className="text-center font-bold">
+                        No exercises added yet. Click on the plus button to get
+                        started!
+                      </p>
+                    )}
+                    {savedExercises.map((exercise, index) => (
+                      <CreateRoutineCard
+                        exercise={exercise}
+                        handleEditExercise={handleEditExercise}
+                        handleRemoveExercise={handleRemoveExercise}
+                      />
+                    ))}
+                  </div>
+                  <div className="p-1">
+                    <div className=" font-bold py-2 px-4 rounded-full">
+                      <FontAwesomeIcon
+                        icon={faPlusCircle}
+                        className="w-7 h-7 cursor-pointer text-green-500 hover:text-green-600 "
+                        onClick={() => setShowModalSearch(true)}
+                      />
+                    </div>
+                  </div>
+      
+                  {savedExercises.length > 0 && (
+                    <div className="p-4">
+                      <button
+                        className="bg-green-500 hover:bg-green-600 text-white rounded py-3 font-bold w-full"
+                        onClick={() => saveRoutineToDB()}
+                      >
+                        Save Routine
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+              {/* =============================================== */}
+            </div>
+            {/* Set conditiononly if exercises not empty*/}
+      
+            <ModalExerciseSets
+              isOpen={showModalExerciseSet}
+              onClose={() => setShowModalExerciseSet(false)}
+              // handleChanges={handleChanges}
+              handleEditExercise={modifyExerciseSets}
+              exercise={selectedExercise}
+            />
+      
+            <ModalSearchResults
+              isOpen={showModalSearch}
+              onClose={handleCloseSearch}
+              savedExercises={savedExercises}
+              exercisesData={allExercises}
+              addExercises={handleAddExercise}
+            />
+          </div>
+        )}
 
-      <ModalExerciseSets
-        isOpen={showModalExerciseSet}
-        onClose={() => setShowModalExerciseSet(false)}
-        // handleChanges={handleChanges}
-        handleEditExercise={modifyExerciseSets}
-        exercise={selectedExercise}
-      />
-
-      <ModalSearchResults
-        isOpen={showModalSearch}
-        onClose={handleCloseSearch}
-        savedExercises={savedExercises}
-        exercisesData={allExercises}
-        addExercises={handleAddExercise}
-      />
     </div>
   );
 }

@@ -5,9 +5,9 @@ function ExerciseExpand({ exercise, onChange }) {
   const [completedExercises, setCompletedExercises] = useState({
     exerciseName: exercise.exerciseName,
     targetReps: exercise.targetReps,
-    targetWeight: Array.from(Array(exercise.targetReps.length), () => 0),
+    targetWeights: Array.from(Array(exercise.targetReps.length), () => 0),
     actualReps: Array.from(Array(exercise.targetReps.length), () => 0),
-    actualWeight: Array.from(Array(exercise.targetReps.length), () => 0),
+    actualWeights: Array.from(Array(exercise.targetReps.length), () => 0),
   }); // Array to store completed exercises
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggleDropdown = () => {
@@ -22,8 +22,8 @@ function ExerciseExpand({ exercise, onChange }) {
       ...updatedSetInfo[index],
       weight: event.target.value,
     };
-    updatedCompletedExercises.targetWeight[index] = event.target.value;
-    updatedCompletedExercises.actualWeight[index] = event.target.value;
+    updatedCompletedExercises.targetWeights[index] = event.target.value;
+    updatedCompletedExercises.actualWeights[index] = event.target.value;
 
     setSetInfo(updatedSetInfo);
     setCompletedExercises(updatedCompletedExercises);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function StarRating() {
+function StarRating(onChange) {
   const [rating, setRating] = useState(0);
 
   const handleStarClick = (selectedRating) => {
@@ -13,7 +13,7 @@ function StarRating() {
       {[1, 2, 3, 4, 5].map((value) => (
         <span
           key={value}
-          className={`text-yellow-400 text-3xl ${
+          className={`text-gray-400 text-3xl ${
             value <= rating ? "text-yellow-500" : "text-gray-300"
           }`}
           onClick={() => handleStarClick(value)}

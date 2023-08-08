@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import Button from "../component/Button";
 import Swal from "sweetalert2";
-import axios from "axios";
 import ExerciseExpand from "../component/ExerciseExpand";
 import { Link } from "react-router-dom";
 import baseAxios from "../axios/baseAxios";
@@ -13,7 +12,7 @@ import baseAxios from "../axios/baseAxios";
 function DuringRoutine() {
   const routineNameDisplay = localStorage.getItem("routine");
   const routineJSON = JSON.parse(routineNameDisplay);
-  // console.log(routineJSON.name);
+  console.log("routineJSON", routineJSON.name);
 
   const userName = localStorage.getItem("username");
   const processExercise = (updatedCompletedExercises, index) => {
@@ -51,17 +50,20 @@ function DuringRoutine() {
       routineDuration: formatTime(elapsedTime),
       caloriesBurned: caloriesBurned,
       completedExercises: completedExercises,
+      createdBy: routineJSON.createdBy,
+      // routineIntensity: 4,
     };
     // console.log(workoutData);
-    const response = axios
-      .post("http://localhost:8080/completedRoutine/new", workoutData, {
+    const response = baseAxios
+      .post("/completedRoutine/new", workoutData, {
         withCredentials: true,
       })
       .then((response) => {
         // Handle the response from the backend if needed
         // get your completedRoutine ID
-
+        const completedRoutineId = response.data.data.id;
         // set completed routine ID to local storage
+        localStorage.setItem("completedRoutineId", completedRoutineId);
 
         console.log("Workout data sent successfully!", response);
         // Redirect to the "end" page or any other desired action
@@ -100,7 +102,7 @@ function DuringRoutine() {
   }, [isRunning]);
 
   const routineName = routineJSON.name;
-  const createdBy = userName;
+  const createdBy = routineJSON.createdBy;
 
   // Calories calculator
   useEffect(() => {
@@ -123,7 +125,7 @@ function DuringRoutine() {
             return {
               exerciseName: exercise.exerciseName,
               targetReps: exercise.targetReps,
-              targetWeight: Array.from(
+              targetWeights: Array.from(
                 Array(exercise.targetReps.length),
                 () => 0
               ),
@@ -131,7 +133,7 @@ function DuringRoutine() {
                 Array(exercise.targetReps.length),
                 () => 0
               ),
-              actualWeight: Array.from(
+              actualWeights: Array.from(
                 Array(exercise.targetReps.length),
                 () => 0
               ),

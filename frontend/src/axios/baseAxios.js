@@ -4,7 +4,7 @@ import axios from "axios";
 const baseAxios = axios.create({
   baseURL: "https://c08c-138-75-104-147.ngrok-free.app",
   timeout: 10000, // Set a default timeout for all requests (optional)
-  // withCredentials: true,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json", // Set default headers for all requests (optional)
     "ngrok-skip-browser-warning": true,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { clearGlobalTimer } from "../utils/GlobalTimer";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 function Navbar() {
   const [navbar, setNavbar] = useState(["Home", "Routine", "Logout"]);
@@ -16,12 +16,11 @@ function Navbar() {
     clearGlobalTimer();
     document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     Swal.fire({
-      title: 'Success!',
-      text: 'You have successfully logged out!',
-      icon: 'success',
-      confirmButtonText: 'Cool'
-    })
-
+      title: "Success!",
+      text: "You have successfully logged out!",
+      icon: "success",
+      confirmButtonText: "Cool",
+    });
   };
 
   const toggleMenu = () => {
@@ -51,9 +50,11 @@ function Navbar() {
   return (
     <div className="top-0 w-full block">
       <div className="bg-yellow-300 flex justify-between items-center w-full h-20 px-2 2xl:px-16">
-        <div>
-          <p className="font-bold text-2xl">Lift bros 🦾</p>
-        </div>
+        <Link to="/" onClick={handleMenuClick}>
+          <div>
+            <p className="font-bold text-2xl">Lift Bro 🦾</p>
+          </div>
+        </Link>
 
         {/* Navbar desktop */}
         <div className={`hidden sm:block ${menuOpen ? "hidden" : ""}`}>
@@ -80,7 +81,6 @@ function Navbar() {
             ))}
           </ul>
         </div>
-        
 
         {/* Navbar mobile */}
         <div className="sm:hidden flex flex-1 justify-end items-center">
@@ -110,14 +110,15 @@ function Navbar() {
       {/* Mobile Menu */}
       <div
         className={`${
-          menuOpen ? "flex flex-col opacity-100 max-h-full" : "opacity-0 max-h-0"
+          menuOpen
+            ? "flex flex-col opacity-100 max-h-full"
+            : "opacity-0 max-h-0"
         } z-10 bg-white shadow-lg relative rounded-xl sidebar`}
         style={{
           backgroundColor: menuOpen ? "#f0f0f0" : "white",
           borderRadius: menuOpen ? "4px" : "0",
           overflow: menuOpen ? "visible" : "hidden",
-          transition:
-            "opacity 0.3s ease-in-out, max-height 0.3s ease-in-out",
+          transition: "opacity 0.3s ease-in-out, max-height 0.3s ease-in-out",
         }}
       >
         <ul className={`${menuOpen ? "block sm:hidden" : "hidden"}`}>

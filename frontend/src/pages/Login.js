@@ -7,10 +7,8 @@ import { useDispatch } from "react-redux";
 import { setLoginUser } from "../redux/slice/loginSlice";
 import { startGlobalTimer } from "../utils/GlobalTimer";
 import baseAxios from "../axios/baseAxios";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import { faBold } from "@fortawesome/free-solid-svg-icons";
-
-
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -29,9 +27,7 @@ function Login() {
   };
 
   const videoRef = useRef(null);
-  const videos = [
-    "/videos/Untitled.mp4",
-  ];
+  const videos = ["/videos/Untitled.mp4"];
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   useEffect(() => {
@@ -95,23 +91,22 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await baseAxios.post(
-        "/login",
-        {
-          username: username,
-          password: password,
-        });
-
+      const response = await baseAxios.post("/login", {
+        username: username,
+        password: password,
+      });
 
       const jwtToken = response.data.cookie.value;
       const expirationTimeISO = response.data.cookie.expires;
-      console.log(expirationTimeISO, " test ")
+      console.log(expirationTimeISO, " test ");
       const expirationDateCookie = new Date(expirationTimeISO);
       const formattedExpirationForCookie = expirationDateCookie.toUTCString();
 
       // Convert ISO 8601 timestamp to Unix timestamp in seconds
-      const expirationTimeUnix = Math.floor(new Date(expirationTimeISO).getTime() / 1000);
-  
+      const expirationTimeUnix = Math.floor(
+        new Date(expirationTimeISO).getTime() / 1000
+      );
+
       // Calculate the time remaining until token expiration
       const currentTime = Math.floor(new Date().getTime() / 1000);
       const timeRemaining = expirationTimeUnix - currentTime;
@@ -122,27 +117,23 @@ function Login() {
 
       // Set the cookie
       document.cookie = `jwt=${jwtToken}; expires=${formattedExpirationForCookie}; path=/`;
-      
-
 
       // Start the global timer for token expiration
       startGlobalTimer(handleTokenExpiration, timeRemaining * 1000);
-
 
       if (jwtToken) {
         console.log("Token:", jwtToken);
         console.log("Navigating to home page.");
         Swal.fire({
-          title: 'Success!',
-          text: 'You have successfully logged in!',
-          icon: 'success',
-          confirmButtonText: 'Cool'
-        })
+          title: "Success!",
+          text: "You have successfully logged in!",
+          icon: "success",
+          confirmButtonText: "Cool",
+        });
         navigate("/"); // Navigate to the login page if not authenticated
       } else {
-        console.log("Token not found.");        
+        console.log("Token not found.");
         setLoginError("Username or Password is incorrect."); //login error message for users
-
       }
     } catch (error) {
       console.error("Error:", error);
@@ -169,14 +160,16 @@ function Login() {
       <div className="flex justify-center items-center h-screen">
         <div className="relative rounded-lg shadow-md p-6 bg-yellow-300 z-0">
           <div>
-            <h1 className="text-5xl font-bold mb-8">Lift Bros 🦾</h1>
-            </div>
-            <hr  style={{
-              color: '#000000',
-              backgroundColor: '#000000',
+            <h1 className="text-5xl font-bold mb-8">Lift Bro 🦾</h1>
+          </div>
+          <hr
+            style={{
+              color: "#000000",
+              backgroundColor: "#000000",
               height: 1,
-              borderColor : '#000000'
-              }}/>
+              borderColor: "#000000",
+            }}
+          />
           <div>
             <h2 className="text-3xl font-bold mb-5">Login</h2>
             <form onSubmit={handleFormSubmit}>

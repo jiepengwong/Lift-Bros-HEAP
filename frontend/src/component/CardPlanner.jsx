@@ -1,6 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faCaretDown, faTrash, faTimes, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlay,
+  faCaretDown,
+  faTrash,
+  faTimes,
+  faCaretUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 function CardPlanner({ routineInfo, deleteCard }) {
@@ -11,7 +17,9 @@ function CardPlanner({ routineInfo, deleteCard }) {
   const [exerciseHeight, setExerciseHeight] = useState("0px");
 
   useEffect(() => {
-    setExerciseHeight(expanded ? `${exerciseRef.current.scrollHeight}px` : "0px");
+    setExerciseHeight(
+      expanded ? `${exerciseRef.current.scrollHeight}px` : "0px"
+    );
   }, [expanded]);
 
   const toggleExpand = () => {
@@ -35,11 +43,11 @@ function CardPlanner({ routineInfo, deleteCard }) {
     }
     localStorage.setItem("routine", JSON.stringify(routineInfo));
     navigate("/during");
-  }
+  };
 
   return (
     <div className="max-w-md w-full bg-white border border-gray-200 rounded-lg shadow-md relative">
-      <div className="mb-4 w-full relative rounded-t-md overflow-hidden aspect-w-16 aspect-h-9">
+      <div className="mb-4 w-full relative rounded-t-md">
         {localStorage.getItem("username") === routineInfo.createdBy && (
           <button
             onClick={deleteRoutine}
@@ -49,31 +57,30 @@ function CardPlanner({ routineInfo, deleteCard }) {
           </button>
         )}
         <img
-          className="object-cover w-full h-full"
+          className={`object-cover w-full h-full ${"md:h-40"}`}
           src={`data:image/png;base64,${routineInfo.image}`}
           alt="Routine Preview"
         />
       </div>
 
       <div className="px-7 pb-7">
-        <a href="#" className="mb-2 block text-gray-900 dark:text-white">
-          <h5 className="text-xl text-start font-bold tracking-tight w-full overflow-hidden">
+        <a href="#" className="mb-2 block text-gray-900 dark:text-black">
+          <h5 className="text-l text-start font-bold tracking-tight w-full overflow-hidden min-h-[3rem]">
             {routineInfo.name}
           </h5>
         </a>
 
         {localStorage.getItem("username") !== routineInfo.createdBy && (
           <button className="flex flex-start bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded-full">
-            <p className="text-sm">
-              Created by: {routineInfo.createdBy}
-            </p>
+            <p className="text-sm">Created by: {routineInfo.createdBy}</p>
           </button>
         )}
 
         <div className="relative w-full mt-2 px-1">
           <button
-            className={`flex items-center font-semibold text-blue-700 hover:text-blue-800 transition-colors focus:outline-none ${expanded ? "underline" : ""
-              }`}
+            className={`flex items-center font-semibold text-blue-700 hover:text-blue-800 transition-colors focus:outline-none ${
+              expanded ? "underline" : ""
+            }`}
             onClick={toggleExpand}
           >
             {expanded ? (
@@ -89,16 +96,16 @@ function CardPlanner({ routineInfo, deleteCard }) {
             )}
           </button>
           <div className="flex justify-end mt-2">
-  <button
-    className="flex items-center bg-green-700 rounded-full text-white hover:bg-green-800 transition-colors focus:outline-none px-3 py-1"
-    onClick={playRoutine}
-  >
-    <span className="hidden md:inline font-semibold">START</span>
-    <span className="md:hidden">
-      <FontAwesomeIcon icon={faPlay} />
-    </span>
-  </button>
-</div>
+            <button
+              className="flex items-center bg-green-700 rounded-full text-white hover:bg-green-800 transition-colors focus:outline-none px-3 py-1"
+              onClick={playRoutine}
+            >
+              <span className="hidden md:inline font-semibold">START</span>
+              <span className="md:hidden">
+                <FontAwesomeIcon icon={faPlay} />
+              </span>
+            </button>
+          </div>
         </div>
 
         {expanded && (

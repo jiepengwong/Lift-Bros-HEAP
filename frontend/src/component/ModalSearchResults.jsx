@@ -14,6 +14,11 @@ function ModalSearchResults({ isOpen, onClose, savedExercises, exercisesData, ad
 
   console.log(exercisesData, " i am in ModalSearchResults")
 
+  const resetClose = () => {
+    handleSearch(exercisesData, '', savedExercises);
+    onClose();
+  };
+
   useEffect(() => {
     const savedExerciseNames = savedExercises.map(exercise => exercise.exerciseName);
     console.log(savedExerciseNames, " i am in this useEffect")
@@ -24,14 +29,18 @@ function ModalSearchResults({ isOpen, onClose, savedExercises, exercisesData, ad
 
  const handleSearch = (data, filterString, savedExercises) => {
   // Filter out the saved exercises first
+  console.log("triggered handleSearch function in ModalSearchResults")
+  console.log(data, filterString, savedExercises)
   const savedExerciseNames = savedExercises.map(exercise => exercise.exerciseName);
+  console.log(savedExerciseNames, " i am in the handleSearch function")
   const filteredData = data.filter(exercise => !savedExerciseNames.includes(exercise.name));
+  console.log(filteredData, " i am in the handleSearch function, filtered data")
 
   if (filterString !== '') {
     setSearchInput(filterString);
     const searchOutput = filteredData.filter(result => {
       return (
-        (result.exerciseName && result.exerciseName.toLowerCase().includes(filterString.toLowerCase())) ||
+        (result.name && result.name.toLowerCase().includes(filterString.toLowerCase())) ||
         (result.description && result.description.toLowerCase().includes(filterString.toLowerCase()))
       );
     });
@@ -45,6 +54,7 @@ function ModalSearchResults({ isOpen, onClose, savedExercises, exercisesData, ad
 
   useEffect(() => {
     if (isOpen) {
+      handleSearch(exercisesData, '', savedExercises);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
@@ -79,7 +89,7 @@ function ModalSearchResults({ isOpen, onClose, savedExercises, exercisesData, ad
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="bg-gray-800 opacity-75 fixed inset-0" onClick={onClose}></div>
+        <div className="bg-gray-800 opacity-75 fixed inset-0" onClick={resetClose}></div>
 
         <div className="w-4/5 h-4/5 max-w-3xl mx-auto bg-white rounded-lg p-1 shadow-lg overflow-y-auto z-10">
           <div className="max-h-full overflow-y-auto modal-content">
@@ -112,17 +122,17 @@ function ModalSearchResults({ isOpen, onClose, savedExercises, exercisesData, ad
     // If the exercise is saved, don't render it
     if (!isExerciseSaved) {
       return (
-        <div key={exercise.name} className="bg-white overflow-hidden shadow rounded-lg">
-          <div className="px-4 py-5 sm:p-4">
-            <h3 className="text-lg leading-6 font-medium text-gray-900">{exercise.name}</h3>
-            <div className="mt-2 max-w-xl text-sm text-gray-500">
-              <p>{exercise.description}</p>
-            </div>
-            <div className="mt-5">
-              <button onClick={() => handleAddExercise(exercise)}>Add</button>
-            </div>
+        <div key={exercise.name} className="relative bg-white overflow-hidden shadow rounded-lg flex flex-col">
+        <div className="px-4 py-5 sm:p-4 flex-grow">
+          <h3 className="text-lg leading-6 font-medium text-gray-900">{exercise.name}</h3>
+          <div className="mt-2 max-w-xl text-sm text-gray-500">
+            <p>{exercise.description}</p>
           </div>
         </div>
+        <div className="px-4 py-4 sm:px-6 text-center">
+          <button className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full" onClick={() => handleAddExercise(exercise)}>Add</button>
+        </div>
+      </div>
       );
     }
   })

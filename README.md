@@ -1,6 +1,18 @@
 # LiftBros
 
 Welcome to LiftBros – Your Ultimate Fitness Partner!
+Application is live at https://liftbro.netlify.app
+
+## Getting Started
+
+To get started with LiftBros:
+
+1. Clone the repository: `git clone https://github.com/your-username/liftbros.git`
+2. Navigate to the project directory: `cd liftbros`
+3. Install frontend dependencies: `cd frontend && npm install`
+4. Place .env file in root backend folder (contact group for .env file)
+5. Install backend dependencies and run docker: `cd ../backend && docker-compose up --build`
+6. Start the frontend: `cd ../frontend && npm start`
 
 ## Project Overview
 
@@ -34,14 +46,6 @@ Our backend powers LiftBros with essential functionalities. Key backend features
 
 - **Exercise Catalog**: Maintain an organized database of exercises with rich multimedia content.
 
-## Getting Started
+## Test Driven Development
 
-To get started with LiftBros:
-
-1. Clone the repository: `git clone https://github.com/your-username/liftbros.git`
-2. Navigate to the project directory: `cd liftbros`
-3. Install frontend dependencies: `cd frontend && npm install`
-4. Install backend dependencies: `cd ../backend && docker-compose up --build
-5. Start the frontend: `cd ../frontend && npm start`
-6. Start the backend: `cd ../backend && docker-compose up`
-
+Our team use TDD to develop, you can view our test cases using postman. Import our postman collection and environment to get started.

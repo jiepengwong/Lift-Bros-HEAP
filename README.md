@@ -18,11 +18,11 @@ LiftBros offers a range of powerful functionalities to enhance your fitness expe
 
 Our frontend, built with React, provides an intuitive and user-friendly interface for seamless fitness management. Key features include:
 
-- **User Dashboard**: Access an interactive dashboard displaying your workout routines, progress, and calorie tracking.
+- **User Dashboard**: Access a dashboard that allows you to see your recommended routines and the past calories burnt in a week!
 
-- **Exercise Library**: Explore an extensive library of exercises with detailed instructions and videos.
+- **Exercise Library**: Explore an extensive library of exercises with detailed instructions, where you will be able to pick those exercises for your personalized routines
 
-- **Community Interaction**: Engage with fellow LiftBros users, share accomplishments, and seek inspiration.
+- **Personalisation of exercise routines**: Create or even explore other user's routines and monitor the amount of calories burnt when you start your workout routine
 
 ## Backend
 

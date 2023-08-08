@@ -307,15 +307,13 @@ function CreateRoutine() {
       <div className="flex flex-col">
         <div className=" bg-gray-200 rounded">
           <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center m-10 p-10">
-            Modifying Your Routine
+            Creating Your Routine
           </h1>
         </div>
 
         <div className="flex flex-row justify-evenly bg-gray-200 p-10">
           <div>
-            <p className="font-bold text-center  text-lg mb-2">
-              Current Selected Routine Name:
-            </p>
+            <p className="font-bold text-center  text-lg mb-2">Routine Name:</p>
             <p className="text-center">{newRoutineName}</p>
           </div>
         </div>

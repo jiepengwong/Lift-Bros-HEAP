@@ -57,7 +57,7 @@ function CardPlanner({ routineInfo, deleteCard }) {
           </button>
         )}
         <img
-          className={`object-cover w-full h-full ${"md:h-40"}`}
+          className={`object-cover w-full h-full ${"md:h-44"}`}
           src={`data:image/png;base64,${routineInfo.image}`}
           alt="Routine Preview"
         />

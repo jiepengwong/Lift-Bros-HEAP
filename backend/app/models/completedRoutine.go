@@ -19,6 +19,7 @@ type CompletedRoutine struct {
 	CaloriesBurned     int                 `json:"caloriesBurned"`
 	RoutineIntensity   int                 `json:"routineIntensity"`
 	Username           string              `json:"username"`
+	CreatedBy          string              `json:"createdBy"`
 	RoutineName        string              `json:"routineName"`
 	CompletedExercises []CompletedExercise `gorm:"foreignKey:CompletedRoutineID" json:"completedExercises"`
 }

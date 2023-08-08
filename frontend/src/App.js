@@ -9,7 +9,6 @@ import Login from "./pages/Login";
 import History from "./pages/History";
 // import LoginTest from "./pages/LoginTest";
 import Register from "./pages/Register";
-import LogoutPage from "./pages/LogoutPage";
 
 // import Home from "./pages/Home";
 import Planner from "./pages/Planner.jsx";
@@ -40,8 +39,6 @@ function App() {
         <Routes>
           {/* Public routes */}
           <Route path="/login" element={<Login />} />
-          {/* <Route path="/login" element={<LoginTest />} /> */}
-          <Route exact path="/logout" component={LogoutPage} />
           <Route path="/register" element={<Register />} />
           {/* Protected Routes */}
             <Route element={<RequireAuth />}>

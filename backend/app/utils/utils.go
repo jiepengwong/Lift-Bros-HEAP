@@ -19,9 +19,15 @@ func StringToInts(str string) []int {
 	strs := strings.Split(str, ",")
 	ints := make([]int, len(strs))
 	for i, s := range strs {
-		j, err := strconv.Atoi(s)
-		if err != nil {
-			panic(err)
+		var j int
+		if s == "" {
+			j = 0
+		} else {
+			var err error
+			j, err = strconv.Atoi(s)
+			if err != nil {
+				panic(err)
+			}
 		}
 		ints[i] = j
 	}

@@ -78,9 +78,17 @@ func CreateCompletedRoutine(c *fiber.Ctx) error {
 	}
 	completedRoutine.UserID = user.ID
 
+	creator := new(models.User)
+	// retrieve user id from the database using their username
+	if err := GetUserByUsername(completedRoutine.CreatedBy, creator); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
 	routine := new(models.Routine)
 	// retrieve all exercise id from the database using their name
-	if err := getRoutineByUserIdAndName(user.ID, completedRoutine.RoutineName, routine); err != nil {
+	if err := getRoutineByUserIdAndName(creator.ID, completedRoutine.RoutineName, routine); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
 		})
@@ -154,7 +162,7 @@ func UpdateCompletedRoutine(c *fiber.Ctx) error {
 	// TODO: Validation and error handling
 
 	// Update the existing completed routine in the database using submitted updated completed routine
-	if updatedCompletedRoutine.DateTimeCompleted.IsZero() {
+	if !updatedCompletedRoutine.DateTimeCompleted.IsZero() {
 		existingCompletedRoutine.DateTimeCompleted = updatedCompletedRoutine.DateTimeCompleted
 	}
 

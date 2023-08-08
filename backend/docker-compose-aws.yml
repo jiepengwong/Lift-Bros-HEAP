@@ -4,11 +4,10 @@ services:
     image: 216448517639.dkr.ecr.ap-southeast-1.amazonaws.com/liftbro:latest
     ports:
       - 8080:8080
+    restart: always
     container_name: app
     depends_on:
       - mysql
-    # volumes:
-    #   - .:/app
     networks:
       - backend
     environment:
@@ -18,38 +17,26 @@ services:
   mysql:
     image: mysql:8.0
     restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=password
-      # - MYSQL_ROOT_HOST=root
-      - MYSQL_USER=liftbro
-      - MYSQL_PASSWORD=password
-      - MYSQL_DATABASE=liftbro
+    env_file:
+      - .env
     ports:
       - "3306:3306"
     container_name: mysql
     command: --default-authentication-plugin=mysql_native_password
     networks:
       - backend
-    # volumes:
-    #   - mysql_data:/var/lib/mysql
 
 # Networks to be created to facilitate communication between containers
 networks:
   backend:
     driver: bridge
-# volumes:
-#   mysql_data:
-
 # # UI interface for mysql
 # phpmyadmin:
 #   image: phpmyadmin/phpmyadmin
 #   depends_on:
 #     - mysql
-#   environment:
-#     - PMA_HOST=mysql
-#     - PMA_USER=root
-#     - PMA_PORT=3306
-#     - PMA_PASSWORD=password
+#   env_file:
+#     - .env
 #   ports:
 #     - 9090:80
 #   restart: always

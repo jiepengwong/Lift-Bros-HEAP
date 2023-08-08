@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../component/Button";
 import { useNavigate } from "react-router-dom";
 import Loading from "../component/Loading";
+import Swal from "sweetalert2";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -68,6 +69,13 @@ function HomePage() {
       })
       .catch((error) => {
         console.log(error);
+        setIsLoading(false);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            html: "Something went wrong! Error message: " + error.message,
+          })
+        
       });
   };
 
@@ -130,16 +138,17 @@ function HomePage() {
         <Loading />
       ) : (
         <div>
-          <div className="max-w-3xl mx-auto mt-20">
-            <h1 className="text-3xl font-bold mb-4">
-              Welcome back, {userName}!
-            </h1>
-          </div>
+        <div className="bg-custom-image-homepage p-8 md:p-16 mb-4 rounded-lg shadow-md">
+  <div className="max-w-3xl mx-auto mt-12 md:mt-20">
+    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 uppercase">
+      Welcome back, <span className="text-yellow-400">{userName} 💪</span>!
+    </h1>
+  </div>
+  <p className="text-lg md:text-xl text-yellow-400 font-bold mb-6">
+  🚀 Unleash the <span className="text-white uppercase">GigaChad</span> within you, and embark on a journey of <span className="text-white">transformation</span> and <span className="text-white">dominance</span>! 
+</p>
+</div>
           <section className="max-w-3xl mx-auto">
-            <p className="text-gray-600 mb-6">
-              Let's start Lifting Bro! Choose from some of our recommended
-              routines
-            </p>
             <h2 className="text-xl font-bold mb-4">Recommended Routines</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {recommendedRoutines.map((routine) => {

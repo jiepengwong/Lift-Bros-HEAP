@@ -19,7 +19,7 @@ var secretKey = os.Getenv("SECRET_KEY")
 
 func GetUserByUsername(username string, user *models.User) error {
 	db := config.GetDB()
-	if err := db.First(&user, "name = ?", username).Error; err != nil {
+	if err := db.First(&user, "username = ?", username).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return errors.New("user not found")
 		}

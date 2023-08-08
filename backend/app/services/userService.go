@@ -181,7 +181,9 @@ func Login(c *fiber.Ctx) error {
 
 	// Check for valid user
 	user := new(models.User)
-	if err := db.First(user, "username = ?", login.Username).Error; err != nil {
+	err := db.First(user, "username = ?", login.Username).Error
+	usernameMismatch := login.Username != user.Username
+	if err != nil || usernameMismatch {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Invalid username",
 		})
@@ -234,7 +236,6 @@ func Login(c *fiber.Ctx) error {
 }
 
 func Logout(c *fiber.Ctx) error {
-	fmt.Println("Logout")
 	cookie := fiber.Cookie{
 		Name:     "jwt",
 		Value:    "",

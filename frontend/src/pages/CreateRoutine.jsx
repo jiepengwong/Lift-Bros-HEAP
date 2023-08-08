@@ -54,6 +54,12 @@ function CreateRoutine() {
   const [selectedExercise, setSelectedExercise] = useState({});
   const [modifiedExercise, setModifiedExercise] = useState({});
 
+
+  // HandleClose
+  const handleCloseSearch = () => {
+    setShowModalSearch(false)
+  }
+
   // Logic for buttons (Have to filter between ARRAY (saved exercises) and OBJECT (search results))
   const handleAddExercise = (exercise) => {
     console.log("triggered add exercise function");
@@ -409,7 +415,7 @@ function CreateRoutine() {
 
       <ModalSearchResults
         isOpen={showModalSearch}
-        onClose={() => setShowModalSearch(false)}
+        onClose={handleCloseSearch}
         savedExercises={savedExercises}
         exercisesData={allExercises}
         addExercises={handleAddExercise}

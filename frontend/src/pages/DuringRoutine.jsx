@@ -12,7 +12,8 @@ import baseAxios from "../axios/baseAxios";
 
 function DuringRoutine() {
   const routineNameDisplay = localStorage.getItem("routine");
-  console.log(routineNameDisplay);
+  const routineJSON = JSON.parse(routineNameDisplay);
+  // console.log(routineJSON.name);
 
   const userName = localStorage.getItem("username");
   const processExercise = (updatedCompletedExercises, index) => {
@@ -23,6 +24,18 @@ function DuringRoutine() {
     });
     // console.log(completedExercises);
   };
+  const formatTime = (timeInSeconds) => {
+    const hours = Math.floor(timeInSeconds / 3600);
+    const minutes = Math.floor((timeInSeconds % 3600) / 60);
+    const seconds = timeInSeconds % 60;
+
+    const formattedHours = hours.toString().padStart(2, "0");
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+    const formattedSeconds = seconds.toString().padStart(2, "0");
+
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  };
+
   const [exerciseList, setExerciseList] = useState([]);
   const [completedExercises, setCompletedExercises] = useState([]);
   const [isRunning, setIsRunning] = useState(false);
@@ -35,9 +48,9 @@ function DuringRoutine() {
       username: userName,
       routineName: "Liftbro's Upper Body Routine",
       dateTimeCompleted: new Date().toJSON(),
-      routineDuration: elapsedTime,
+      routineDuration: formatTime(elapsedTime),
       caloriesBurned: caloriesBurned,
-      // completedExercises: [],
+      completedExercises: completedExercises,
     };
     // console.log(workoutData);
     const response = axios
@@ -46,6 +59,10 @@ function DuringRoutine() {
       })
       .then((response) => {
         // Handle the response from the backend if needed
+        // get your completedRoutine ID
+
+        // set completed routine ID to local storage
+
         console.log("Workout data sent successfully!", response);
         // Redirect to the "end" page or any other desired action
       })
@@ -82,7 +99,7 @@ function DuringRoutine() {
     };
   }, [isRunning]);
 
-  const routineName = "Liftbro's Upper Body Routine";
+  const routineName = routineJSON.name;
   const createdBy = userName;
 
   // Calories calculator
@@ -133,7 +150,7 @@ function DuringRoutine() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-4 mt-20 mx-auto">Routine name</h1>
+      <h1 className="text-3xl font-bold mb-4 mt-20 mx-auto">{routineName}</h1>
       <div className="flex justify-evenly p-20">
         {/* Timer box */}
         <div>
@@ -182,9 +199,9 @@ function DuringRoutine() {
       <div className="flex justify-evenly p-20">
         {/* Complete workout */}
         <div>
-          {/* <Link to="/end"> */}
-          <Button text="Complete Workout" onClick={handleCompleteWorkout} />
-          {/* </Link> */}
+          <Link to="/end">
+            <Button text="Complete Workout" onClick={handleCompleteWorkout} />
+          </Link>
         </div>
       </div>
     </div>

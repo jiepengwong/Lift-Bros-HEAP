@@ -6,6 +6,14 @@ import Button from "../component/Button";
 import { Link } from "react-router-dom";
 
 function Endpage() {
+  // grab your completed routine id from local storage
+
+  // get the completed routine from the backend using completed routine id
+  // get the routine name, routine duration, and routine calories burned from the backend and assing to variable
+
+  // create function to update the compelted routine intensity
+  // use post request to update the completed routine intensity
+
   return (
     <div className="flex flex-col justify-center items-center">
       <h1 className="text-xl sm:text-lg lg:text-3xl font-bold text-center m-2 p-4">

@@ -11,28 +11,6 @@ function HomePage() {
   const navigate = useNavigate();
   const userName = localStorage.getItem("username");
 
-  const [allRecommendedRoutines, setAllRecommendedRoutines] = useState({});
-  const getAllRecommendedRoutines = () => {
-    baseAxios
-      .get("/routine/templates", {
-        withCredentials: true,
-      })
-      .then((response) => {
-        console.log("Testing base axios - SUCCESS");
-        console.log(response.data);
-        setAllRecommendedRoutines(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log("Testing base axios - ERROR");
-      });
-  };
-
-  // const getOneRecommendedRoutine = (allRecommendedRoutines) => {
-  //   const keys = Object.keys(recommendedRoutines);
-  //   if (keys.length > 0) {
-  //     const randomKey = Math.floor(keys[(keys.length * Math.random())]);}
-
   const [chartLabels, setChartLabels] = useState({});
   const [weekOffset, setWeekOffset] = useState(0);
   const [recommendedRoutines, setRecommendedRoutines] = useState([]);

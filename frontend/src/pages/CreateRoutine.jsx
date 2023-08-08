@@ -305,19 +305,22 @@ function CreateRoutine() {
   return (
     <div>
       <div className="flex flex-col">
-        <div className=" bg-gray-200 rounded">
-          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center m-10 p-10">
-            Creating Your Routine
-          </h1>
-        </div>
-
-        <div className="flex flex-row justify-evenly bg-gray-200 p-10">
-          <div>
-            <p className="font-bold text-center  text-lg mb-2">Routine Name:</p>
-            <p className="text-center">{newRoutineName}</p>
-          </div>
-        </div>
+      <div className="bg-custom-image rounded ">
+  <h1 className="text-2xl md:text-3xl lg:text-3xl font-bold text-center text-white py-10">
+    Creating Your Routine
+  </h1>
+  <div className="flex items-center rounded justify-center ">
+    <div className="bg-black bg-opacity-40 p-6 md:px-20 rounded flex flex-col">
+      <button className="font-bold text-center text-xl md:text-2xl text-white mb-2">Your Routine Name</button>
+      <button className="rounded-full bg-yellow-300 text-black font-bold text-xl md:text-2xl mb-2">{newRoutineName}</button>
+    </div>
+  </div>
+  <div className="flex flex-row justify-evenly p-6 md:p-10">
+    {/* Add your content here */}
+  </div>
+</div>
       </div>
+
 
       <div className="py-4">
         {/* Step 1: Image Upload Section */}

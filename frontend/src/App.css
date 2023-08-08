@@ -158,3 +158,31 @@
   color: rgba(255, 255, 255, 0.8);
   text-align: center;
 }
+
+.bg-custom-image {
+  background-image: url('assets/gigachad.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  position: relative;
+  z-index: 1; /* Set z-index for the background image */
+}
+
+.bg-custom-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Darker overlay color */
+  mix-blend-mode: multiply; /* Darken the background image */
+  z-index: -1; /* Set z-index for the overlay */
+}
+
+@media (min-width: 1024px) {
+  .bg-custom-image {
+    background-size: 100% auto; /* Maintain aspect ratio, fill width */
+    background-position: center top; /* Shift slightly downward */
+  }
+}

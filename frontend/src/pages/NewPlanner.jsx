@@ -226,7 +226,7 @@ function Planner() {
               type="button"
               onClick={toggleMobileMenu}
             >
-              Dropdown button{" "}
+              Routines{" "}
               <svg
                 className="w-4 h-4 ml-2"
                 aria-hidden="true"
@@ -365,9 +365,8 @@ function Planner() {
                     .includes(searchQueryPastRoutines.toLowerCase())
                 )
                 .map(
-                  (routineCard, index) =>
-                    routineCard.id
-                    // Render your content for past routines here
+                  (routineCard, index) => routineCard.id
+                  // Render your content for past routines here
                 )}
             </>
           )}

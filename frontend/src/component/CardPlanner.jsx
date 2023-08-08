@@ -47,36 +47,25 @@ function CardPlanner({ routineInfo, deleteCard }) {
 
   return (
     <div className="max-w-md w-full bg-white border border-gray-200 rounded-lg shadow-md relative">
-<div className="mb-4 w-full relative rounded-t-md">
-  {localStorage.getItem("username") === routineInfo.createdBy && (
-    <button
-      onClick={deleteRoutine}
-      className="absolute top-2 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 hover:bg-red-300"
-    >
-      <FontAwesomeIcon icon={faTimes} />
-    </button>
-  )}
-  <div
-    className="relative"
-    style={{
-      paddingBottom: "56.25%" // 16:9 aspect ratio
-    }}
-  >
-    <img
-      className={`absolute inset-0 w-full h-full ${
-        'sm:object-cover'
-      }`}
-      src={`data:image/png;base64,${routineInfo.image}`}
-      alt="Routine Preview"
-    />
-  </div>
-</div>
-
-
+      <div className="mb-4 w-full relative rounded-t-md">
+        {localStorage.getItem("username") === routineInfo.createdBy && (
+          <button
+            onClick={deleteRoutine}
+            className="absolute top-2 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 hover:bg-red-300"
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+        )}
+        <img
+          className={`object-cover w-full h-full ${"md:h-40"}`}
+          src={`data:image/png;base64,${routineInfo.image}`}
+          alt="Routine Preview"
+        />
+      </div>
 
       <div className="px-7 pb-7">
         <a href="#" className="mb-2 block text-gray-900 dark:text-black">
-          <h5 className="text-xl text-start font-bold tracking-tight w-full overflow-hidden">
+          <h5 className="text-l text-start font-bold tracking-tight w-full overflow-hidden min-h-[3rem]">
             {routineInfo.name}
           </h5>
         </a>

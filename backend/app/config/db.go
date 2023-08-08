@@ -14,10 +14,15 @@ var (
 
 func InitDatabase() {
 	var err error
-	dataSourceName := "liftbro:password@tcp(mysql:3306)/liftbro?charset=utf8mb4&parseTime=True&loc=Local"
+	mysqlUser := os.Getenv("MYSQL_USER")
+	mysqlPassword := os.Getenv("MYSQL_PASSWORD")
+	dataSourceName := fmt.Sprintf("%s:%s@tcp(mysql:3306)/liftbro?charset=utf8mb4&parseTime=True&loc=Local",
+		mysqlUser, mysqlPassword)
 	// docker exec -it backend-mysql-1 mysql -u liftbro -p
 	// If you are using a local database
-	// dataSourceName := "root:password@tcp(localhost:3307)/liftbro?charset=utf8mb4&parseTime=True&loc=Local"
+	// dbUser := os.Getenv("DB_USER")
+	// dataSourceName := fmt.Sprintf("%s:%s@tcp(localhost:3307)/liftbro?charset=utf8mb4&parseTime=True&loc=Local",
+	//  	dbUser, mysqlPassword)
 	db, err = gorm.Open(mysql.Open(dataSourceName), &gorm.Config{})
 	if err != nil {
 		panic("Failed to connect to database")

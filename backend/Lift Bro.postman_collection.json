@@ -28,7 +28,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"bao\",\r\n    \"name\": \"bao\",\r\n    \"password\": \"password\",\r\n    \"dob\": \"2023-05-28T10:30:00+08:00\",\r\n    \"phoneNo\": \"999\",\r\n    \"email\": \"bao@gmail.com\"\r\n}",
+							"raw": "{\r\n    \"username\": \"bao\",\r\n    \"name\": \"bao\",\r\n    \"password\": \"password\",\r\n    \"dob\": \"2023-05-28T10:30:00+08:00\",\r\n    \"phoneNo\": \"999\",\r\n    \"email\": \"baotest@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -303,7 +303,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"bao shin\",\r\n    \"password\": \"password\",\r\n    \"dob\": \"2023-05-28T10:30:00Z\",\r\n    \"phoneNo\": \"999\",\r\n    \"email\": \"bao@gmail.com\"\r\n}",
+							"raw": "{\r\n    \"name\": \"bao shin\",\r\n    \"password\": \"password\",\r\n    \"dob\": \"2023-05-28T10:30:00Z\",\r\n    \"phoneNo\": \"999\",\r\n    \"email\": \"baotest@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -370,7 +370,7 @@
 			"name": "Exercise",
 			"item": [
 				{
-					"name": "New User Copy",
+					"name": "New User",
 					"event": [
 						{
 							"listen": "test",
@@ -389,7 +389,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"bao\",\r\n    \"name\": \"bao\",\r\n    \"password\": \"password\",\r\n    \"dob\": \"2023-05-28T10:30:00+08:00\",\r\n    \"phoneNo\": \"999\",\r\n    \"email\": \"bao@gmail.com\"\r\n}",
+							"raw": "{\r\n    \"username\": \"bao\",\r\n    \"name\": \"bao\",\r\n    \"password\": \"password\",\r\n    \"dob\": \"2023-05-28T10:30:00+08:00\",\r\n    \"phoneNo\": \"999\",\r\n    \"email\": \"baotest@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -409,7 +409,7 @@
 					"response": []
 				},
 				{
-					"name": "Login Admin",
+					"name": "Login User",
 					"event": [
 						{
 							"listen": "test",
@@ -430,7 +430,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"LiftBro\",\r\n    \"password\": \"password\"\r\n}",
+							"raw": "{\r\n    \"username\": \"bao\",\r\n    \"password\": \"password\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -688,47 +688,6 @@
 		{
 			"name": "Routine",
 			"item": [
-				{
-					"name": "Login Admin",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"var jsonData = JSON.parse(responseBody);\r",
-									"pm.environment.set(\"jwtToken\", jsonData.cookie.value);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"LiftBro\",\r\n    \"password\": \"password\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/login",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Create Routine",
 					"event": [
@@ -1042,47 +1001,6 @@
 			"name": "Completed Routine",
 			"item": [
 				{
-					"name": "Login Admin",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"var jsonData = JSON.parse(responseBody);\r",
-									"pm.environment.set(\"jwtToken\", jsonData.cookie.value);"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"LiftBro\",\r\n    \"password\": \"password\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/login",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Create Completed Routine",
 					"event": [
 						{
@@ -1334,7 +1252,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/completedRoutine/pastWeek?weekOffset=1&username=Liftbro",
+							"raw": "{{baseUrl}}/completedRoutine/pastWeek?weekOffset=1&username=bao",
 							"host": [
 								"{{baseUrl}}"
 							],
@@ -1349,7 +1267,7 @@
 								},
 								{
 									"key": "username",
-									"value": "Liftbro"
+									"value": "bao"
 								}
 							]
 						}
@@ -1357,7 +1275,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete User Copy",
+					"name": "Delete User",
 					"event": [
 						{
 							"listen": "test",

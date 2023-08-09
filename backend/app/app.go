@@ -11,7 +11,7 @@ import (
 func Start() {
 	app := fiber.New()
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "http://localhost:3000, http://127.0.0.1:3000, https://liftbro.netlify.app",
+		AllowOrigins:     "http://localhost:3000, http://127.0.0.1:3000, https://liftbro.netlify.app, http://frontend:80",
 		AllowCredentials: true,
 		AllowHeaders:     "authorization, content-type, ngrok-skip-browser-warning",
 	}))

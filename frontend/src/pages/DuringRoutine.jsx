@@ -46,7 +46,7 @@ function DuringRoutine() {
     setIsRunning(false);
     const workoutData = {
       username: userName,
-      routineName: "Liftbro's Upper Body Routine",
+      routineName: routineJSON.name,
       dateTimeCompleted: new Date().toJSON(),
       routineDuration: formatTime(elapsedTime),
       // caloriesBurned: caloriesBurned,

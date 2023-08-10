@@ -30,7 +30,7 @@ function App() {
   // List of routes where the navbar should be rendered
   const routesWithNavbar = [
     '/',
-    '/routine',
+    '/Routine',
     '/createRoutine',
     '/end',
     '/during',

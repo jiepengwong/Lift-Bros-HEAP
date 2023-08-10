@@ -22,16 +22,28 @@ import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate, Link } from "react-router-dom";
 import { startGlobalTimer, clearGlobalTimer } from "./utils/GlobalTimer"; // Import the new utility
 import { Helmet } from 'react-helmet';
+import NotFound from "./pages/NotFound";
+import { useLocation  } from "react-router-dom";
 function App() {
-  const navigate = useNavigate();
+  const location = useLocation();
+
+  // List of routes where the navbar should be rendered
+  const routesWithNavbar = [
+    '/',
+    '/routine',
+    '/createRoutine',
+    '/end',
+    '/during',
+    '/history',
+    // '/login', == Excluded ==
+    // '/register' == Excluded ==
+    // Add more routes where the navbar should be rendered
+  ];
 
 
 
-
-  const shouldRenderNavbar = !(
-    window.location.pathname.toLowerCase() === "/login" ||
-    window.location.pathname.toLowerCase() === "/register"
-  );
+  // Determine whether to render the navbar based on the current route
+  const shouldRenderNavbar = routesWithNavbar.includes(location.pathname);
   return (
     <div className="App">
       <Helmet>
@@ -56,6 +68,9 @@ function App() {
             <Route path="/during" element={<DuringRoutine />} />
             <Route path="/history" element={<History />} />
           </Route>
+
+        {/* This route catches all unmatched routes and displays the 404 page */}
+        <Route path="*" element={<NotFound />} />
 
         </Routes>
       </div>

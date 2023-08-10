@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create a base Axios instance
 const baseAxios = axios.create({
-  baseURL: "https://c08c-138-75-104-147.ngrok-free.app",
+  baseURL: "https://sc6ba3mvpg.ap-southeast-1.awsapprunner.com/",
   timeout: 10000, // Set a default timeout for all requests (optional)
   withCredentials: true,
   headers: {

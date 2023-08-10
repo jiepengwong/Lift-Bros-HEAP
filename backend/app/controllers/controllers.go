@@ -6,6 +6,12 @@ import (
 	"github.com/jiepengwong/Lift-Bros-HEAP/app/services"
 )
 
+func setupTestingRoutes(app *fiber.App) {
+    app.Get("/ping", func(c *fiber.Ctx) error {
+        return c.SendString("Pong! The server is up and running.")
+    })
+}
+
 func SetupRoutes(app *fiber.App) {
 	setupUserRoutes(app)
 	setupExerciseRoutes(app)

@@ -44,12 +44,7 @@ baseAxios.interceptors.response.use(
         }
         // You can also redirect the user to a login page or display an error message
         // Example: redirectToLoginPage();
-      } else if (error.response.status === 404 || error.response.status === 400) {
-        // Handle 404 errors by displaying an alert
-        // Example: displayAlert("Resource not found");
-
-
-      }
+      } 
       Swal.fire({
         title: "Error!",
         text: "Something went wrong!" + error.response,

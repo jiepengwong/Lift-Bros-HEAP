@@ -117,11 +117,11 @@ function Planner() {
         .catch((error) => {
           console.log(error);
           setIsLoading(false);
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            html: "Something went wrong! Error message: " + error.message,
-          })
+          // Swal.fire({
+          //   icon: "error",
+          //   title: "Oops...",
+          //   html: "Something went wrong! Error message: " + error.message,
+          // })
         });
 
     }
@@ -154,11 +154,11 @@ function Planner() {
         .catch((error) => {
           console.log(error);
           setIsLoading(false);
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            html: "Something went wrong! Error message: " + error.message,
-          })
+          // Swal.fire({
+          //   icon: "error",
+          //   title: "Oops...",
+          //   html: "Something went wrong! Error message: " + error.message,
+          // })
         });
     }
 
@@ -178,11 +178,11 @@ function Planner() {
         .catch((error) => {
           console.log(error);
           setIsLoading(false);
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            html: "Something went wrong! Error message: " + error.message,
-          })
+          // Swal.fire({
+          //   icon: "error",
+          //   title: "Oops...",
+          //   html: "Something went wrong! Error message: " + error.message,
+          // })
         });
     }
   }, [activeTab]);

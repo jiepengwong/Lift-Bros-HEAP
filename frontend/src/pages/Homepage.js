@@ -70,11 +70,12 @@ function HomePage() {
       .catch((error) => {
         console.log(error);
         setIsLoading(false);
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            html: "Something went wrong! Error message: " + error.message,
-          })
+        console.log("testing catch block in Homepage")
+        // Swal.fire({
+        //   icon: "error",
+        //   title: "Oops...",
+        //   html: "Something went wrong! Error message: " + error.message,
+        // })
         
       });
   };

@@ -59,6 +59,7 @@ function Login() {
       const playPromise = video.play();
       if (playPromise) {
         playPromise.catch(handleAutoplayError);
+        
       }
     }
   };

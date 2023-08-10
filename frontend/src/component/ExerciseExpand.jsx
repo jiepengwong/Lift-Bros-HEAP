@@ -74,7 +74,7 @@ function ExerciseExpand({ exercise, onChange }) {
         </svg>
       </button>
       {dropdownOpen && (
-        <div>
+        <div className="fade-in-dropdown">
           <ol
             className="py-2 text-sm text-gray-700 dark:text-gray-200"
             aria-labelledby="dropdownDefaultButton"

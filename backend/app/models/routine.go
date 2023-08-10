@@ -55,6 +55,7 @@ type RoutineExercise struct {
 	RoutineName      string    `json:"routineName"`
 	ExerciseID       uuid.UUID `json:"-" gorm:"primaryKey"`
 	ExerciseName     string    `json:"exerciseName"`
+	Description      string    `json:"description"`
 	TargetReps       []int     `gorm:"-" json:"targetReps"`
 	TargetRepsString string    `json:"-"`
 	RepBuffer        int       `json:"repBuffer"`

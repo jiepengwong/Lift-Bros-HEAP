@@ -153,6 +153,7 @@ func CreateRoutine(c *fiber.Ctx) error {
 			RoutineName:  routineData.Name,
 			ExerciseID:   routine.Exercises[i].ID,
 			ExerciseName: exerciseData.Name,
+			Description:  routine.Exercises[i].Description,
 			TargetReps:   exerciseData.TargetReps,
 			RepBuffer:    exerciseData.RepBuffer,
 		}

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-function ExerciseExpand({ exercise, onChange }) {
+function ExerciseExpand({ exercise, prevExercise, onChange }) {
   const [completedExercises, setCompletedExercises] = useState({
     exerciseName: exercise.exerciseName,
     targetReps: exercise.targetReps,
@@ -154,8 +154,15 @@ function ExerciseExpand({ exercise, onChange }) {
                 key={index}
                 className="flex flex-col md:flex-row md:items-center justify-center"
               >
-                <div className="mb-2 md:mb-0 font-semibold text-md md:text-md">
-                  SET {index + 1} - {set} target reps
+                <div className="flex flex-col">
+                  <div className="mb-2 md:mb-0 font-semibold text-md md:text-md">
+                    SET {index + 1} - {set} target reps
+                  </div>
+                  <p>
+                    {prevExercise.length === 0
+                      ? ""
+                      : `Prev: ${prevExercise.actualWeights[index]}kg x ${prevExercise.actualReps[index]}`}
+                  </p>
                 </div>
                 <div className="flex-grow md:flex-grow-0">
                   <input

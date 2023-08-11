@@ -36,6 +36,7 @@ function DuringRoutine() {
   };
 
   const [exerciseList, setExerciseList] = useState([]);
+  const [previousExerciseList, setPreviousExerciseList] = useState([]);
   const [completedExercises, setCompletedExercises] = useState([]);
   const [isRunning, setIsRunning] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(0);
@@ -145,10 +146,36 @@ function DuringRoutine() {
       .catch((error) => {
         console.log(error);
       });
+    // Fetch previous routine
+    baseAxios
+      .get(
+        `completedRoutine/recent?username=${createdBy}&routineName=${routineName}&createdBy=${createdBy}`,
+        {
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        // Set past routine of user here
+        setPreviousExerciseList(response.data.data.completedExercises);
+      })
+      .catch((error) => {
+        if (error.response.status === 404) {
+          setPreviousExerciseList([]);
+        }
+        console.log(error);
+      });
   }, []);
 
   const handlePlayPause = () => {
     setIsRunning((prevState) => !prevState);
+  };
+
+  const findPreviousExercise = (exerciseName) => {
+    if (previousExerciseList === undefined || previousExerciseList.length === 0)
+      return [];
+    return previousExerciseList.find(
+      (exercise) => exercise.exerciseName === exerciseName
+    );
   };
 
   return (
@@ -188,6 +215,7 @@ function DuringRoutine() {
         <div className="m-2" key={index}>
           <ExerciseExpand
             exercise={exercise}
+            prevExercise={findPreviousExercise(exercise.exerciseName)}
             onChange={(updatedInfo) => processExercise(updatedInfo, index)}
           />
         </div>

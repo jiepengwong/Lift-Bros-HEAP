@@ -13,7 +13,6 @@ function DuringRoutine() {
   const navigate = useNavigate();
   const routineNameDisplay = localStorage.getItem("routine");
   const routineJSON = JSON.parse(routineNameDisplay);
-  console.log("routineJSON", routineJSON.name);
 
   const userName = localStorage.getItem("username");
   const processExercise = (updatedCompletedExercises, index) => {
@@ -154,7 +153,10 @@ function DuringRoutine() {
 
   return (
     <div>
-      <h1 className="text-4xl font-bold py-20 mx-auto bg-custom-image-duringroutine text-white"><span className=" uppercase text-yellow-300">Routine</span> - {routineName}</h1>
+      <h1 className="text-4xl font-bold py-20 mx-auto bg-custom-image-duringroutine text-white">
+        <span className=" uppercase text-yellow-300">Routine</span> -{" "}
+        {routineName}
+      </h1>
       <div className="flex flex-col items-center p-10 md:flex-row md:justify-evenly md:p-5">
         {/* Timer box */}
         <div className="mb-4 md:mb-0">
@@ -165,7 +167,9 @@ function DuringRoutine() {
             {/* Play/Pause button */}
             <div className="flex justify-center">
               <button
-                className={`bg-${isRunning ? 'orange' : 'green'}-500 hover:bg-${isRunning ? 'orange' : 'green'}-600 text-white font-semibold py-2 px-4 rounded-full`}
+                className={`bg-${isRunning ? "orange" : "green"}-500 hover:bg-${
+                  isRunning ? "orange" : "green"
+                }-600 text-white font-semibold py-2 px-4 rounded-full`}
                 onClick={handlePlayPause}
               >
                 <FontAwesomeIcon icon={isRunning ? faPause : faPlay} />

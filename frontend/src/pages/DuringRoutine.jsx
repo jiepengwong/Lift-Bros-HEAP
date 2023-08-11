@@ -154,38 +154,27 @@ function DuringRoutine() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-4 mt-20 mx-auto">{routineName}</h1>
-      <div className="flex justify-evenly p-20">
+      <h1 className="text-4xl font-bold py-20 mx-auto bg-custom-image-duringroutine text-white"><span className=" uppercase text-yellow-300">Routine</span> - {routineName}</h1>
+      <div className="flex flex-col items-center p-10 md:flex-row md:justify-evenly md:p-5">
         {/* Timer box */}
-        <div>
-          <div className="flex flex-col justify-center bg-gray-200 p-4 rounded-lg">
-            <div>
+        <div className="mb-4 md:mb-0">
+          <div className="flex flex-col items-center bg-gray-200 p-4 rounded-lg">
+            <div className="mb-2">
               <Stopwatch elapsedTime={elapsedTime} />
             </div>
             {/* Play/Pause button */}
-            <br></br>
             <div className="flex justify-center">
-              {!isRunning && (
-                <button
-                  className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full"
-                  onClick={handlePlayPause}
-                >
-                  <FontAwesomeIcon icon={isRunning ? faPause : faPlay} />
-                </button>
-              )}
-
-              {isRunning && (
-                <button
-                  className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-full"
-                  onClick={handlePlayPause}
-                >
-                  <FontAwesomeIcon icon={isRunning ? faPause : faPlay} />
-                </button>
-              )}
+              <button
+                className={`bg-${isRunning ? 'orange' : 'green'}-500 hover:bg-${isRunning ? 'orange' : 'green'}-600 text-white font-semibold py-2 px-4 rounded-full`}
+                onClick={handlePlayPause}
+              >
+                <FontAwesomeIcon icon={isRunning ? faPause : faPlay} />
+              </button>
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-center">
+
+        <div className="flex flex-col items-center">
           {/* Calories box */}
           <GreyBox text="Est. calories burned:" data={caloriesBurned} />
         </div>

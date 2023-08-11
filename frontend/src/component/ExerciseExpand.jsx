@@ -75,35 +75,39 @@ function ExerciseExpand({ exercise, onChange }) {
       </button>
       {dropdownOpen && (
         <div className="fade-in-dropdown">
-          <ol
-            className="py-2 text-sm text-gray-700 dark:text-gray-200"
-            aria-labelledby="dropdownDefaultButton"
-          >
-            {/* Display the entered weight and actual reps for each set */}
-            {exercise.targetReps.map((set, index) => (
-              <li key={index}>
-                {set} target reps -{" "}
-                <input
-                  type="number"
-                  value={setInfo[index]?.weight || ""}
-                  min={0}
-                  onChange={(event) => handleWeightChange(index, event)}
-                  placeholder="Weight (kg)"
-                  className="py-2 px-3 m-2 border border-yellow-500 rounded-lg focus:outline-none focus:ring-1 focus:ring-yellow-600 focus:border-transparent"
-                />{" "}
-                kg -{" "}
-                <input
-                  type="number"
-                  value={setInfo[index]?.actualReps || ""}
-                  min={0}
-                  onChange={(event) => handleActlRepsChange(index, event)}
-                  placeholder="Reps done"
-                  className="py-2 px-3 m-2 border border-yellow-500 rounded-lg focus:outline-none focus:ring-1 focus:ring-yellow-600 focus:border-transparent"
-                />{" "}
-                reps done
-              </li>
-            ))}
-          </ol>
+         <ol
+    className="py-2 text-sm text-gray-700 space-y-2"
+    aria-labelledby="dropdownDefaultButton"
+  >
+    {/* Display the entered weight and actual reps for each set */}
+    {exercise.targetReps.map((set, index) => (
+      <li key={index} className="flex flex-col md:flex-row md:items-center justify-center">
+      <div className="mb-2 md:mb-0 font-semibold text-xl md:text-lg">
+        SET {index + 1} - {set} target reps
+      </div>
+      <div className="flex-grow md:flex-grow-0">
+        <input
+          type="number"
+          value={setInfo[index]?.weight || ""}
+          min={0}
+          onChange={(event) => handleWeightChange(index, event)}
+          placeholder="Weight (kg)"
+          className="py-2 px-3 m-2 border border-yellow-500 rounded-lg focus:outline-none focus:ring-1 focus:ring-yellow-600 focus:border-transparent"
+        />
+      </div>
+      <div className="flex-grow md:flex-grow-0">
+        <input
+          type="number"
+          value={setInfo[index]?.actualReps || ""}
+          min={0}
+          onChange={(event) => handleActlRepsChange(index, event)}
+          placeholder="Reps done"
+          className="py-2 px-3 m-2 border border-yellow-500 rounded-lg focus:outline-none focus:ring-1 focus:ring-yellow-600 focus:border-transparent"
+        />
+      </div>
+    </li>
+    ))}
+  </ol>
         </div>
       )}
     </div>

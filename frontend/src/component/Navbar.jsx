@@ -73,7 +73,7 @@ function Navbar() {
                     {item}
                   </Link>
                 ) : (
-                  <Link to={`/${item}`} onClick={handleMenuClick}>
+                  <Link to={`/routine`} onClick={handleMenuClick}>
                     {item}
                   </Link>
                 )}

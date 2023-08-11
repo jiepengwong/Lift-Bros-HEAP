@@ -19,28 +19,32 @@ import LoginTest from "./pages/LoginTest";
 import RequireAuth from "./utils/RequireAuth";
 // import useAuth from "./utils/useAuth";
 import { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+  Link,
+} from "react-router-dom";
 import { startGlobalTimer, clearGlobalTimer } from "./utils/GlobalTimer"; // Import the new utility
-import { Helmet } from 'react-helmet';
+import { Helmet } from "react-helmet";
 import NotFound from "./pages/NotFound";
-import { useLocation  } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 function App() {
   const location = useLocation();
 
   // List of routes where the navbar should be rendered
   const routesWithNavbar = [
-    '/',
-    '/Routine',
-    '/createRoutine',
-    '/end',
-    '/during',
-    '/history',
+    "/",
+    "/routine",
+    "/createRoutine",
+    "/end",
+    "/during",
+    "/history",
     // '/login', == Excluded ==
     // '/register' == Excluded ==
     // Add more routes where the navbar should be rendered
   ];
-
-
 
   // Determine whether to render the navbar based on the current route
   const shouldRenderNavbar = routesWithNavbar.includes(location.pathname);
@@ -50,8 +54,10 @@ function App() {
         <meta charSet="utf-8" />
         <title>Lift Bro</title>
         <link rel="canonical" href="https://liftbro.netlify.app/" />
-        <meta name="description" content="Start your gym routine today with LiftBro" />
-
+        <meta
+          name="description"
+          content="Start your gym routine today with LiftBro"
+        />
       </Helmet>
       {shouldRenderNavbar && <Navbar />}
       <div>
@@ -69,9 +75,8 @@ function App() {
             <Route path="/history" element={<History />} />
           </Route>
 
-        {/* This route catches all unmatched routes and displays the 404 page */}
-        <Route path="*" element={<NotFound />} />
-
+          {/* This route catches all unmatched routes and displays the 404 page */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </div>

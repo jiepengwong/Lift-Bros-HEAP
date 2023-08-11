@@ -47,6 +47,24 @@ function Navbar() {
     };
   }, []);
 
+  const navElement = (item, mobile, index) => {
+    return (
+      <li
+        key={item}
+        className={
+          mobile
+            ? `z-10 font-bold cursor-pointer block py-2 mx-2 rounded-md ${
+                index === navbar.length - 1 ? "last-item" : ""
+              }`
+            : "font-bold cursor-pointer inline-block px-6 py-2 mx-2 rounded-md hover:bg-green-300"
+        }
+        onClick={mobile ? handleMenuClick : null}
+      >
+        {item}
+      </li>
+    );
+  };
+
   return (
     <div className="top-0 w-full block">
       <div className="bg-yellow-300 flex justify-between items-center w-full h-20 px-2 2xl:px-16">
@@ -59,26 +77,21 @@ function Navbar() {
         {/* Navbar desktop */}
         <div className={`hidden sm:block ${menuOpen ? "hidden" : ""}`}>
           <ul>
-            {navbar.map((item) => (
-              <li
-                key={item}
-                className="font-bold cursor-pointer inline-block px-6 py-2 mx-2 rounded-md hover:bg-green-300"
-              >
-                {item === "Home" ? (
-                  <Link to="/" onClick={handleMenuClick}>
-                    {item}
-                  </Link>
-                ) : item === "Logout" ? (
-                  <Link to="/login" onClick={handleLogout}>
-                    {item}
-                  </Link>
-                ) : (
-                  <Link to={`/routine`} onClick={handleMenuClick}>
-                    {item}
-                  </Link>
-                )}
-              </li>
-            ))}
+            {navbar.map((item) =>
+              item === "Home" ? (
+                <Link to="/" onClick={handleMenuClick}>
+                  {navElement(item, false)}
+                </Link>
+              ) : item === "Logout" ? (
+                <Link to="/login" onClick={handleLogout}>
+                  {navElement(item, false)}
+                </Link>
+              ) : (
+                <Link to={`/routine`} onClick={handleMenuClick}>
+                  {navElement(item, false)}
+                </Link>
+              )
+            )}
           </ul>
         </div>
 
@@ -122,25 +135,17 @@ function Navbar() {
         }}
       >
         <ul className={`${menuOpen ? "block sm:hidden" : "hidden"}`}>
-          {navbar.map((item, index) => (
-            <li
-              key={item}
-              className={`z-10 font-bold cursor-pointer block py-2 mx-2 rounded-md ${
-                index === navbar.length - 1 ? "last-item" : ""
-              }`}
-              onClick={handleMenuClick}
-            >
-              {item === "Home" ? (
-                <Link to="/">{item}</Link>
-              ) : item === "Logout" ? (
-                <Link to="/login" onClick={handleLogout}>
-                  {item}
-                </Link>
-              ) : (
-                <Link to={`/${item}`}>{item}</Link>
-              )}
-            </li>
-          ))}
+          {navbar.map((item, index) =>
+            item === "Home" ? (
+              <Link to="/">{navElement(item, true, index)}</Link>
+            ) : item === "Logout" ? (
+              <Link to="/login" onClick={handleLogout}>
+                {navElement(item, true, index)}
+              </Link>
+            ) : (
+              <Link to={`/routine`}>{navElement(item, true, index)}</Link>
+            )
+          )}
         </ul>
       </div>
     </div>

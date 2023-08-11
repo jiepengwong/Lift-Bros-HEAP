@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 function ModalExerciseSets({ isOpen, onClose, handleEditExercise, exercise }) {
   const [sets, setSets] = useState([]);
   const [reps, setReps] = useState([]);
-  console.log(exercise);
 
   useEffect(() => {
     // Lock scroll when the modal is open

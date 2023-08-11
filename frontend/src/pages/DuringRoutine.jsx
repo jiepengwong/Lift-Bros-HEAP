@@ -149,7 +149,7 @@ function DuringRoutine() {
     // Fetch previous routine
     baseAxios
       .get(
-        `completedRoutine/recent?username=${createdBy}&routineName=${routineName}&createdBy=${createdBy}`,
+        `completedRoutine/recent?username=${userName}&routineName=${routineName}&createdBy=${createdBy}`,
         {
           withCredentials: true,
         }

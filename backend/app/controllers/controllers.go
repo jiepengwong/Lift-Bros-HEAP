@@ -7,9 +7,9 @@ import (
 )
 
 func setupTestingRoutes(app *fiber.App) {
-    app.Get("/ping", func(c *fiber.Ctx) error {
-        return c.SendString("Pong! The server is up and running.")
-    })
+	app.Get("/ping", func(c *fiber.Ctx) error {
+		return c.SendString("Pong! The server is up and running.")
+	})
 }
 
 func SetupRoutes(app *fiber.App) {
@@ -55,6 +55,7 @@ func setupCompletedRoutineRoutes(app *fiber.App) {
 	completedRoutine.Post("/new", services.CreateCompletedRoutine)
 	completedRoutine.Get("/pastWeek", services.GetCompletedRoutinesPastWeek)
 	completedRoutine.Get("/user/:username", services.GetCompletedRoutineByUser)
+	completedRoutine.Get("/recent", services.GetMostRecentCompletedRoutineByName)
 	completedRoutine.Get("/:id", services.GetCompletedRoutine)
 	completedRoutine.Get("/", services.GetCompletedRoutines)
 	completedRoutine.Put("/:id", services.UpdateCompletedRoutine)

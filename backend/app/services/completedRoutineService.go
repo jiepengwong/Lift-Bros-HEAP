@@ -3,6 +3,7 @@ package services
 import (
 	"errors"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -133,7 +134,9 @@ func GetCompletedRoutine(c *fiber.Ctx) error {
 func GetCompletedRoutines(c *fiber.Ctx) error {
 	db := config.GetDB()
 	var completedRoutines []models.CompletedRoutine
-	if err := db.Preload("CompletedExercises").Find(&completedRoutines).Error; err != nil {
+	if err := db.Preload("CompletedExercises").
+		Order("date_time_completed desc").
+		Find(&completedRoutines).Error; err != nil {
 		// you can also use Preload(clause.Associations) to preload all associations
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
@@ -141,6 +144,58 @@ func GetCompletedRoutines(c *fiber.Ctx) error {
 	}
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"data": completedRoutines,
+	})
+}
+
+func GetMostRecentCompletedRoutineByName(c *fiber.Ctx) error {
+	db := config.GetDB()
+
+	username := strings.ReplaceAll(c.Query("username"), "%20", " ")
+	routineName := strings.ReplaceAll(c.Query("routineName"), "%20", " ")
+	createdBy := strings.ReplaceAll(c.Query("createdBy"), "%20", " ")
+
+	// get user from database
+	user := new(models.User)
+	if err := GetUserByUsername(username, user); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	// get creator from database
+	creator := new(models.User)
+	if err := GetUserByUsername(createdBy, creator); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	// get routine from database
+	routine := new(models.Routine)
+	if err := getRoutineByUserIdAndName(creator.ID, routineName, routine); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	// fetch most recent exercise
+	mostRecentRoutine := new(models.CompletedRoutine)
+	if err := db.Preload("CompletedExercises").
+		Where("user_id = ? AND routine_id = ?", user.ID, routine.ID).
+		Order("date_time_completed desc").
+		First(&mostRecentRoutine).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return c.Status(fiber.StatusOK).JSON(fiber.Map{
+				"data": []models.CompletedRoutine{},
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"data": mostRecentRoutine,
 	})
 }
 

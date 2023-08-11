@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 
 // Create a base Axios instance
 const baseAxios = axios.create({
-  baseURL: "https://sc6ba3mvpg.ap-southeast-1.awsapprunner.com/",
+  baseURL: "https://fqp52bb95r.ap-southeast-1.awsapprunner.com",
   timeout: 10000, // Set a default timeout for all requests (optional)
   withCredentials: true,
   headers: {

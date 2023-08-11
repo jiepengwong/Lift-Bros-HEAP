@@ -18,7 +18,7 @@ func InitDatabase() {
 	mysqlPassword := os.Getenv("MYSQL_PASSWORD")
 
 	// FOR RDS DATABASE CHANGE TO @tcp(mysql:3306) for local and also baseAxios
-	dataSourceName := fmt.Sprintf("%s:%s@tcp(liftbro-rds.cxk5ezdbakhc.ap-southeast-1.rds.amazonaws.com:3306)/liftbro?charset=utf8mb4&parseTime=True&loc=Local",
+	dataSourceName := fmt.Sprintf("%s:%s@tcp(liftbro-mysql.cxk5ezdbakhc.ap-southeast-1.rds.amazonaws.com:3306)/liftbro?charset=utf8mb4&parseTime=True&loc=Local",
 		mysqlUser, mysqlPassword)
 	// docker exec -it backend-mysql-1 mysql -u liftbro -p
 	// If you are using a local database

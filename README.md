@@ -50,9 +50,5 @@ Our backend powers LiftBros with essential functionalities. Key backend features
 
 Our team use TDD to develop, you can view our test cases using postman. Import our postman collection and environment to get started.
 
-## A very simple architectural diagram
-![image](https://github.com/jiepengwong/Lift-Bros-HEAP/assets/76239879/e87800e1-ac8c-4616-858a-51fb23981d37)
-
-Our team employed the use of docker together with ECR and ECS to create a simple pipeline to deploy our MySQL and backend Images, which is spun up by Fargate. Frontend is then connected to the Application Load Balancer, and the Fargate containers are deployed across 3 availability zones which makes the application highly available.   
 
 
